@@ -1,35 +1,55 @@
+import { Box, Flex, Link } from "@chakra-ui/react"
 import { links } from "../content/site-content"
 import { Button } from "./ui/button"
 
 export function Nav() {
   return (
-    <nav className="fixed inset-x-0 top-0 z-[100] flex items-center justify-between bg-gradient-to-b from-bg/92 to-transparent px-6 py-7 min-[901px]:px-12">
-      <a
+    <Flex
+      as="nav"
+      position="fixed"
+      insetInline="0"
+      top="0"
+      zIndex="100"
+      align="center"
+      justify="space-between"
+      px={{ base: "6", lg901: "12" }}
+      py="7"
+      style={{
+        background:
+          "linear-gradient(to bottom, color-mix(in oklch, oklch(0.05 0 0) 92%, transparent), transparent)",
+      }}
+    >
+      <Link
         href="#"
-        className="text-[1.75rem] font-black uppercase tracking-tight text-fg no-underline"
+        fontSize="1.75rem"
+        fontWeight="black"
+        textTransform="uppercase"
+        letterSpacing="tight"
+        color="fg"
+        textDecoration="none"
       >
         KYD.
-      </a>
-      <ul className="flex list-none items-center gap-6">
-        <li>
+      </Link>
+      <Flex as="ul" listStyleType="none" align="center" gap="6">
+        <Box as="li">
           <Button
             href={links.tickets}
             variant="outline"
-            className="!px-[22px] !py-[9px] !text-sm"
+            css={{ px: "22px", py: "9px", fontSize: "sm" }}
           >
             Find My Tickets
           </Button>
-        </li>
-        <li>
+        </Box>
+        <Box as="li">
           <Button
             href={links.getInTouch}
             variant="primary"
-            className="!px-[22px] !py-[9px] !text-sm"
+            css={{ px: "22px", py: "9px", fontSize: "sm" }}
           >
             Get in touch
           </Button>
-        </li>
-      </ul>
-    </nav>
+        </Box>
+      </Flex>
+    </Flex>
   )
 }

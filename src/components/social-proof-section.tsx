@@ -1,61 +1,84 @@
+import { Box, Flex, Grid, Text } from "@chakra-ui/react"
 import { roster, testimonials } from "../content/site-content"
 import { Container } from "./ui/container"
 
 export function SocialProofSection() {
   return (
-    <section className="border-t border-border px-6 py-20 min-[901px]:px-12 min-[901px]:py-28">
+    <Box
+      as="section"
+      borderTop="1px solid"
+      borderColor="border"
+      px={{ base: "6", lg901: "12" }}
+      py={{ base: "20", lg901: "28" }}
+    >
       <Container>
-        <p className="mb-8 font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-fg-subtle">
+        <Text textStyle="eyebrow" mb="8" color="fgSubtle">
           Used by artists and venues across the country
-        </p>
+        </Text>
 
-        <div className="-ml-px -mt-px mb-20 flex flex-wrap">
+        <Flex flexWrap="wrap" ml="-1px" mt="-1px" mb="20">
           {roster.map((item, index) => (
-            <div
+            <Box
               key={`${item.name}-${index}`}
-              className={`border border-border px-6 py-3.5 text-[clamp(1.1rem,2vw,1.55rem)] font-black uppercase leading-none tracking-tight ${
-                item.type === "artist" ? "text-accent" : "text-fg-muted"
-              }`}
+              border="1px solid"
+              borderColor="border"
+              px="6"
+              py="3.5"
+              fontSize="clamp(1.1rem, 2vw, 1.55rem)"
+              fontWeight="black"
+              textTransform="uppercase"
+              lineHeight="1"
+              letterSpacing="tight"
+              color={item.type === "artist" ? "accent" : "fgMuted"}
             >
               {item.name}
-            </div>
+            </Box>
           ))}
-        </div>
+        </Flex>
 
-        <p className="mb-6 font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-fg-subtle">
+        <Text textStyle="eyebrow" mb="6" color="fgSubtle">
           What people are saying
-        </p>
+        </Text>
 
-        <div className="mt-8 grid grid-cols-1 gap-6 min-[901px]:grid-cols-3">
+        <Grid
+          mt="8"
+          templateColumns={{ base: "1fr", lg901: "repeat(3, 1fr)" }}
+          gap="6"
+        >
           {testimonials.map((testimonial) => (
-            <article
+            <Flex
+              as="article"
               key={testimonial.attribution}
-              className={`flex flex-col gap-4 rounded border p-8 ${
-                testimonial.placeholder
-                  ? "border-dashed border-border-strong"
-                  : "border-border"
-              }`}
+              direction="column"
+              gap="4"
+              borderRadius="md"
+              border="1px solid"
+              borderColor={
+                testimonial.placeholder ? "borderStrong" : "border"
+              }
+              borderStyle={testimonial.placeholder ? "dashed" : "solid"}
+              p="8"
             >
-              <p
-                className={`flex-1 text-base leading-relaxed ${
-                  testimonial.placeholder
-                    ? "italic text-fg-faint"
-                    : "text-fg-muted"
-                }`}
+              <Text
+                flex="1"
+                fontSize="base"
+                lineHeight="relaxed"
+                fontStyle={testimonial.placeholder ? "italic" : undefined}
+                color={testimonial.placeholder ? "fgFaint" : "fgMuted"}
               >
                 &ldquo;{testimonial.quote}&rdquo;
-              </p>
-              <p
-                className={`text-[13px] font-medium ${
-                  testimonial.placeholder ? "text-fg-faint" : "text-accent"
-                }`}
+              </Text>
+              <Text
+                fontSize="13px"
+                fontWeight="medium"
+                color={testimonial.placeholder ? "fgFaint" : "accent"}
               >
                 {testimonial.attribution}
-              </p>
-            </article>
+              </Text>
+            </Flex>
           ))}
-        </div>
+        </Grid>
       </Container>
-    </section>
+    </Box>
   )
 }

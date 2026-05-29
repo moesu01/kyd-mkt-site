@@ -1,34 +1,56 @@
+import { Box, Flex, Link, Text } from "@chakra-ui/react"
 import { footerLinks } from "../content/site-content"
 import { Container } from "./ui/container"
 
 export function Footer() {
   return (
-    <footer className="border-t border-border px-6 py-10 min-[901px]:px-12">
-      <Container className="flex flex-col gap-6">
-        <div className="flex flex-col flex-wrap items-start justify-between gap-4 min-[901px]:flex-row min-[901px]:items-center">
-          <a
+    <Box
+      as="footer"
+      borderTop="1px solid"
+      borderColor="border"
+      px={{ base: "6", lg901: "12" }}
+      py="10"
+    >
+      <Container display="flex" flexDirection="column" gap="6">
+        <Flex
+          direction={{ base: "column", lg901: "row" }}
+          flexWrap="wrap"
+          align={{ base: "flex-start", lg901: "center" }}
+          justify="space-between"
+          gap="4"
+        >
+          <Link
             href="#"
-            className="text-xl font-black uppercase tracking-tight text-fg-ghost no-underline"
+            fontSize="xl"
+            fontWeight="black"
+            textTransform="uppercase"
+            letterSpacing="tight"
+            color="fgGhost"
+            textDecoration="none"
           >
             KYD Labs.
-          </a>
-          <ul className="flex list-none flex-wrap gap-7">
+          </Link>
+          <Flex as="ul" listStyleType="none" flexWrap="wrap" gap="7">
             {footerLinks.map((link) => (
-              <li key={link.label}>
-                <a
+              <Box as="li" key={link.label}>
+                <Link
                   href={link.href}
-                  className="text-[13px] text-fg-ghost transition-colors hover:text-fg-muted"
+                  fontSize="13px"
+                  color="fgGhost"
+                  transitionProperty="colors"
+                  transitionDuration="150ms"
+                  _hover={{ color: "fgMuted" }}
                 >
                   {link.label}
-                </a>
-              </li>
+                </Link>
+              </Box>
             ))}
-          </ul>
-        </div>
-        <p className="text-xs text-fg-faint">
+          </Flex>
+        </Flex>
+        <Text fontSize="xs" color="fgFaint">
           © 2025 KYD Labs. All rights reserved.
-        </p>
+        </Text>
       </Container>
-    </footer>
+    </Box>
   )
 }

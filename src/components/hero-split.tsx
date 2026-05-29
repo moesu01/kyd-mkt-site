@@ -1,62 +1,185 @@
+import { Box, Flex, Heading, Text } from "@chakra-ui/react"
 import { links } from "../content/site-content"
 import { Button } from "./ui/button"
 
 export function HeroSplit() {
   return (
-    <div className="relative flex min-h-[620px] h-screen flex-col overflow-hidden min-[901px]:flex-row">
-      <div className="relative flex-1 bg-bg min-[901px]:flex-none min-[901px]:h-auto min-[901px]:basis-1/2 max-[900px]:h-[50vh]">
-        <div className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 select-none px-10 text-[clamp(4rem,9vw,9rem)] font-black uppercase leading-[0.88] tracking-tight text-fg-dim">
+    <Flex
+      position="relative"
+      direction={{ base: "column", lg901: "row" }}
+      minH="heroMinHeight"
+      h="100vh"
+      overflow="hidden"
+    >
+      <Box
+        position="relative"
+        flex={{ base: "1", lg901: "none" }}
+        bg="bg"
+        h={{ base: "50vh", lg901: "auto" }}
+        flexBasis={{ lg901: "50%" }}
+      >
+        <Box
+          pointerEvents="none"
+          position="absolute"
+          left="10"
+          top="50%"
+          transform="translateY(-50%)"
+          userSelect="none"
+          px="10"
+          fontSize="clamp(4rem, 9vw, 9rem)"
+          fontWeight="black"
+          textTransform="uppercase"
+          lineHeight="0.88"
+          letterSpacing="tight"
+          color="fgDim"
+        >
           YOUR
           <br />
           TICKETS
-        </div>
-        <div className="absolute bottom-10 left-10 font-mono text-[10px] uppercase tracking-[0.2em] text-fg-dim">
+        </Box>
+        <Text
+          position="absolute"
+          bottom="10"
+          left="10"
+          fontFamily="mono"
+          fontSize="10px"
+          textTransform="uppercase"
+          letterSpacing="0.2em"
+          color="fgDim"
+        >
           [ Fan crowd — photo ]
-        </div>
-      </div>
+        </Text>
+      </Box>
 
-      <div className="relative flex-1 bg-bg min-[901px]:flex-none min-[901px]:h-auto min-[901px]:basis-1/2 max-[900px]:h-[50vh]">
-        <div className="pointer-events-none absolute right-10 top-1/2 -translate-y-1/2 select-none text-right text-[clamp(4rem,9vw,9rem)] font-black uppercase leading-[0.88] tracking-tight text-fg-dim">
+      <Box
+        position="relative"
+        flex={{ base: "1", lg901: "none" }}
+        bg="bg"
+        h={{ base: "50vh", lg901: "auto" }}
+        flexBasis={{ lg901: "50%" }}
+      >
+        <Box
+          pointerEvents="none"
+          position="absolute"
+          right="10"
+          top="50%"
+          transform="translateY(-50%)"
+          userSelect="none"
+          textAlign="right"
+          fontSize="clamp(4rem, 9vw, 9rem)"
+          fontWeight="black"
+          textTransform="uppercase"
+          lineHeight="0.88"
+          letterSpacing="tight"
+          color="fgDim"
+        >
           YOUR
           <br />
           PLATFORM
-        </div>
-        <div className="absolute bottom-10 right-10 font-mono text-[10px] uppercase tracking-[0.2em] text-fg-dim">
+        </Box>
+        <Text
+          position="absolute"
+          bottom="10"
+          right="10"
+          fontFamily="mono"
+          fontSize="10px"
+          textTransform="uppercase"
+          letterSpacing="0.2em"
+          color="fgDim"
+        >
           [ Side-of-stage — photo ]
-        </div>
-      </div>
+        </Text>
+      </Box>
 
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-bg/60 via-transparent to-bg/40" />
-
-      <div
-        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-transparent via-bg/94 to-transparent max-[900px]:block min-[901px]:hidden"
-        aria-hidden
+      <Box
+        pointerEvents="none"
+        position="absolute"
+        inset="0"
+        zIndex="1"
+        style={{
+          background:
+            "linear-gradient(to bottom, color-mix(in oklch, oklch(0.05 0 0) 60%, transparent), transparent, color-mix(in oklch, oklch(0.05 0 0) 40%, transparent))",
+        }}
       />
-      <div
-        className="pointer-events-none absolute inset-0 z-[1] hidden bg-gradient-to-r from-transparent via-bg/92 to-transparent min-[901px]:block"
+
+      <Box
+        pointerEvents="none"
+        position="absolute"
+        inset="0"
+        zIndex="1"
+        display={{ base: "block", lg901: "none" }}
         aria-hidden
+        style={{
+          background:
+            "linear-gradient(to bottom, transparent, color-mix(in oklch, oklch(0.05 0 0) 94%, transparent), transparent)",
+        }}
       />
 
-      <div className="absolute inset-0 z-[2] flex flex-col items-center justify-center gap-7 px-8 text-center">
-        <p className="font-mono text-[11px] font-medium uppercase tracking-[0.25em] text-accent">
+      <Box
+        pointerEvents="none"
+        position="absolute"
+        inset="0"
+        zIndex="1"
+        display={{ base: "none", lg901: "block" }}
+        aria-hidden
+        style={{
+          background:
+            "linear-gradient(to right, transparent, color-mix(in oklch, oklch(0.05 0 0) 92%, transparent), transparent)",
+        }}
+      />
+
+      <Flex
+        position="absolute"
+        inset="0"
+        zIndex="2"
+        direction="column"
+        align="center"
+        justify="center"
+        gap="7"
+        px="8"
+        textAlign="center"
+      >
+        <Text
+          fontFamily="mono"
+          fontSize="11px"
+          fontWeight="medium"
+          textTransform="uppercase"
+          letterSpacing="0.25em"
+          color="accent"
+        >
           KYD Labs
-        </p>
-        <h1 className="max-w-[680px] text-[clamp(2rem,4vw,3.75rem)] font-black uppercase leading-[1.02] tracking-tight">
+        </Text>
+        <Heading
+          as="h1"
+          maxW="heroHeadline"
+          fontSize="clamp(2rem, 4vw, 3.75rem)"
+          fontWeight="black"
+          textTransform="uppercase"
+          lineHeight="1.02"
+          letterSpacing="tight"
+        >
           Modern ticketing
           <br />
-          <span className="text-accent">built for venues.</span>
-        </h1>
-        <p className="max-w-[520px] text-[clamp(0.95rem,1.5vw,1.1rem)] leading-relaxed text-fg-muted">
+          <Text as="span" color="accent">
+            built for venues.
+          </Text>
+        </Heading>
+        <Text
+          maxW="heroSubtext"
+          fontSize="clamp(0.95rem, 1.5vw, 1.1rem)"
+          lineHeight="relaxed"
+          color="fgMuted"
+        >
           Own your data. Capture resale. Activate fans with AI. The
           infrastructure venues use to run smarter shows.
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-3.5">
+        </Text>
+        <Flex flexWrap="wrap" align="center" justify="center" gap="3.5">
           <Button href={links.getInTouch}>Get in touch →</Button>
           <Button href={links.tickets} variant="outline">
             Find My Tickets
           </Button>
-        </div>
-      </div>
-    </div>
+        </Flex>
+      </Flex>
+    </Flex>
   )
 }

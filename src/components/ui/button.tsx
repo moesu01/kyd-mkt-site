@@ -1,4 +1,6 @@
+import { chakra, useRecipe, type SystemStyleObject } from "@chakra-ui/react"
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react"
+import { buttonRecipe } from "../../theme"
 
 type ButtonVariant = "primary" | "outline" | "ghost" | "dark" | "outline-dark"
 
@@ -7,6 +9,7 @@ interface ButtonBaseProps {
   variant?: ButtonVariant
   className?: string
   static?: boolean
+  css?: SystemStyleObject
 }
 
 type ButtonAsButton = ButtonBaseProps &
@@ -17,43 +20,43 @@ type ButtonAsLink = ButtonBaseProps &
 
 type ButtonProps = ButtonAsButton | ButtonAsLink
 
-const variantClasses: Record<ButtonVariant, string> = {
-  primary:
-    "bg-accent text-accent-fg font-semibold hover:brightness-105",
-  outline:
-    "border border-border-strong text-fg hover:border-fg-muted",
-  ghost: "text-fg-muted hover:text-fg",
-  dark:
-    "bg-surface-raised text-fg font-semibold hover:bg-fg-ghost/30",
-  "outline-dark":
-    "border border-border-strong text-fg-muted hover:border-fg hover:text-fg",
-}
-
-const baseClasses =
-  "inline-flex min-h-10 items-center justify-center gap-1.5 rounded-full px-[26px] py-[13px] text-sm transition-[transform,filter,border-color,color,background-color] active:scale-[0.96]"
+const ChakraButton = chakra("button")
+const ChakraLink = chakra("a")
 
 export function Button({
   children,
   variant = "primary",
   className = "",
   static: isStatic = false,
+  css: cssOverride,
   ...props
 }: ButtonProps) {
-  const classes = `${baseClasses} ${variantClasses[variant]} ${isStatic ? "active:scale-100" : ""} ${className}`
+  const recipe = useRecipe({ recipe: buttonRecipe })
+  const styles = recipe({ variant, static: isStatic })
 
   if ("href" in props && props.href !== undefined) {
     const { href, ...anchorProps } = props
     return (
-      <a href={href} className={classes} {...anchorProps}>
+      <ChakraLink
+        href={href}
+        css={[styles, cssOverride]}
+        className={className}
+        {...anchorProps}
+      >
         {children}
-      </a>
+      </ChakraLink>
     )
   }
 
   const buttonProps = props as ButtonHTMLAttributes<HTMLButtonElement>
   return (
-    <button type="button" className={classes} {...buttonProps}>
+    <ChakraButton
+      type="button"
+      css={[styles, cssOverride]}
+      className={className}
+      {...buttonProps}
+    >
       {children}
-    </button>
+    </ChakraButton>
   )
 }

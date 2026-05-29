@@ -1,14 +1,14 @@
+import { Box, type BoxProps } from "@chakra-ui/react"
 import type { ReactNode } from "react"
 
-interface ContainerProps {
+interface ContainerProps extends BoxProps {
   children: ReactNode
-  className?: string
 }
 
-export function Container({ children, className = "" }: ContainerProps) {
+export function Container({ children, ...props }: ContainerProps) {
   return (
-    <div className={`mx-auto w-full max-w-[1200px] ${className}`}>
+    <Box mx="auto" w="full" maxW="container" {...props}>
       {children}
-    </div>
+    </Box>
   )
 }

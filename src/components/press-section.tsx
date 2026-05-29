@@ -1,64 +1,107 @@
+import { Box, Flex, Grid, Heading, Link, Text } from "@chakra-ui/react"
 import { pressCoverage } from "../content/site-content"
 import { Container } from "./ui/container"
 import { SectionHeading } from "./ui/section-heading"
 
 export function PressSection() {
   return (
-    <section className="border-t border-border bg-surface px-6 py-20 min-[901px]:px-12 min-[901px]:py-28">
+    <Box
+      as="section"
+      borderTop="1px solid"
+      borderColor="border"
+      bg="surface"
+      px={{ base: "6", lg901: "12" }}
+      py={{ base: "20", lg901: "28" }}
+    >
       <Container>
-        <SectionHeading
-          label="Press"
-          headline={
-            <>
-              As seen in the <span className="text-accent">press.</span>
-            </>
-          }
-          className="mb-12"
-        />
+        <Box mb="12">
+          <SectionHeading
+            label="Press"
+            headline={
+              <>
+                As seen in the{" "}
+                <Text as="span" color="accent">
+                  press.
+                </Text>
+              </>
+            }
+          />
+        </Box>
 
-        <div className="grid grid-cols-1 gap-6 min-[901px]:grid-cols-2">
+        <Grid
+          templateColumns={{ base: "1fr", lg901: "repeat(2, 1fr)" }}
+          gap="6"
+        >
           {pressCoverage.map((item) => (
-            <article
+            <Flex
+              as="article"
               key={item.outlet}
-              className={`group flex flex-col gap-4 rounded border p-8 transition-colors ${
+              direction="column"
+              gap="4"
+              borderRadius="md"
+              border="1px solid"
+              borderColor={item.placeholder ? "borderStrong" : "border"}
+              borderStyle={item.placeholder ? "dashed" : "solid"}
+              p="8"
+              transitionProperty="colors"
+              transitionDuration="150ms"
+              _hover={
                 item.placeholder
-                  ? "border-dashed border-border-strong"
-                  : "border-border hover:border-border-strong"
-              }`}
+                  ? undefined
+                  : { borderColor: "borderStrong" }
+              }
             >
-              <div className="flex items-baseline justify-between gap-4">
-                <p
-                  className={`font-mono text-sm font-medium uppercase tracking-wider ${
-                    item.placeholder ? "text-fg-faint" : "text-accent"
-                  }`}
+              <Flex align="baseline" justify="space-between" gap="4">
+                <Text
+                  fontFamily="mono"
+                  fontSize="sm"
+                  fontWeight="medium"
+                  textTransform="uppercase"
+                  letterSpacing="wider"
+                  color={item.placeholder ? "fgFaint" : "accent"}
                 >
                   {item.outlet}
-                </p>
-                <time
-                  className={`shrink-0 font-mono text-xs uppercase tracking-wider ${
-                    item.placeholder ? "text-fg-faint" : "text-fg-ghost"
-                  }`}
-                  dateTime={item.placeholder ? undefined : item.date}
+                </Text>
+                <Text
+                  as="time"
+                  flexShrink={0}
+                  fontFamily="mono"
+                  fontSize="xs"
+                  textTransform="uppercase"
+                  letterSpacing="wider"
+                  color={item.placeholder ? "fgFaint" : "fgGhost"}
+                  {...(!item.placeholder ? { dateTime: item.date } : {})}
                 >
                   {item.date}
-                </time>
-              </div>
+                </Text>
+              </Flex>
 
-              <h3
-                className={`text-lg font-semibold leading-snug ${
-                  item.placeholder ? "italic text-fg-faint" : "text-fg"
-                }`}
+              <Heading
+                as="h3"
+                fontSize="lg"
+                fontWeight="semibold"
+                lineHeight="snug"
+                fontStyle={item.placeholder ? "italic" : undefined}
+                color={item.placeholder ? "fgFaint" : "fg"}
               >
                 {item.headline}
-              </h3>
+              </Heading>
 
-              <a
+              <Link
                 href={item.href}
-                className={`mt-auto inline-flex min-h-10 items-center text-sm font-medium transition-colors ${
-                  item.placeholder
-                    ? "pointer-events-none text-fg-faint"
-                    : "text-fg-muted hover:text-fg"
-                }`}
+                mt="auto"
+                display="inline-flex"
+                minH="10"
+                alignItems="center"
+                fontSize="sm"
+                fontWeight="medium"
+                transitionProperty="colors"
+                transitionDuration="150ms"
+                pointerEvents={item.placeholder ? "none" : undefined}
+                color={item.placeholder ? "fgFaint" : "fgMuted"}
+                _hover={
+                  item.placeholder ? undefined : { color: "fg" }
+                }
                 aria-label={
                   item.placeholder
                     ? `${item.outlet} article coming soon`
@@ -67,11 +110,11 @@ export function PressSection() {
                 tabIndex={item.placeholder ? -1 : undefined}
               >
                 {item.placeholder ? "Article coming soon" : "Read article →"}
-              </a>
-            </article>
+              </Link>
+            </Flex>
           ))}
-        </div>
+        </Grid>
       </Container>
-    </section>
+    </Box>
   )
 }

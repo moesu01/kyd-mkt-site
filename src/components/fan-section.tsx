@@ -1,3 +1,4 @@
+import { Box, Flex, Text } from "@chakra-ui/react"
 import { links } from "../content/site-content"
 import { Button } from "./ui/button"
 import { Container } from "./ui/container"
@@ -5,18 +6,31 @@ import { SectionHeading } from "./ui/section-heading"
 
 export function FanSection() {
   return (
-    <section className="border-t border-border bg-surface px-6 py-20 min-[901px]:px-12 min-[901px]:py-28">
+    <Box
+      as="section"
+      borderTop="1px solid"
+      borderColor="border"
+      bg="surface"
+      px={{ base: "6", lg901: "12" }}
+      py={{ base: "20", lg901: "28" }}
+    >
       <Container>
-        <SectionHeading
-          label="For Fans"
-          headline="Need ticket help?"
-          className="mb-5"
-        />
-        <p className="max-w-[540px] text-[1.05rem] leading-relaxed text-fg-muted">
+        <Box mb="5">
+          <SectionHeading
+            label="For Fans"
+            headline="Need ticket help?"
+          />
+        </Box>
+        <Text
+          maxW="bodyCopy"
+          fontSize="1.05rem"
+          lineHeight="relaxed"
+          color="fgMuted"
+        >
           Locate your tickets, join a waitlist, or request a refund. You&apos;re in
           the right place.
-        </p>
-        <div className="mt-10 flex flex-wrap gap-3">
+        </Text>
+        <Flex mt="10" flexWrap="wrap" gap="3">
           <Button href={links.tickets} variant="dark">
             Find My Tickets →
           </Button>
@@ -26,8 +40,8 @@ export function FanSection() {
           <Button href={links.refund} variant="outline-dark">
             Request a Refund
           </Button>
-        </div>
+        </Flex>
       </Container>
-    </section>
+    </Box>
   )
 }

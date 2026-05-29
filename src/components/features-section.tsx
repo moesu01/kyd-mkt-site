@@ -1,40 +1,81 @@
+import { Box, Flex, Grid, Heading, Text } from "@chakra-ui/react"
 import { features } from "../content/site-content"
 import { Container } from "./ui/container"
 import { SectionHeading } from "./ui/section-heading"
 
 export function FeaturesSection() {
   return (
-    <section className="border-t border-border px-6 py-20 min-[901px]:px-12 min-[901px]:py-28">
+    <Box
+      as="section"
+      borderTop="1px solid"
+      borderColor="border"
+      px={{ base: "6", lg901: "12" }}
+      py={{ base: "20", lg901: "28" }}
+    >
       <Container>
-        <div className="mb-12">
+        <Box mb="12">
           <SectionHeading
             label="Platform"
             headline={
               <>
                 Modern ticketing infrastructure.
                 <br />
-                <span className="text-accent">Built for control.</span>
+                <Text as="span" color="accent">
+                  Built for control.
+                </Text>
               </>
             }
           />
-        </div>
+        </Box>
 
-        <div className="grid grid-cols-1 gap-px border border-border bg-border min-[901px]:grid-cols-3">
+        <Grid
+          templateColumns={{ base: "1fr", lg901: "repeat(3, 1fr)" }}
+          gap="1px"
+          border="1px solid"
+          borderColor="border"
+          bg="border"
+        >
           {features.map((feature) => (
-            <article key={feature.title} className="bg-bg p-8 min-[901px]:px-8 min-[901px]:py-10">
-              <div className="mb-7 flex h-11 w-11 items-center justify-center rounded-[10px] border border-border text-lg text-accent">
+            <Box
+              as="article"
+              key={feature.title}
+              bg="bg"
+              p="8"
+              px={{ lg901: "8" }}
+              py={{ lg901: "10" }}
+            >
+              <Flex
+                mb="7"
+                h="11"
+                w="11"
+                align="center"
+                justify="center"
+                borderRadius="10px"
+                border="1px solid"
+                borderColor="border"
+                fontSize="lg"
+                color="accent"
+              >
                 {feature.icon}
-              </div>
-              <h3 className="mb-3 text-[1.4rem] font-bold uppercase tracking-tight text-fg">
+              </Flex>
+              <Heading
+                as="h3"
+                mb="3"
+                fontSize="1.4rem"
+                fontWeight="bold"
+                textTransform="uppercase"
+                letterSpacing="tight"
+                color="fg"
+              >
                 {feature.title}
-              </h3>
-              <p className="text-[0.95rem] leading-relaxed text-fg-subtle">
+              </Heading>
+              <Text fontSize="0.95rem" lineHeight="relaxed" color="fgSubtle">
                 {feature.body}
-              </p>
-            </article>
+              </Text>
+            </Box>
           ))}
-        </div>
+        </Grid>
       </Container>
-    </section>
+    </Box>
   )
 }

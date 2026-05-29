@@ -1,3 +1,4 @@
+import { Box, Grid, Heading, Text } from "@chakra-ui/react"
 import { links, stats, venueAudiences } from "../content/site-content"
 import { Button } from "./ui/button"
 import { Container } from "./ui/container"
@@ -5,10 +6,20 @@ import { SectionHeading } from "./ui/section-heading"
 
 export function VenuesSection() {
   return (
-    <section className="border-t border-border px-6 py-20 min-[901px]:px-12 min-[901px]:py-28">
+    <Box
+      as="section"
+      borderTop="1px solid"
+      borderColor="border"
+      px={{ base: "6", lg901: "12" }}
+      py={{ base: "20", lg901: "28" }}
+    >
       <Container>
-        <div className="grid grid-cols-1 items-center gap-14 min-[901px]:grid-cols-2 min-[901px]:gap-24">
-          <div>
+        <Grid
+          templateColumns={{ base: "1fr", lg901: "1fr 1fr" }}
+          alignItems="center"
+          gap={{ base: "14", lg901: "24" }}
+        >
+          <Box>
             <SectionHeading
               label="For Venues & Artists"
               headline={
@@ -17,55 +28,89 @@ export function VenuesSection() {
                   <br />
                   Your fans.
                   <br />
-                  <span className="text-accent">Your money.</span>
+                  <Text as="span" color="accent">
+                    Your money.
+                  </Text>
                 </>
               }
-              className="mb-6"
+              mb="6"
             />
-            <p className="mb-10 max-w-[540px] text-[1.05rem] leading-relaxed text-fg-muted">
+            <Text
+              mb="10"
+              maxW="bodyCopy"
+              fontSize="1.05rem"
+              lineHeight="relaxed"
+              color="fgMuted"
+            >
               A next-gen, whitelabel ticketing and marketing platform for
               independent artists, touring acts, and venues. Own your ticketing.
               Keep your fan data. Automate your marketing. Deliver 10x results
               &mdash; and never rent your audience again.
-            </p>
+            </Text>
             <Button href={links.getInTouch}>Get in touch →</Button>
-          </div>
+          </Box>
 
-          <div className="grid grid-cols-2 border border-border">
+          <Grid templateColumns="repeat(2, 1fr)" border="1px solid" borderColor="border">
             {stats.map((stat, index) => (
-              <div
+              <Box
                 key={stat.label}
-                className={`border-border p-8 min-[901px]:px-8 min-[901px]:py-9 ${
-                  index % 2 === 0 ? "border-r" : ""
-                } ${index < 2 ? "border-b" : ""}`}
+                borderColor="border"
+                p="8"
+                px={{ lg901: "8" }}
+                py={{ lg901: "9" }}
+                borderRightWidth={index % 2 === 0 ? "1px" : undefined}
+                borderBottomWidth={index < 2 ? "1px" : undefined}
               >
-                <div className="tabular-nums text-[3.75rem] font-black leading-none tracking-tight text-accent">
+                <Text
+                  fontVariantNumeric="tabular-nums"
+                  fontSize="3.75rem"
+                  fontWeight="black"
+                  lineHeight="1"
+                  letterSpacing="tight"
+                  color="accent"
+                >
                   {stat.value}
-                </div>
-                <div className="mt-2 font-mono text-[13px] text-fg-subtle">{stat.label}</div>
-              </div>
+                </Text>
+                <Text mt="2" fontFamily="mono" fontSize="13px" color="fgSubtle">
+                  {stat.label}
+                </Text>
+              </Box>
             ))}
-          </div>
-        </div>
+          </Grid>
+        </Grid>
 
-        <div className="mt-16 min-[901px]:mt-24">
-          <p className="mb-8 font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-fg-subtle">
+        <Box mt={{ base: "16", lg901: "24" }}>
+          <Text textStyle="eyebrow" mb="8" color="fgSubtle">
             Who it&apos;s for
-          </p>
-          <div className="grid grid-cols-1 gap-px border border-border bg-border min-[901px]:grid-cols-3">
+          </Text>
+          <Grid
+            templateColumns={{ base: "1fr", lg901: "repeat(3, 1fr)" }}
+            gap="1px"
+            border="1px solid"
+            borderColor="border"
+            bg="border"
+          >
             {venueAudiences.map((audience) => (
-              <article key={audience.title} className="bg-bg p-8">
-                <h3 className="mb-3 text-[1.4rem] font-bold uppercase tracking-tight text-fg">
+              <Box as="article" key={audience.title} bg="bg" p="8">
+                <Heading
+                  as="h3"
+                  mb="3"
+                  fontSize="1.4rem"
+                  fontWeight="bold"
+                  textTransform="uppercase"
+                  letterSpacing="tight"
+                  color="fg"
+                >
                   {audience.title}
-                </h3>
-                <p className="text-[0.95rem] leading-relaxed text-fg-muted">
+                </Heading>
+                <Text fontSize="0.95rem" lineHeight="relaxed" color="fgMuted">
                   {audience.body}
-                </p>
-              </article>
+                </Text>
+              </Box>
             ))}
-          </div>
-        </div>
+          </Grid>
+        </Box>
       </Container>
-    </section>
+    </Box>
   )
 }

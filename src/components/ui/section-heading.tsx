@@ -1,31 +1,32 @@
+import { Box, Heading, Text, type BoxProps } from "@chakra-ui/react"
 import type { ReactNode } from "react"
 
-interface SectionHeadingProps {
+interface SectionHeadingProps extends BoxProps {
   label: string
   headline: ReactNode
   dividerTone?: "light" | "dark"
-  className?: string
 }
 
 export function SectionHeading({
   label,
   headline,
   dividerTone = "light",
-  className = "",
+  ...props
 }: SectionHeadingProps) {
   return (
-    <div className={className}>
-      <p className="mb-6 font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-fg-subtle">
+    <Box {...props}>
+      <Text textStyle="eyebrow" mb="6" color="fgSubtle">
         {label}
-      </p>
-      <div
-        className={`mb-7 h-[3px] w-9 ${
-          dividerTone === "dark" ? "bg-fg" : "bg-accent"
-        }`}
+      </Text>
+      <Box
+        mb="7"
+        h="3px"
+        w="9"
+        bg={dividerTone === "dark" ? "fg" : "accent"}
       />
-      <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] font-black uppercase leading-[0.95] tracking-tight">
+      <Heading as="h2" textStyle="displayHeading">
         {headline}
-      </h2>
-    </div>
+      </Heading>
+    </Box>
   )
 }
