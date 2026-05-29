@@ -3,7 +3,7 @@ import { Container } from "./ui/container"
 
 export function Footer() {
   return (
-    <footer className="border-t border-border px-6 pb-24 pt-10 min-[901px]:px-12">
+    <footer className="border-t border-border px-6 py-10 min-[901px]:px-12">
       <Container className="flex flex-col gap-6">
         <div className="flex flex-col flex-wrap items-start justify-between gap-4 min-[901px]:flex-row min-[901px]:items-center">
           <a
@@ -25,7 +25,7 @@ export function Footer() {
             ))}
           </ul>
         </div>
-        <p className="text-xs text-fg/[0.14]">
+        <p className="text-xs text-fg-faint">
           © 2025 KYD Labs. All rights reserved.
         </p>
       </Container>

@@ -15,7 +15,7 @@ export function SectionHeading({
 }: SectionHeadingProps) {
   return (
     <div className={className}>
-      <p className="mb-6 text-[11px] font-medium uppercase tracking-[0.2em] text-fg-subtle">
+      <p className="mb-6 font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-fg-subtle">
         {label}
       </p>
       <div

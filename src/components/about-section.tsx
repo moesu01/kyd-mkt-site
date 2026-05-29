@@ -18,20 +18,26 @@ export function AboutSection() {
           />
 
           <div>
-            <p className="mb-12 text-[1.05rem] leading-relaxed text-fg-muted">
+            <p className="mb-8 text-[1.05rem] leading-relaxed text-fg-muted">
               Live events are the beating heart of culture. For too long, venues
               and artists have been cut off from the fans and revenue they
-              generate. KYD is the infrastructure to change that. Own your
-              audience, your distribution, and your future.
+              generate. KYD is the infrastructure to change that.
             </p>
-            <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.2em] text-fg-ghost">
+            <p className="mb-12 text-[clamp(1.5rem,2.5vw,2rem)] font-black uppercase leading-[1.05] tracking-tight">
+              Control your data.
+              <br />
+              Keep your fans.
+              <br />
+              <span className="text-accent">Maximize your profit.</span>
+            </p>
+            <p className="mb-5 font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-fg-subtle">
               Backed by
             </p>
             <div className="flex flex-wrap gap-3">
               {backers.map((backer) => (
                 <div
                   key={backer}
-                  className="rounded border border-fg/[0.09] px-4 py-1.5 text-base font-bold uppercase tracking-wider text-fg-ghost"
+                  className="rounded border border-border px-4 py-1.5 text-base font-bold uppercase tracking-wider text-fg-ghost"
                 >
                   {backer}
                 </div>

@@ -12,17 +12,22 @@ export function Nav() {
       </a>
       <ul className="flex list-none items-center gap-6">
         <li>
-          <Button href={links.tickets} variant="primary" className="!px-[22px] !py-[9px] !text-sm">
+          <Button
+            href={links.tickets}
+            variant="outline"
+            className="!px-[22px] !py-[9px] !text-sm"
+          >
             Find My Tickets
           </Button>
         </li>
         <li>
-          <a
-            href={links.useKyd}
-            className="text-sm text-fg opacity-65 transition-opacity hover:opacity-100"
+          <Button
+            href={links.getInTouch}
+            variant="primary"
+            className="!px-[22px] !py-[9px] !text-sm"
           >
-            Use KYD
-          </a>
+            Get in touch
+          </Button>
         </li>
       </ul>
     </nav>

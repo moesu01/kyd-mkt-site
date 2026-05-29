@@ -1,4 +1,4 @@
-import { links, stats } from "../content/site-content"
+import { links, stats, venueAudiences } from "../content/site-content"
 import { Button } from "./ui/button"
 import { Container } from "./ui/container"
 import { SectionHeading } from "./ui/section-heading"
@@ -23,12 +23,12 @@ export function VenuesSection() {
               className="mb-6"
             />
             <p className="mb-10 max-w-[540px] text-[1.05rem] leading-relaxed text-fg-muted">
-              You built the audience. KYD makes sure you keep it. A full-stack
-              ticketing and marketing platform for independent artists, touring
-              acts, and venues who are done letting middlemen own their data,
-              their resale, and their revenue.
+              A next-gen, whitelabel ticketing and marketing platform for
+              independent artists, touring acts, and venues. Own your ticketing.
+              Keep your fan data. Automate your marketing. Deliver 10x results
+              &mdash; and never rent your audience again.
             </p>
-            <Button href={links.bookCall}>Book a Call →</Button>
+            <Button href={links.getInTouch}>Get in touch →</Button>
           </div>
 
           <div className="grid grid-cols-2 border border-border">
@@ -42,8 +42,26 @@ export function VenuesSection() {
                 <div className="tabular-nums text-[3.75rem] font-black leading-none tracking-tight text-accent">
                   {stat.value}
                 </div>
-                <div className="mt-2 text-[13px] text-fg-subtle">{stat.label}</div>
+                <div className="mt-2 font-mono text-[13px] text-fg-subtle">{stat.label}</div>
               </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-16 min-[901px]:mt-24">
+          <p className="mb-8 font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-fg-subtle">
+            Who it&apos;s for
+          </p>
+          <div className="grid grid-cols-1 gap-px border border-border bg-border min-[901px]:grid-cols-3">
+            {venueAudiences.map((audience) => (
+              <article key={audience.title} className="bg-bg p-8">
+                <h3 className="mb-3 text-[1.4rem] font-bold uppercase tracking-tight text-fg">
+                  {audience.title}
+                </h3>
+                <p className="text-[0.95rem] leading-relaxed text-fg-muted">
+                  {audience.body}
+                </p>
+              </article>
             ))}
           </div>
         </div>

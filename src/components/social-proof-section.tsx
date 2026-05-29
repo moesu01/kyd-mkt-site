@@ -5,7 +5,7 @@ export function SocialProofSection() {
   return (
     <section className="border-t border-border px-6 py-20 min-[901px]:px-12 min-[901px]:py-28">
       <Container>
-        <p className="mb-8 text-[11px] font-medium uppercase tracking-[0.2em] text-fg-ghost">
+        <p className="mb-8 font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-fg-subtle">
           Used by artists and venues across the country
         </p>
 
@@ -22,7 +22,7 @@ export function SocialProofSection() {
           ))}
         </div>
 
-        <p className="mb-6 text-[11px] font-medium uppercase tracking-[0.2em] text-fg-subtle">
+        <p className="mb-6 font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-fg-subtle">
           What people are saying
         </p>
 
@@ -32,22 +32,22 @@ export function SocialProofSection() {
               key={testimonial.attribution}
               className={`flex flex-col gap-4 rounded border p-8 ${
                 testimonial.placeholder
-                  ? "border-dashed border-fg/[0.05]"
+                  ? "border-dashed border-border-strong"
                   : "border-border"
               }`}
             >
               <p
                 className={`flex-1 text-base leading-relaxed ${
                   testimonial.placeholder
-                    ? "italic text-fg/[0.18]"
-                    : "text-fg/80"
+                    ? "italic text-fg-faint"
+                    : "text-fg-muted"
                 }`}
               >
                 &ldquo;{testimonial.quote}&rdquo;
               </p>
               <p
                 className={`text-[13px] font-medium ${
-                  testimonial.placeholder ? "text-fg/[0.14]" : "text-accent"
+                  testimonial.placeholder ? "text-fg-faint" : "text-accent"
                 }`}
               >
                 {testimonial.attribution}
