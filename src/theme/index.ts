@@ -6,20 +6,29 @@ import {
 } from "@chakra-ui/react"
 import { breakpoints, colors, fonts, sizes } from "./tokens"
 
+const buttonEase = "cubic-bezier(0.2, 0, 0, 1)"
+
+const buttonFocusVisible = {
+  outline: "2px solid",
+  outlineColor: "rgba(255, 255, 255, 0.45)",
+  outlineOffset: "2px",
+} as const
+
 export const buttonRecipe = defineRecipe({
   className: "kyd-button",
   base: {
     display: "inline-flex",
-    minH: "10",
     alignItems: "center",
     justifyContent: "center",
     gap: "1.5",
-    borderRadius: "full",
-    px: "26px",
-    py: "13px",
-    fontSize: "sm",
-    transitionProperty: "transform, filter, border-color, color, background-color",
+    fontFamily: "sans",
+    border: "1px solid",
+    borderColor: "transparent",
+    transitionProperty:
+      "transform, filter, border-color, color, background-color, box-shadow",
     transitionDuration: "150ms",
+    transitionTimingFunction: buttonEase,
+    _focusVisible: buttonFocusVisible,
     _active: {
       transform: "scale(0.96)",
     },
@@ -30,40 +39,106 @@ export const buttonRecipe = defineRecipe({
         bg: "accent",
         color: "accentFg",
         fontWeight: "semibold",
+        borderColor: "transparent",
         _hover: {
-          filter: "brightness(1.05)",
+          filter: "brightness(1.06)",
+          boxShadow:
+            "0 1px 2px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
+        },
+        _active: {
+          filter: "brightness(1)",
+          boxShadow: "none",
         },
       },
       outline: {
-        border: "1px solid",
-        borderColor: "borderStrong",
+        bg: "transparent",
+        borderColor: "rgba(255, 255, 255, 0.35)",
         color: "fg",
+        fontWeight: "medium",
         _hover: {
-          borderColor: "fgMuted",
+          bg: "rgba(255, 255, 255, 0.08)",
+          borderColor: "fg",
+          color: "fg",
+        },
+        _active: {
+          bg: "rgba(255, 255, 255, 0.12)",
+        },
+      },
+      "outline-accent": {
+        bg: "transparent",
+        borderColor: "accent",
+        color: "fg",
+        fontWeight: "medium",
+        _hover: {
+          borderColor: "fg",
+          color: "fg",
+          bg: "rgba(255, 255, 255, 0.06)",
+        },
+        _active: {
+          bg: "rgba(255, 255, 255, 0.1)",
         },
       },
       ghost: {
+        bg: "transparent",
+        borderColor: "transparent",
         color: "fgMuted",
+        fontWeight: "medium",
         _hover: {
           color: "fg",
+          bg: "rgba(255, 255, 255, 0.06)",
         },
       },
       dark: {
         bg: "surfaceRaised",
         color: "fg",
         fontWeight: "semibold",
+        borderColor: "transparent",
         _hover: {
-          bg: "color-mix(in oklch, fgGhost 30%, transparent)",
+          bg: "rgba(255, 255, 255, 0.14)",
+          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.25)",
+        },
+        _active: {
+          boxShadow: "none",
         },
       },
       "outline-dark": {
-        border: "1px solid",
+        bg: "transparent",
         borderColor: "borderStrong",
         color: "fgMuted",
+        fontWeight: "medium",
         _hover: {
           borderColor: "fg",
           color: "fg",
+          bg: "rgba(255, 255, 255, 0.06)",
         },
+      },
+    },
+    size: {
+      section: {
+        minH: "10",
+        borderRadius: "full",
+        px: "26px",
+        py: "13px",
+        fontSize: "sm",
+      },
+      compact: {
+        minH: "auto",
+        h: "auto",
+        borderRadius: "4px",
+        px: "6",
+        py: "3",
+        fontSize: "13px",
+        lineHeight: "1",
+      },
+      hero: {
+        minH: "auto",
+        h: "auto",
+        borderRadius: "4px",
+        px: "6",
+        py: "3.5",
+        fontSize: "14px",
+        letterSpacing: "-0.2px",
+        lineHeight: "1",
       },
     },
     static: {
@@ -76,6 +151,7 @@ export const buttonRecipe = defineRecipe({
   },
   defaultVariants: {
     variant: "primary",
+    size: "section",
   },
 })
 
@@ -108,7 +184,6 @@ const config = defineConfig({
         value: {
           fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
           fontWeight: "bold",
-          textTransform: "uppercase",
           lineHeight: "0.95",
           letterSpacing: "tight",
         },
@@ -121,6 +196,8 @@ const config = defineConfig({
   globalCss: {
     html: {
       scrollBehavior: "smooth",
+      fontFamily: "Inter, sans-serif",
+      fontFeatureSettings: "'liga' 1, 'calt' 1",
     },
     body: {
       bg: "bg",

@@ -1,7 +1,7 @@
 export const colors = {
   bg: { value: "oklch(0.05 0 0)" },
   surface: { value: "oklch(0.12 0 0)" },
-  surfaceRaised: { value: "oklch(0.16 0 0)" },
+  surfaceRaised: { value: "oklch(0.25 0 0)" },
   fg: { value: "oklch(0.93 0 0)" },
   fgMuted: { value: "oklch(0.7 0 0)" },
   fgSubtle: { value: "oklch(0.7 0 0)" },

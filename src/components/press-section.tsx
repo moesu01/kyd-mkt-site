@@ -20,9 +20,9 @@ export function PressSection() {
             label="Press"
             headline={
               <>
-                As seen in the{" "}
+                As Seen in the{" "}
                 <Text as="span" color="accent">
-                  press.
+                  Press.
                 </Text>
               </>
             }

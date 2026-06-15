@@ -1,5 +1,6 @@
-import { Box, Grid, Heading, Text } from "@chakra-ui/react"
+import { Box, Grid, Text } from "@chakra-ui/react"
 import { links, stats, venueAudiences } from "../content/site-content"
+import { FeatureCard } from "./feature-card"
 import { Button } from "./ui/button"
 import { Container } from "./ui/container"
 import { SectionHeading } from "./ui/section-heading"
@@ -16,7 +17,7 @@ function StatRow({
   return (
     <Box
       position="relative"
-      minH={{ base: "120px", lg901: "144px" }}
+      minH={{ base: "102px", lg901: "122px" }}
       borderTop={isFirst ? "1px solid" : undefined}
       borderBottom="1px solid"
       borderColor="border"
@@ -24,26 +25,27 @@ function StatRow({
       <Text
         position="absolute"
         left="0"
-        top={{ base: "6", lg901: "9" }}
-        fontVariantNumeric="tabular-nums"
+        top={{ base: "20px", lg901: "31px" }}
+        fontFamily="sans"
         fontSize={{ base: "3rem", lg901: "72px" }}
-        fontWeight="normal"
+        fontWeight="100"
         lineHeight="1"
-        letterSpacing="-0.25rem"
+        letterSpacing="-0.15rem"
         color="accent"
+        css={{ fontFeatureSettings: '"cv01" 1' }}
       >
         {value}
       </Text>
       <Text
         position="absolute"
         right="0"
-        top={{ base: "14", lg901: "19" }}
+        top={{ base: "48px", lg901: "65px" }}
         maxW="224px"
-        fontSize="14px"
+        fontSize="16px"
         lineHeight="20px"
         letterSpacing="-0.1504px"
         textAlign="right"
-        color="fgMuted"
+        color="fg"
       >
         {label}
       </Text>
@@ -62,6 +64,26 @@ export function VenuesSection() {
       py={{ base: "20", lg901: "28" }}
     >
       <Container>
+        <Box mb={{ base: "16", lg901: "24" }}>
+          <Text textStyle="eyebrow" mb="8" color="fgSubtle">
+            Who it&apos;s for
+          </Text>
+          <Grid
+            templateColumns={{ base: "1fr", lg901: "repeat(3, 1fr)" }}
+            gap={{ base: "12", lg901: "10" }}
+          >
+            {venueAudiences.map((audience) => (
+              <FeatureCard
+                key={audience.title}
+                layout="compact"
+                icon={audience.icon}
+                title={audience.title}
+                body={audience.body}
+              />
+            ))}
+          </Grid>
+        </Box>
+
         <Grid
           templateColumns={{ base: "1fr", lg901: "1fr 1fr" }}
           alignItems="start"
@@ -72,12 +94,12 @@ export function VenuesSection() {
               label="For Venues & Artists"
               headline={
                 <>
-                  Your tickets.
+                  Your Tickets.
                   <br />
-                  Your fans.
+                  Your Fans.
                   <br />
                   <Text as="span" color="accent">
-                    Your money.
+                    Your Money.
                   </Text>
                 </>
               }
@@ -89,7 +111,9 @@ export function VenuesSection() {
               Keep your fan data. Automate your marketing. Deliver 10x results
               &mdash; and never rent your audience again.
             </Text>
-            <Button href={links.getInTouch}>Get in touch →</Button>
+            <Box mt="6">
+              <Button href={links.getInTouch}>Get in touch →</Button>
+            </Box>
           </Box>
 
           <Box w="full">
@@ -103,38 +127,6 @@ export function VenuesSection() {
             ))}
           </Box>
         </Grid>
-
-        <Box mt={{ base: "16", lg901: "24" }}>
-          <Text textStyle="eyebrow" mb="8" color="fgSubtle">
-            Who it&apos;s for
-          </Text>
-          <Grid
-            templateColumns={{ base: "1fr", lg901: "repeat(3, 1fr)" }}
-            gap="1px"
-            border="1px solid"
-            borderColor="border"
-            bg="border"
-          >
-            {venueAudiences.map((audience) => (
-              <Box as="article" key={audience.title} bg="bg" p="8">
-                <Heading
-                  as="h3"
-                  mb="3"
-                  fontSize="1.4rem"
-                  fontWeight="bold"
-                  textTransform="uppercase"
-                  letterSpacing="tight"
-                  color="fg"
-                >
-                  {audience.title}
-                </Heading>
-                <Text fontSize="0.95rem" lineHeight="relaxed" color="fgMuted">
-                  {audience.body}
-                </Text>
-              </Box>
-            ))}
-          </Grid>
-        </Box>
       </Container>
     </Box>
   )

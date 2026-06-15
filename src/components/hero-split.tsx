@@ -3,33 +3,6 @@ import { heroFooterLinks, links } from "../content/site-content"
 import { HeroNycClock } from "./hero-nyc-clock"
 import { Button } from "./ui/button"
 
-const heroButtonStyles = {
-  minH: "auto",
-  borderRadius: "4px",
-  px: "6",
-  py: "3.5",
-  fontFamily: "sans",
-  fontSize: "14px",
-  fontWeight: "medium",
-  textTransform: "uppercase",
-  letterSpacing: "-0.2px",
-} as const
-
-const heroPrimaryButtonStyles = {
-  ...heroButtonStyles,
-  bg: "accent",
-  color: "accentFg",
-  _hover: { filter: "brightness(1.05)" },
-} as const
-
-const heroOutlineButtonStyles = {
-  ...heroButtonStyles,
-  border: "1px solid",
-  borderColor: "accent",
-  color: "fg",
-  _hover: { borderColor: "fg", color: "fg" },
-} as const
-
 function HeroMiniFooter() {
   return (
     <Box
@@ -134,25 +107,20 @@ export function HeroSplit() {
               mt="6"
               fontSize="clamp(2.5rem, 6vw, 4.15rem)"
               fontWeight="bold"
-              textTransform="uppercase"
               lineHeight="1.02"
               letterSpacing="-0.02em"
               color="fg"
             >
-              Modern ticketing
+              Modern Ticketing
               <br />
-              built for venues
+              Built for Venues
             </Heading>
             <Flex flexWrap="wrap" align="center" gap="6" mt="6">
-              <Button href={links.getInTouch} css={heroPrimaryButtonStyles}>
+              <Button href={links.getInTouch} size="hero">
                 Get in touch →
               </Button>
-              <Button
-                href={links.tickets}
-                variant="outline"
-                css={heroOutlineButtonStyles}
-              >
-                Find My Tickets
+              <Button href={links.tickets} variant="outline-accent" size="hero">
+                Find my tickets
               </Button>
             </Flex>
           </Box>

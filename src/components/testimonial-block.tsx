@@ -45,6 +45,15 @@ function TestimonialLogo({
   )
 }
 
+const testimonialFontFeatures = {
+  fontFeatureSettings: '"ss08" 1, "case" 1',
+} as const
+
+const testimonialQuoteStyles = {
+  ...testimonialFontFeatures,
+  hangingPunctuation: "first last",
+} as const
+
 export function TestimonialBlock({
   quote,
   attribution,
@@ -73,12 +82,17 @@ export function TestimonialBlock({
 
       <Flex flex="1" direction="column" justify="center" py={{ base: "8", lg901: "12" }}>
         <Text
+          as="p"
+          fontFamily="sans"
           fontSize={{ base: "clamp(1.375rem, 2.5vw, 2rem)", lg901: "32px" }}
-          lineHeight={{ base: "1.35", lg901: "41.6px" }}
-          letterSpacing="-0.32px"
+          fontWeight="540"
+          lineHeight="1.3"
+          letterSpacing="-1%"
           color={placeholder ? "fgFaint" : "fg"}
           fontStyle={placeholder ? "italic" : undefined}
           wordBreak="break-word"
+          textWrap="pretty"
+          css={testimonialQuoteStyles}
         >
           &ldquo;{quote}&rdquo;
         </Text>
@@ -86,20 +100,24 @@ export function TestimonialBlock({
 
       <Box>
         <Text
+          fontFamily="sans"
           fontSize="18px"
           lineHeight="23.4px"
           color={placeholder ? "fgFaint" : "fg"}
+          css={testimonialFontFeatures}
         >
           {attribution}
         </Text>
         {role ? (
           <Text
+            fontFamily="sans"
             mt="1"
             fontSize="13px"
             lineHeight="15.6px"
             letterSpacing="-0.26px"
             color={placeholder ? "fgFaint" : "fg"}
             opacity={placeholder ? 1 : 0.6}
+            css={testimonialFontFeatures}
           >
             {role}
           </Text>

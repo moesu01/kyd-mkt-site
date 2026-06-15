@@ -19,30 +19,33 @@ export const heroFooterLinks = [
 ] as const
 
 export const navMenuLinks = [
-  { label: "About KYD", href: "#about" },
-  { label: "For Venues & Artists", href: "#venues" },
+  { label: "About kyd", href: "#about" },
+  { label: "For venues & artists", href: "#venues" },
   { label: "Platform", href: "#platform" },
-  { label: "For Fans", href: "#fans" },
+  { label: "For fans", href: "#fans" },
   { label: "Press", href: "#press" },
 ] as const
 
 export const stats = [
-  { value: "10X", label: "return on ad spend" },
-  { value: "15X", label: "fan reach" },
-  { value: "100%", label: "audience ownership" },
-  { value: "0", label: "middlemen" },
+  { value: "10X", label: "Return on ad spend" },
+  { value: "15X", label: "Fan reach" },
+  { value: "100%", label: "Audience ownership" },
+  { value: "0", label: "Middlemen" },
 ] as const
 
 export const venueAudiences = [
   {
+    icon: "◆",
     title: "Venues",
     body: "Looking for ticketing that you control. See what KYD offers and why teams get in touch.",
   },
   {
+    icon: "◎",
     title: "Agents",
     body: "Understand KYD's role across ticketing, resale, data, and live-event infrastructure.",
   },
   {
+    icon: "✦",
     title: "Artists",
     body: "Run your own touring and ticketing. Keep your fans, your data, and your revenue.",
   },
@@ -57,7 +60,7 @@ export const features = [
   {
     icon: "↻",
     title: "Resale Capture",
-    body: "Capture resale activity wherever tickets go. Every resale runs through your platform — the upside stays with the venue, not the secondary market.",
+    body: "Capture resale activity wherever tickets go. Every resale runs through your platform, so the upside stays with the venue, not the secondary market.",
   },
   {
     icon: "◎",
@@ -67,12 +70,12 @@ export const features = [
   {
     icon: "✦",
     title: "AI-Powered Activation",
-    body: "Models trained on your data drive higher-converting ads, email, and ticketing campaigns. Spend smarter and sell more with every show.",
+    body: "Models trained on your data drive higher-converting ads, email, and ticketing. Spend smarter and sell more with every show.",
   },
   {
     icon: "⚡",
     title: "Comprehensive Ticketing",
-    body: "Launch events, configure pricing, manage box office, and track performance — all in one place. Your fan CRM and analytics are built in.",
+    body: "Launch events, configure pricing, manage box office, and track performance, all in one place. Your fan CRM and analytics are built in.",
   },
 ] as const
 
@@ -106,7 +109,7 @@ export const testimonials = [
   },
   {
     quote:
-      "Most platforms treat venues like an afterthought. KYD built the tools we actually use night of show — door lists, comps, last-minute holds — without making our team learn a new religion.",
+      "Most platforms treat venues like an afterthought. KYD built the tools we actually use night of show, from door lists and comps to last-minute holds, without making our team learn a new religion.",
     attribution: "mock up",
     role: "place holder",
     logoSrc: "/logos/testimonials/placeholder.svg",

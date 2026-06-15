@@ -2,11 +2,19 @@ import { chakra, useRecipe, type SystemStyleObject } from "@chakra-ui/react"
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react"
 import { buttonRecipe } from "../../theme"
 
-type ButtonVariant = "primary" | "outline" | "ghost" | "dark" | "outline-dark"
+type ButtonVariant =
+  | "primary"
+  | "outline"
+  | "outline-accent"
+  | "ghost"
+  | "dark"
+  | "outline-dark"
+type ButtonSize = "section" | "compact" | "hero"
 
 interface ButtonBaseProps {
   children: ReactNode
   variant?: ButtonVariant
+  size?: ButtonSize
   className?: string
   static?: boolean
   css?: SystemStyleObject
@@ -26,13 +34,14 @@ const ChakraLink = chakra("a")
 export function Button({
   children,
   variant = "primary",
+  size = "section",
   className = "",
   static: isStatic = false,
   css: cssOverride,
   ...props
 }: ButtonProps) {
   const recipe = useRecipe({ recipe: buttonRecipe })
-  const styles = recipe({ variant, static: isStatic })
+  const styles = recipe({ variant, size, static: isStatic })
 
   if ("href" in props && props.href !== undefined) {
     const { href, ...anchorProps } = props

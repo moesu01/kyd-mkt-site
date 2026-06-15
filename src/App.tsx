@@ -1,7 +1,11 @@
 import { Box } from "@chakra-ui/react"
 import { AboutSection } from "./components/about-section"
 import { FanSection } from "./components/fan-section"
-import { FeaturesSection } from "./components/features-section"
+import { FeaturesSectionInteractive } from "./components/features-section-interactive"
+// TODO: Original FeaturesSection is hidden while evaluating the interactive
+// version above. If we commit to the interactive view, delete this import,
+// <FeaturesSection /> below, and src/components/features-section.tsx.
+// import { FeaturesSection } from "./components/features-section"
 import { Footer } from "./components/footer"
 import { HeroSplit } from "./components/hero-split"
 import { Nav } from "./components/nav"
@@ -27,7 +31,10 @@ function App() {
       <HeroSplit />
       <AboutSection />
       <VenuesSection />
-      <FeaturesSection />
+      <FeaturesSectionInteractive />
+      {/* TODO: Hidden pending decision on interactive vs. original Platform
+          section. Remove FeaturesSection entirely if unused. */}
+      {/* <FeaturesSection /> */}
       <FanSection />
       <SocialProofSection />
       <PressSection />

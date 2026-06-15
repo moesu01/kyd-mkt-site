@@ -1,66 +1,9 @@
-import { Box, Flex, Grid, Heading, Text } from "@chakra-ui/react"
+import { Box, Flex, Grid, Text } from "@chakra-ui/react"
 import { features, links } from "../content/site-content"
+import { FeatureCard } from "./feature-card"
 import { Button } from "./ui/button"
 import { Container } from "./ui/container"
 import { SectionHeading } from "./ui/section-heading"
-
-interface FeatureCardProps {
-  icon: string
-  title: string
-  body: string
-}
-
-function FeatureCard({ icon, title, body }: FeatureCardProps) {
-  return (
-    <Box as="article">
-      <Flex
-        align="center"
-        justify="center"
-        minH="320px"
-        borderRadius="16px"
-        bg="surfaceRaised"
-        mb="6"
-        aria-hidden
-      >
-        <Flex
-          align="center"
-          justify="center"
-          h="11"
-          w="11"
-          borderRadius="12px"
-          border="1px solid"
-          borderColor="border"
-          fontSize="lg"
-          color="accent"
-          opacity="0.5"
-        >
-          {icon}
-        </Flex>
-      </Flex>
-
-      <Heading
-        as="h3"
-        fontSize="20px"
-        fontWeight="500"
-        lineHeight="28px"
-        letterSpacing="-0.5px"
-        color="fg"
-      >
-        {title}
-      </Heading>
-
-      <Text
-        pt="2"
-        fontSize="14px"
-        lineHeight="1.6"
-        letterSpacing="0"
-        color="fgMuted"
-      >
-        {body}
-      </Text>
-    </Box>
-  )
-}
 
 const topRowFeatures = features.slice(0, 3)
 const bottomRowFeatures = features.slice(3, 5)
@@ -81,10 +24,10 @@ export function FeaturesSection() {
             label="Platform"
             headline={
               <>
-                Modern ticketing infrastructure.
+                Modern Ticketing Infrastructure.
                 <br />
                 <Text as="span" color="accent">
-                  Built for control.
+                  Built for Control.
                 </Text>
               </>
             }

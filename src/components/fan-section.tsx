@@ -19,22 +19,15 @@ export function FanSection() {
         <Box mb="5">
           <SectionHeading
             label="For Fans"
-            headline="Need ticket help?"
+            headline="Need Ticket Help?"
           />
         </Box>
         <Text maxW="bodyCopy" textStyle="sectionBody" color="fgMuted">
-          Locate your tickets, join a waitlist, or request a refund. You&apos;re in
-          the right place.
+          Locate your tickets. You&apos;re in the right place.
         </Text>
         <Flex mt="10" flexWrap="wrap" gap="3">
           <Button href={links.tickets} variant="dark">
             Find My Tickets →
-          </Button>
-          <Button href={links.waitlist} variant="outline-dark">
-            Join a Waitlist
-          </Button>
-          <Button href={links.refund} variant="outline-dark">
-            Request a Refund
           </Button>
         </Flex>
       </Container>

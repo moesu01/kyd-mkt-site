@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Link, chakra } from "@chakra-ui/react"
+import { Box, Flex, Image, Link, Text, chakra } from "@chakra-ui/react"
 import { useState } from "react"
 import { links, navMenuLinks } from "../content/site-content"
 import { Button } from "./ui/button"
@@ -102,35 +102,152 @@ function MenuToggleIcon({ isOpen }: { isOpen: boolean }) {
   )
 }
 
-const navMenuButtonStyles = {
-  minH: "auto",
-  h: "auto",
-  borderRadius: "4px",
-  px: "6",
-  py: "3",
+const navMenuSpacing = "4"
+const navMenuSpacingPx = 16
+
+const navMenuCtaButtonRadiusPx = 4
+const navMenuCtaPanelRadiusPx = navMenuCtaButtonRadiusPx + navMenuSpacingPx
+const navMenuPanelRadiusPx = navMenuCtaPanelRadiusPx + navMenuSpacingPx
+
+const navMenuCtaButtonRadius = `${navMenuCtaButtonRadiusPx}px`
+const navMenuCtaPanelRadius = `${navMenuCtaPanelRadiusPx}px`
+const navMenuPanelRadius = `${navMenuPanelRadiusPx}px`
+const navBarRadius = navMenuCtaPanelRadius
+
+const navMenuCtaSubheadStyles = {
+  mb: "2",
   fontFamily: "sans",
   fontSize: "13px",
   fontWeight: "medium",
-  textTransform: "uppercase",
-  border: "1px solid",
-  lineHeight: "1",
-} as const
-
-const navMenuOutlineButtonStyles = {
-  ...navMenuButtonStyles,
-  borderColor: "accent",
   color: "fg",
-  _hover: { borderColor: "fg", color: "fg" },
 } as const
 
-const navMenuPrimaryButtonStyles = {
-  ...navMenuButtonStyles,
-  bg: "accent",
-  color: "accentFg",
-  borderColor: "transparent",
-  fontWeight: "580",
-  _hover: { filter: "brightness(1.05)" },
+const navMenuLinkPaddingLeftPx = navMenuSpacingPx
+const navMenuLinkPaddingLeftHoverPx = navMenuSpacingPx + 8
+const navMenuLinkHoverDuration = "200ms"
+
+const navMenuLinkDimmedOpacity = 0.45
+
+const navMenuLinkMotionProperties = ["transform", "filter"] as const
+
+const navMenuLinkHoverProperties = [
+  "opacity",
+  "border-color",
+  "border-bottom-color",
+  "color",
+  "box-shadow",
+  "padding-left",
+  "padding-inline-start",
+  "font-weight",
+  "letter-spacing",
+] as const
+
+function repeatTransitionValue(value: string, count: number) {
+  return Array(count).fill(value).join(", ")
+}
+
+function getNavMenuLinkTransitions(
+  menuMotion: ReturnType<typeof getMenuItemMotion>,
+) {
+  const motionCount = navMenuLinkMotionProperties.length
+  const hoverCount = navMenuLinkHoverProperties.length
+
+  return {
+    transitionProperty: [...navMenuLinkMotionProperties, ...navMenuLinkHoverProperties].join(
+      ", ",
+    ),
+    transitionDuration: [
+      repeatTransitionValue(menuMotion.transitionDuration, motionCount),
+      repeatTransitionValue(navMenuLinkHoverDuration, hoverCount),
+    ].join(", "),
+    transitionTimingFunction: [
+      repeatTransitionValue(menuMotion.transitionTimingFunction, motionCount),
+      repeatTransitionValue(iconEase, hoverCount),
+    ].join(", "),
+    transitionDelay: [
+      repeatTransitionValue(menuMotion.transitionDelay, motionCount),
+      repeatTransitionValue("0ms", hoverCount),
+    ].join(", "),
+  } as const
+}
+
+function getNavMenuLinkDivider(index: number, total: number) {
+  const isLast = index === total - 1
+
+  if (isLast) return {} as const
+
+  return {
+    borderBottom: "1px solid",
+    borderBottomColor: "rgba(255, 255, 255, 0.075)",
+  } as const
+}
+
+const navMenuLinkStyles = {
+  display: "block",
+  paddingLeft: `${navMenuLinkPaddingLeftPx}px`,
+  paddingInlineStart: `${navMenuLinkPaddingLeftPx}px`,
+  paddingRight: `${navMenuSpacingPx}px`,
+  py: "2.5",
+  minH: "10",
+  borderRadius: "0",
+  fontWeight: "medium",
+  letterSpacing: "0",
+  _hover: {
+    paddingLeft: `${navMenuLinkPaddingLeftHoverPx}px`,
+    paddingInlineStart: `${navMenuLinkPaddingLeftHoverPx}px`,
+    fontWeight: "580",
+    letterSpacing: "1%",
+  },
+  _active: {
+    paddingLeft: `${navMenuLinkPaddingLeftHoverPx}px`,
+    paddingInlineStart: `${navMenuLinkPaddingLeftHoverPx}px`,
+    fontWeight: "580",
+    letterSpacing: "1%",
+  },
+  _focusVisible: {
+    outline: "2px solid",
+    outlineColor: "rgba(255, 255, 255, 0.45)",
+    outlineOffset: "2px",
+  },
 } as const
+
+function getNavMenuLinkStyles(index: number, total: number) {
+  return {
+    ...navMenuLinkStyles,
+    ...getNavMenuLinkDivider(index, total),
+  } as const
+}
+
+function getNavMenuLinkOpacity(
+  isMenuOpen: boolean,
+  hoveredLinkHref: string | null,
+  href: string,
+) {
+  if (!isMenuOpen) return 0
+
+  if (hoveredLinkHref !== null && hoveredLinkHref !== href) return navMenuLinkDimmedOpacity
+
+  return 1
+}
+
+function getNavMenuLinkCss(
+  index: number,
+  isMenuOpen: boolean,
+  menuItemCount: number,
+  hoveredLinkHref: string | null,
+  href: string,
+) {
+  const menuMotion = getMenuItemMotion(index, isMenuOpen, menuItemCount)
+
+  return {
+    ...getNavMenuLinkStyles(index, navMenuLinks.length),
+    opacity: getNavMenuLinkOpacity(isMenuOpen, hoveredLinkHref, href),
+    transform: menuMotion.transform,
+    filter: menuMotion.filter,
+    pointerEvents: menuMotion.pointerEvents,
+    ...getNavMenuLinkTransitions(menuMotion),
+  } as const
+}
 
 function getMenuItemMotion(index: number, isOpen: boolean, totalItems: number) {
   const enterDelay = `${index * 80}ms`
@@ -148,15 +265,56 @@ function getMenuItemMotion(index: number, isOpen: boolean, totalItems: number) {
   } as const
 }
 
+const navGlassStyles = {
+  bg: "rgba(255, 255, 255, 0.1)",
+  boxShadow: "0 0 0 1px rgba(255, 255, 255, 0.15)",
+  backdropFilter: "blur(12px)",
+  WebkitBackdropFilter: "blur(12px)",
+} as const
+
+const navShellRadiusTransition = {
+  transitionProperty: "border-radius",
+  transitionDuration: "200ms",
+  transitionTimingFunction: iconEase,
+} as const
+
+function getNavBarRadiusStyles(isMenuOpen: boolean) {
+  return {
+    ...navShellRadiusTransition,
+    borderTopLeftRadius: navBarRadius,
+    borderTopRightRadius: navBarRadius,
+    borderBottomLeftRadius: isMenuOpen ? navMenuCtaButtonRadius : navBarRadius,
+    borderBottomRightRadius: isMenuOpen ? navMenuCtaButtonRadius : navBarRadius,
+  } as const
+}
+
+function getNavMenuPanelRadiusStyles(isMenuOpen: boolean) {
+  return {
+    ...navShellRadiusTransition,
+    borderTopLeftRadius: isMenuOpen ? navMenuCtaButtonRadius : navMenuPanelRadius,
+    borderTopRightRadius: isMenuOpen ? navMenuCtaButtonRadius : navMenuPanelRadius,
+    borderBottomLeftRadius: navMenuPanelRadius,
+    borderBottomRightRadius: navMenuPanelRadius,
+  } as const
+}
+const navMenuCtaPanelStyles = {
+  bg: "rgba(255, 255, 255, 0.15)",
+  borderRadius: navMenuCtaPanelRadius,
+  p: navMenuSpacing,
+} as const
+
 export function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [hoveredLinkHref, setHoveredLinkHref] = useState<string | null>(null)
 
   function handleToggleMenu() {
+    setHoveredLinkHref(null)
     setIsMenuOpen((open) => !open)
   }
 
   function handleCloseMenu() {
     setIsMenuOpen(false)
+    setHoveredLinkHref(null)
   }
 
   const menuItemCount = navMenuLinks.length + 2
@@ -171,26 +329,13 @@ export function Nav() {
         h="50px"
         pl="2.5"
         pr="3"
-        borderRadius="4px"
-        bg="#444444"
-        boxShadow="0 0 0 1px rgba(255, 255, 255, 0.15)"
-        overflow="hidden"
+        {...navGlassStyles}
+        css={getNavBarRadiusStyles(isMenuOpen)}
       >
-        <Box
-          position="absolute"
-          inset="0"
-          bg="black"
-          opacity="0.6"
-          borderRadius="4px"
-          pointerEvents="none"
-        />
-
-        <Box position="relative" zIndex="1" w="9" flexShrink={0} />
+        <Box w="9" flexShrink={0} />
 
         <Link
           href="#"
-          position="relative"
-          zIndex="1"
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -210,7 +355,7 @@ export function Nav() {
           />
         </Link>
 
-        <Box position="relative" zIndex="1" flexShrink={0}>
+        <Box flexShrink={0}>
           <chakra.button
             type="button"
             display="flex"
@@ -247,40 +392,44 @@ export function Nav() {
         left="0"
         right="0"
         p="4"
-        borderRadius="4px"
-        bg="#444444"
-        boxShadow="0 0 0 1px rgba(255, 255, 255, 0.15)"
+        {...navGlassStyles}
         zIndex="10"
         aria-hidden={!isMenuOpen}
         css={{
+          ...getNavMenuPanelRadiusStyles(isMenuOpen),
           opacity: isMenuOpen ? 1 : 0,
           transform: isMenuOpen ? "translateY(0)" : "translateY(-8px)",
           filter: isMenuOpen ? "blur(0px)" : "blur(4px)",
           pointerEvents: isMenuOpen ? "auto" : "none",
           visibility: isMenuOpen ? "visible" : "hidden",
-          transitionProperty: "opacity, transform, filter, visibility",
+          transitionProperty: "opacity, transform, filter, visibility, border-radius",
           transitionDuration: isMenuOpen ? "200ms" : "150ms",
           transitionTimingFunction: isMenuOpen ? iconEase : "ease-in",
           transitionDelay: isMenuOpen ? "0ms" : "0ms, 0ms, 0ms, 150ms",
         }}
       >
-        <Flex as="nav" direction="column" gap="2" aria-label="Page sections">
+        <Flex
+          as="nav"
+          direction="column"
+          aria-label="Page sections"
+          onMouseLeave={() => setHoveredLinkHref(null)}
+        >
           {navMenuLinks.map((item, index) => (
             <Link
               key={item.href}
               href={item.href}
               fontSize="14px"
-              fontWeight="medium"
-              letterSpacing="0.02em"
-              textTransform="uppercase"
               color="fg"
               textDecoration="none"
-              py="1"
               tabIndex={isMenuOpen ? 0 : -1}
-              css={{
-                ...getMenuItemMotion(index, isMenuOpen, menuItemCount),
-                _hover: { opacity: isMenuOpen ? 0.75 : 0 },
-              }}
+              css={getNavMenuLinkCss(
+                index,
+                isMenuOpen,
+                menuItemCount,
+                hoveredLinkHref,
+                item.href,
+              )}
+              onMouseEnter={() => setHoveredLinkHref(item.href)}
               onClick={handleCloseMenu}
             >
               {item.label}
@@ -288,44 +437,45 @@ export function Nav() {
           ))}
         </Flex>
 
-        <Box
-          borderTop="1px solid"
-          borderColor="rgba(255, 255, 255, 0.15)"
-          css={getMenuItemMotion(navMenuLinks.length, isMenuOpen, menuItemCount)}
-        />
-
         <Flex
-          direction={{ base: "column", lg901: "row" }}
-          gap="6"
+          direction="row"
+          align="stretch"
           w="full"
-          css={getMenuItemMotion(navMenuLinks.length + 1, isMenuOpen, menuItemCount)}
+          css={{
+            ...getMenuItemMotion(navMenuLinks.length + 1, isMenuOpen, menuItemCount),
+            ...navMenuCtaPanelStyles,
+          }}
         >
-          <Box flex={{ lg901: "1" }} w={{ base: "full", lg901: "auto" }}>
+          <Box flex="1" minW="0" pr="6">
+            <Text {...navMenuCtaSubheadStyles}>Work with kyd</Text>
             <Button
               href={links.getInTouch}
               variant="primary"
+              size="compact"
               tabIndex={isMenuOpen ? 0 : -1}
-              css={{
-                ...navMenuPrimaryButtonStyles,
-                w: "full",
-              }}
+              css={{ w: "full", fontWeight: "580" }}
               onClick={handleCloseMenu}
             >
               Get in touch
             </Button>
           </Box>
-          <Box flex={{ lg901: "1" }} w={{ base: "full", lg901: "auto" }}>
+          <Box
+            w="1px"
+            flexShrink={0}
+            bg="rgba(255, 255, 255, 0.15)"
+            alignSelf="stretch"
+          />
+          <Box flex="1" minW="0" pl="6">
+            <Text {...navMenuCtaSubheadStyles}>For fans</Text>
             <Button
               href={links.tickets}
               variant="outline"
+              size="compact"
               tabIndex={isMenuOpen ? 0 : -1}
-              css={{
-                ...navMenuOutlineButtonStyles,
-                w: "full",
-              }}
+              css={{ w: "full" }}
               onClick={handleCloseMenu}
             >
-              Find My Tickets
+              Find my tickets
             </Button>
           </Box>
         </Flex>

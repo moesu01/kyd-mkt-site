@@ -62,9 +62,9 @@ export function AboutSection() {
             label="About KYD"
             headline={
               <>
-                Built for the people who actually{" "}
+                Built for the People Who Actually{" "}
                 <Text as="span" color="accent">
-                  create value.
+                  Create Value.
                 </Text>
               </>
             }
@@ -85,16 +85,15 @@ export function AboutSection() {
               as="p"
               fontSize="clamp(1.5rem, 2.5vw, 2rem)"
               fontWeight="black"
-              textTransform="uppercase"
               lineHeight="1.05"
               letterSpacing="tight"
             >
-              Control your data.
+              Control Your Data.
               <br />
-              Keep your fans.
+              Keep Your Fans.
               <br />
               <Text as="span" color="accent">
-                Maximize your profit.
+                Maximize Your Profit.
               </Text>
             </Heading>
           </Box>

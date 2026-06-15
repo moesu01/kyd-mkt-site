@@ -38,7 +38,7 @@ export function SocialProofSection() {
         </Flex>
 
         <Heading as="h2" mb={{ base: "10", lg901: "12" }} textStyle="displayHeading">
-          What people are saying
+          What People Are Saying
         </Heading>
       </Container>
 

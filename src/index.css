@@ -2,3 +2,19 @@ html {
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
 }
+
+@keyframes feature-progress-fill {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.feature-progress-fill {
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: feature-progress-fill var(--feature-dwell-ms, 6000ms) linear forwards;
+}
