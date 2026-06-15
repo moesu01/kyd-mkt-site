@@ -7,6 +7,7 @@ export function PressSection() {
   return (
     <Box
       as="section"
+      id="press"
       borderTop="1px solid"
       borderColor="border"
       bg="surface"

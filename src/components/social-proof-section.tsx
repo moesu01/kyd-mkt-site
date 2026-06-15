@@ -1,6 +1,7 @@
-import { Box, Flex, Grid, Text } from "@chakra-ui/react"
-import { roster, testimonials } from "../content/site-content"
+import { Box, Flex, Heading, Text } from "@chakra-ui/react"
+import { roster } from "../content/site-content"
 import { Container } from "./ui/container"
+import { TestimonialCarousel } from "./testimonial-carousel"
 
 export function SocialProofSection() {
   return (
@@ -16,7 +17,7 @@ export function SocialProofSection() {
           Used by artists and venues across the country
         </Text>
 
-        <Flex flexWrap="wrap" ml="-1px" mt="-1px" mb="20">
+        <Flex flexWrap="wrap" ml="-1px" mt="-1px" mb={{ base: "16", lg901: "24" }}>
           {roster.map((item, index) => (
             <Box
               key={`${item.name}-${index}`}
@@ -36,49 +37,12 @@ export function SocialProofSection() {
           ))}
         </Flex>
 
-        <Text textStyle="eyebrow" mb="6" color="fgSubtle">
+        <Heading as="h2" mb={{ base: "10", lg901: "12" }} textStyle="displayHeading">
           What people are saying
-        </Text>
-
-        <Grid
-          mt="8"
-          templateColumns={{ base: "1fr", lg901: "repeat(3, 1fr)" }}
-          gap="6"
-        >
-          {testimonials.map((testimonial) => (
-            <Flex
-              as="article"
-              key={testimonial.attribution}
-              direction="column"
-              gap="4"
-              borderRadius="md"
-              border="1px solid"
-              borderColor={
-                testimonial.placeholder ? "borderStrong" : "border"
-              }
-              borderStyle={testimonial.placeholder ? "dashed" : "solid"}
-              p="8"
-            >
-              <Text
-                flex="1"
-                fontSize="base"
-                lineHeight="relaxed"
-                fontStyle={testimonial.placeholder ? "italic" : undefined}
-                color={testimonial.placeholder ? "fgFaint" : "fgMuted"}
-              >
-                &ldquo;{testimonial.quote}&rdquo;
-              </Text>
-              <Text
-                fontSize="13px"
-                fontWeight="medium"
-                color={testimonial.placeholder ? "fgFaint" : "accent"}
-              >
-                {testimonial.attribution}
-              </Text>
-            </Flex>
-          ))}
-        </Grid>
+        </Heading>
       </Container>
+
+      <TestimonialCarousel />
     </Box>
   )
 }

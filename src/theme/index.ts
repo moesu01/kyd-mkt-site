@@ -92,16 +92,22 @@ const config = defineConfig({
       eyebrow: {
         value: {
           fontFamily: "mono",
-          fontSize: "11px",
-          fontWeight: "medium",
+          fontSize: "12px",
+          fontWeight: "semibold",
           textTransform: "uppercase",
           letterSpacing: "0.2em",
+        },
+      },
+      sectionBody: {
+        value: {
+          fontSize: "clamp(0.875rem, 0.75rem + 0.625vw, 1.125rem)",
+          lineHeight: "relaxed",
         },
       },
       displayHeading: {
         value: {
           fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
-          fontWeight: "black",
+          fontWeight: "bold",
           textTransform: "uppercase",
           lineHeight: "0.95",
           letterSpacing: "tight",

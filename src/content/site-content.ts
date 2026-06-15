@@ -12,6 +12,20 @@ export const links = {
   pressEmail: "mailto:press@kydlabs.com",
 } as const
 
+export const heroFooterLinks = [
+  { label: "For Venues & Artists", href: "#venues", showIcon: false },
+  { label: "Platform", href: "#platform", showIcon: true },
+  { label: "Press", href: "#press", showIcon: true },
+] as const
+
+export const navMenuLinks = [
+  { label: "About KYD", href: "#about" },
+  { label: "For Venues & Artists", href: "#venues" },
+  { label: "Platform", href: "#platform" },
+  { label: "For Fans", href: "#fans" },
+  { label: "Press", href: "#press" },
+] as const
+
 export const stats = [
   { value: "10X", label: "return on ad spend" },
   { value: "15X", label: "fan reach" },
@@ -78,21 +92,34 @@ export const testimonials = [
     quote:
       "Seems to me KYD is the bleeding edge. Then again, I don't want to talk to everybody.",
     attribution: "Bob Lefsetz",
+    role: "The Lefsetz Letter",
+    logoSrc: "/logos/testimonials/bob-lefsetz.svg",
     placeholder: false,
   },
   {
-    quote: "Testimonial coming soon",
-    attribution: "Placeholder",
-    placeholder: true,
+    quote:
+      "We switched our entire tour to KYD and finally stopped fighting our own box office. Fans get in faster, we see real data, and nobody is refreshing a broken checkout page at 10:01 a.m.",
+    attribution: "mock up",
+    role: "place holder",
+    logoSrc: "/logos/testimonials/placeholder.svg",
+    placeholder: false,
   },
   {
-    quote: "Testimonial coming soon",
-    attribution: "Placeholder",
-    placeholder: true,
+    quote:
+      "Most platforms treat venues like an afterthought. KYD built the tools we actually use night of show — door lists, comps, last-minute holds — without making our team learn a new religion.",
+    attribution: "mock up",
+    role: "place holder",
+    logoSrc: "/logos/testimonials/placeholder.svg",
+    placeholder: false,
   },
 ] as const
 
-export const backers = ["a16z", "Comcast", "MBC Group", "Techstars"] as const
+export const backers = [
+  { name: "a16z", logoSrc: "/logos/a16z.svg" },
+  { name: "Comcast", logoSrc: "/logos/comcast.svg" },
+  { name: "MBC Group", logoSrc: "/logos/mbc-group.svg" },
+  { name: "Techstars", logoSrc: "/logos/techstars.svg" },
+] as const
 
 export const pressCoverage = [
   {

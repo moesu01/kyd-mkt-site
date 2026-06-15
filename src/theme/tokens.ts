@@ -4,7 +4,7 @@ export const colors = {
   surfaceRaised: { value: "oklch(0.16 0 0)" },
   fg: { value: "oklch(0.93 0 0)" },
   fgMuted: { value: "oklch(0.7 0 0)" },
-  fgSubtle: { value: "oklch(0.65 0 0)" },
+  fgSubtle: { value: "oklch(0.7 0 0)" },
   fgGhost: { value: "oklch(0.54 0 0)" },
   fgFaint: { value: "oklch(0.46 0 0)" },
   fgDim: { value: "oklch(0.32 0 0)" },

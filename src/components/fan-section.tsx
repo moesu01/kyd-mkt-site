@@ -8,6 +8,7 @@ export function FanSection() {
   return (
     <Box
       as="section"
+      id="fans"
       borderTop="1px solid"
       borderColor="border"
       bg="surface"
@@ -21,12 +22,7 @@ export function FanSection() {
             headline="Need ticket help?"
           />
         </Box>
-        <Text
-          maxW="bodyCopy"
-          fontSize="1.05rem"
-          lineHeight="relaxed"
-          color="fgMuted"
-        >
+        <Text maxW="bodyCopy" textStyle="sectionBody" color="fgMuted">
           Locate your tickets, join a waitlist, or request a refund. You&apos;re in
           the right place.
         </Text>

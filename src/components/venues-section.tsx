@@ -4,10 +4,58 @@ import { Button } from "./ui/button"
 import { Container } from "./ui/container"
 import { SectionHeading } from "./ui/section-heading"
 
+function StatRow({
+  value,
+  label,
+  isFirst,
+}: {
+  value: string
+  label: string
+  isFirst: boolean
+}) {
+  return (
+    <Box
+      position="relative"
+      minH={{ base: "120px", lg901: "144px" }}
+      borderTop={isFirst ? "1px solid" : undefined}
+      borderBottom="1px solid"
+      borderColor="border"
+    >
+      <Text
+        position="absolute"
+        left="0"
+        top={{ base: "6", lg901: "9" }}
+        fontVariantNumeric="tabular-nums"
+        fontSize={{ base: "3rem", lg901: "72px" }}
+        fontWeight="normal"
+        lineHeight="1"
+        letterSpacing="-0.25rem"
+        color="accent"
+      >
+        {value}
+      </Text>
+      <Text
+        position="absolute"
+        right="0"
+        top={{ base: "14", lg901: "19" }}
+        maxW="224px"
+        fontSize="14px"
+        lineHeight="20px"
+        letterSpacing="-0.1504px"
+        textAlign="right"
+        color="fgMuted"
+      >
+        {label}
+      </Text>
+    </Box>
+  )
+}
+
 export function VenuesSection() {
   return (
     <Box
       as="section"
+      id="venues"
       borderTop="1px solid"
       borderColor="border"
       px={{ base: "6", lg901: "12" }}
@@ -16,7 +64,7 @@ export function VenuesSection() {
       <Container>
         <Grid
           templateColumns={{ base: "1fr", lg901: "1fr 1fr" }}
-          alignItems="center"
+          alignItems="start"
           gap={{ base: "14", lg901: "24" }}
         >
           <Box>
@@ -35,13 +83,7 @@ export function VenuesSection() {
               }
               mb="6"
             />
-            <Text
-              mb="10"
-              maxW="bodyCopy"
-              fontSize="1.05rem"
-              lineHeight="relaxed"
-              color="fgMuted"
-            >
+            <Text mb="10" maxW="bodyCopy" textStyle="sectionBody" color="fgMuted">
               A next-gen, whitelabel ticketing and marketing platform for
               independent artists, touring acts, and venues. Own your ticketing.
               Keep your fan data. Automate your marketing. Deliver 10x results
@@ -50,33 +92,16 @@ export function VenuesSection() {
             <Button href={links.getInTouch}>Get in touch →</Button>
           </Box>
 
-          <Grid templateColumns="repeat(2, 1fr)" border="1px solid" borderColor="border">
+          <Box w="full">
             {stats.map((stat, index) => (
-              <Box
+              <StatRow
                 key={stat.label}
-                borderColor="border"
-                p="8"
-                px={{ lg901: "8" }}
-                py={{ lg901: "9" }}
-                borderRightWidth={index % 2 === 0 ? "1px" : undefined}
-                borderBottomWidth={index < 2 ? "1px" : undefined}
-              >
-                <Text
-                  fontVariantNumeric="tabular-nums"
-                  fontSize="3.75rem"
-                  fontWeight="black"
-                  lineHeight="1"
-                  letterSpacing="tight"
-                  color="accent"
-                >
-                  {stat.value}
-                </Text>
-                <Text mt="2" fontFamily="mono" fontSize="13px" color="fgSubtle">
-                  {stat.label}
-                </Text>
-              </Box>
+                value={stat.value}
+                label={stat.label}
+                isFirst={index === 0}
+              />
             ))}
-          </Grid>
+          </Box>
         </Grid>
 
         <Box mt={{ base: "16", lg901: "24" }}>
