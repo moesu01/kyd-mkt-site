@@ -539,6 +539,7 @@ export function FeaturesSectionInteractive() {
           border="1px solid"
           borderColor="frameBorder"
           borderRadius="32px"
+          bg="black"
           p="25px"
         >
           <Grid

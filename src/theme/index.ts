@@ -172,6 +172,15 @@ const config = defineConfig({
       fonts,
       sizes,
     },
+    semanticTokens: {
+      colors: {
+        bg: {
+          DEFAULT: {
+            value: { _light: "{colors.white}", _dark: "#111" },
+          },
+        },
+      },
+    },
     textStyles: {
       eyebrow: {
         value: {
@@ -230,6 +239,10 @@ const config = defineConfig({
       fontSize: "base",
       lineHeight: "relaxed",
       overflowX: "hidden",
+    },
+    "#root": {
+      bg: "bg",
+      minH: "100dvh",
     },
     "h1, h2, h3": {
       textWrap: "balance",

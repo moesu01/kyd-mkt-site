@@ -118,10 +118,24 @@ export const testimonials = [
 ] as const
 
 export const backers = [
-  { name: "a16z", logoSrc: "/logos/a16z.svg" },
-  { name: "Comcast", logoSrc: "/logos/comcast.svg" },
-  { name: "MBC Group", logoSrc: "/logos/mbc-group.svg" },
-  { name: "Techstars", logoSrc: "/logos/techstars.svg" },
+  {
+    name: "a16z crypto",
+    logoSrc: "/logos/a16z-crypto.png",
+    maxH: "2.5rem",
+    maxW: "11rem",
+  },
+  {
+    name: "Comcast Ventures",
+    logoSrc: "/logos/comcast-ventures.png",
+    maxH: "2.5rem",
+    maxW: "12rem",
+  },
+  {
+    name: "Techstars",
+    logoSrc: "/logos/techstars.png",
+    maxH: "1.75rem",
+    maxW: "8.5rem",
+  },
 ] as const
 
 export const pressCoverage = [

@@ -1,5 +1,5 @@
 export const colors = {
-  bg: { value: "oklch(0.05 0 0)" },
+  bg: { value: "#111" },
   surface: { value: "oklch(0.12 0 0)" },
   surfaceRaised: { value: "oklch(0.25 0 0)" },
   fg: { value: "oklch(0.93 0 0)" },
@@ -13,7 +13,7 @@ export const colors = {
   accentFg: { value: "oklch(0.05 0 0)" },
   border: { value: "oklch(0.3 0 0)" },
   borderStrong: { value: "oklch(0.4 0 0)" },
-  frameBorder: { value: "#27272a" },
+  frameBorder: { value: "rgba(255, 255, 255, 0.08)" },
 }
 
 export const fonts = {

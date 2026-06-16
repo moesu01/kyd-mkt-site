@@ -7,9 +7,13 @@ import { SectionHeading } from "./ui/section-heading"
 function BackerLogo({
   name,
   logoSrc,
+  maxH,
+  maxW,
 }: {
   name: string
   logoSrc: string
+  maxH: string
+  maxW: string
 }) {
   const [hasError, setHasError] = useState(false)
 
@@ -32,9 +36,10 @@ function BackerLogo({
     <Image
       src={logoSrc}
       alt={name}
-      h="8"
+      h="auto"
       w="auto"
-      maxW="40"
+      maxH={maxH}
+      maxW={maxW}
       objectFit="contain"
       flexShrink={0}
       onError={() => setHasError(true)}
@@ -47,10 +52,10 @@ export function AboutSection() {
     <Box
       as="section"
       id="about"
-      borderTop="1px solid"
-      borderColor="border"
+      bg="transparent"
       px={{ base: "6", lg901: "12" }}
-      py={{ base: "20", lg901: "28" }}
+      pt={{ base: "20", lg901: "28" }}
+      pb={{ base: "10", lg901: "14" }}
     >
       <Container>
         <Grid
@@ -102,15 +107,16 @@ export function AboutSection() {
 
       <Box mt={{ base: "16", lg901: "20" }}>
         <Container>
-          <Text mb="5" textAlign="center" textStyle="eyebrow" color="fgSubtle">
+          <Text mb="5" textAlign="left" textStyle="eyebrow" color="fgSubtle">
             Backed by
           </Text>
 
           <Flex
             as="ul"
             listStyleType="none"
-            align="center"
+            align="stretch"
             justify="space-between"
+            gap={{ base: "4", lg901: "6" }}
             w="full"
             pb="2"
           >
@@ -119,11 +125,37 @@ export function AboutSection() {
                 as="li"
                 key={backer.name}
                 display="flex"
-                alignItems="center"
-                justifyContent="center"
-                minH="12"
+                flex="1"
+                flexDirection="column"
+                gap="4"
+                border="1px solid"
+                borderColor="frameBorder"
+                borderRadius="16px"
+                overflow="hidden"
+                bg="black"
+                p={{ base: "4", lg901: "5" }}
               >
-                <BackerLogo name={backer.name} logoSrc={backer.logoSrc} />
+                <Flex
+                  flex="1"
+                  align="center"
+                  justify="center"
+                  minH="12"
+                >
+                  <BackerLogo
+                    name={backer.name}
+                    logoSrc={backer.logoSrc}
+                    maxH={backer.maxH}
+                    maxW={backer.maxW}
+                  />
+                </Flex>
+                <Text
+                  textStyle="eyebrow"
+                  color="fgSubtle"
+                  w="full"
+                  textAlign="center"
+                >
+                  {backer.name}
+                </Text>
               </Box>
             ))}
           </Flex>

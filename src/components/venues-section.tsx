@@ -1,4 +1,4 @@
-import { Box, Grid, Text } from "@chakra-ui/react"
+import { Box, Flex, Grid, Text } from "@chakra-ui/react"
 import { links, stats, venueAudiences } from "../content/site-content"
 import { FeatureCard } from "./feature-card"
 import { Button } from "./ui/button"
@@ -58,8 +58,6 @@ export function VenuesSection() {
     <Box
       as="section"
       id="venues"
-      borderTop="1px solid"
-      borderColor="border"
       px={{ base: "6", lg901: "12" }}
       py={{ base: "20", lg901: "28" }}
     >
@@ -86,10 +84,15 @@ export function VenuesSection() {
 
         <Grid
           templateColumns={{ base: "1fr", lg901: "1fr 1fr" }}
-          alignItems="start"
+          alignItems={{ base: "start", lg901: "stretch" }}
           gap={{ base: "14", lg901: "24" }}
         >
-          <Box>
+          <Flex
+            direction="column"
+            justify={{ base: "flex-start", lg901: "space-between" }}
+            h={{ base: "auto", lg901: "full" }}
+            gap={{ base: "10", lg901: 0 }}
+          >
             <SectionHeading
               label="For Venues & Artists"
               headline={
@@ -103,18 +106,17 @@ export function VenuesSection() {
                   </Text>
                 </>
               }
-              mb="6"
             />
-            <Text mb="10" maxW="bodyCopy" textStyle="sectionBody" color="fgMuted">
+            <Text maxW="bodyCopy" textStyle="sectionBody" color="fgMuted">
               A next-gen, whitelabel ticketing and marketing platform for
               independent artists, touring acts, and venues. Own your ticketing.
               Keep your fan data. Automate your marketing. Deliver 10x results
               &mdash; and never rent your audience again.
             </Text>
-            <Box mt="6">
+            <Box alignSelf="flex-start">
               <Button href={links.getInTouch}>Get in touch →</Button>
             </Box>
-          </Box>
+          </Flex>
 
           <Box w="full">
             {stats.map((stat, index) => (
