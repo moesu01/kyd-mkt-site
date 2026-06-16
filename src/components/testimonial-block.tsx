@@ -49,8 +49,13 @@ const testimonialFontFeatures = {
   fontFeatureSettings: '"ss08" 1, "case" 1',
 } as const
 
+const testimonialQuoteFeatures = {
+  fontFeatureSettings: '"case" 1, "ss03" 1, "cv01" 1',
+} as const
+
 const testimonialQuoteStyles = {
-  ...testimonialFontFeatures,
+  ...testimonialQuoteFeatures,
+  textIndent: "calc(-0.45 * 1em)",
   hangingPunctuation: "first last",
 } as const
 
@@ -67,9 +72,8 @@ export function TestimonialBlock({
       direction="column"
       flex="0 0 auto"
       flexShrink={0}
-      w={{ base: "min(63.75vw, 555px)", lg901: "555px" }}
-      minW={{ base: "min(63.75vw, 555px)", lg901: "555px" }}
-      maxW={{ base: "min(63.75vw, 555px)", lg901: "555px" }}
+      w="full"
+      maxW="testimonialCard"
       h={{ base: "480px", lg901: "550px" }}
       borderRadius="8px"
       border={placeholder ? "1px dashed" : "1px solid"}
@@ -84,11 +88,11 @@ export function TestimonialBlock({
         <Text
           as="p"
           fontFamily="sans"
-          fontSize={{ base: "clamp(1.375rem, 2.5vw, 2rem)", lg901: "32px" }}
-          fontWeight="540"
+          fontSize="24px"
+          fontWeight="200"
           lineHeight="1.3"
-          letterSpacing="-1%"
-          color={placeholder ? "fgFaint" : "fg"}
+          letterSpacing="-0.24px"
+          color={placeholder ? "fgFaint" : "#fafafa"}
           fontStyle={placeholder ? "italic" : undefined}
           wordBreak="break-word"
           textWrap="pretty"

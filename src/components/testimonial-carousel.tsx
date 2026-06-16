@@ -5,8 +5,6 @@ import { TestimonialBlock } from "./testimonial-block"
 
 const AUTO_SCROLL_MS = 5000
 
-const cardWidth = { base: "min(63.75vw, 555px)", lg901: "555px" } as const
-
 export function TestimonialCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
@@ -113,9 +111,7 @@ export function TestimonialCarousel() {
             key={`testimonial-${index}`}
             flex="0 0 auto"
             flexShrink={0}
-            w={cardWidth}
-            minW={cardWidth}
-            maxW={cardWidth}
+            w="testimonialCard"
             css={{ scrollSnapAlign: "start" }}
             aria-hidden={activeIndex !== index}
           >

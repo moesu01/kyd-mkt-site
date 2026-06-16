@@ -32,6 +32,7 @@ export const sizes = {
   heroSubtext: { value: "520px" },
   bodyCopy: { value: "540px" },
   heroMinHeight: { value: "620px" },
+  testimonialCard: { value: "440px" },
 }
 
 export const breakpoints = {
