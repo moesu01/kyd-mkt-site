@@ -8,10 +8,12 @@ export const colors = {
   fgGhost: { value: "oklch(0.54 0 0)" },
   fgFaint: { value: "oklch(0.46 0 0)" },
   fgDim: { value: "oklch(0.32 0 0)" },
+  fgFeature: { value: "#a1a1aa" },
   accent: { value: "oklch(0.98 0 0)" },
   accentFg: { value: "oklch(0.05 0 0)" },
   border: { value: "oklch(0.3 0 0)" },
   borderStrong: { value: "oklch(0.4 0 0)" },
+  frameBorder: { value: "#27272a" },
 }
 
 export const fonts = {
@@ -25,6 +27,7 @@ export const fonts = {
 
 export const sizes = {
   container: { value: "1200px" },
+  containerFramed: { value: "1252px" },
   heroHeadline: { value: "680px" },
   heroSubtext: { value: "520px" },
   bodyCopy: { value: "540px" },

@@ -16,19 +16,33 @@ export function FanSection() {
       py={{ base: "20", lg901: "28" }}
     >
       <Container>
-        <Box mb="5">
-          <SectionHeading
-            label="For Fans"
-            headline="Need Ticket Help?"
-          />
-        </Box>
-        <Text maxW="bodyCopy" textStyle="sectionBody" color="fgMuted">
-          Locate your tickets. You&apos;re in the right place.
-        </Text>
-        <Flex mt="10" flexWrap="wrap" gap="3">
-          <Button href={links.tickets} variant="dark">
-            Find My Tickets →
-          </Button>
+        <Flex
+          direction={{ base: "column", lg901: "row" }}
+          align={{ base: "flex-start", lg901: "center" }}
+          justify="space-between"
+          gap={{ base: "10", lg901: "16" }}
+        >
+          <Box flex="1" minW="0">
+            <SectionHeading
+              label="For Fans"
+              headline="Need Ticket Help?"
+              headingAs="h3"
+            />
+            <Text
+              mt="6"
+              maxW="bodyCopy"
+              textStyle="sectionBody"
+              color="fgMuted"
+            >
+              Locate your tickets. You&apos;re in the right place.
+            </Text>
+          </Box>
+
+          <Flex flexShrink={0} align="center">
+            <Button href={links.tickets} variant="outline">
+              Find My Tickets →
+            </Button>
+          </Flex>
         </Flex>
       </Container>
     </Box>

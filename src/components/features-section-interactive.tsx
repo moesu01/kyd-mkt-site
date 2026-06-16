@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, Text, chakra } from "@chakra-ui/react"
+import { Box, Flex, Grid, Heading, Image, Text, chakra } from "@chakra-ui/react"
 import {
   useCallback,
   useEffect,
@@ -8,19 +8,133 @@ import {
   type KeyboardEvent,
 } from "react"
 import { features, links } from "../content/site-content"
+import platformVisualBg from "../assets/images/platform-visual-temp.jpg"
+import unscalpableVisual from "../assets/images/feature-unscalpable.jpg"
+import dataOwnershipVisual from "../assets/images/feature-data-ownership.jpg"
 import { Button } from "./ui/button"
 import { Container } from "./ui/container"
-import { SectionHeading } from "./ui/section-heading"
+
+const platformEyebrowGradient =
+  "linear-gradient(to right, #cccccc 19.928%, #888888 91.667%)"
 
 const dwellMs = 6000
 const iconEase = "cubic-bezier(0.2, 0, 0, 1)"
+const visualBgEnterDurationMs = 300
 const featureCount = features.length
+const featureBodyMinH = "7.5rem"
 
-const panelTransition = {
-  transitionProperty: "opacity, transform, filter",
-  transitionDuration: "300ms",
-  transitionTimingFunction: iconEase,
-} as const
+const featureVisuals: Record<string, string> = {
+  Unscalpable: unscalpableVisual,
+  "Data Ownership": dataOwnershipVisual,
+}
+
+function getFeatureVisualSrc(title: string) {
+  return featureVisuals[title] ?? platformVisualBg
+}
+
+interface FeatureVisualBackgroundProps {
+  activeIndex: number
+  exitingIndex: number | null
+  contentKey: number
+  prefersReducedMotion: boolean
+}
+
+function FeatureVisualBackground({
+  activeIndex,
+  exitingIndex,
+  contentKey,
+  prefersReducedMotion,
+}: FeatureVisualBackgroundProps) {
+  const motionless = prefersReducedMotion
+
+  return (
+    <>
+      {features.map((feature, index) => {
+        const isActive = activeIndex === index
+        const isExiting = exitingIndex === index
+
+        if (!isActive && !isExiting) return null
+
+        return (
+          <Image
+            key={isActive ? `${feature.title}-${contentKey}` : feature.title}
+            position="absolute"
+            inset="0"
+            w="full"
+            h="full"
+            src={getFeatureVisualSrc(feature.title)}
+            alt=""
+            objectFit="cover"
+            objectPosition="center"
+            aria-hidden={!isActive}
+            draggable={false}
+            className={isActive && !motionless ? "feature-visual-bg-enter" : undefined}
+            css={{
+              opacity: isExiting ? 1 : motionless ? 1 : undefined,
+              zIndex: isActive ? 2 : 1,
+            }}
+          />
+        )
+      })}
+    </>
+  )
+}
+
+type NavDirection = "up" | "down" | "none"
+
+function getEnterOffset(direction: NavDirection) {
+  if (direction === "down") return "12px"
+  if (direction === "up") return "-12px"
+  return "8px"
+}
+
+function getExitOffset(direction: NavDirection) {
+  if (direction === "down") return "-12px"
+  if (direction === "up") return "12px"
+  return "-8px"
+}
+
+function PlatformInteractiveHeader() {
+  return (
+    <Box>
+      <Flex align="center" gap="1.5">
+        <Image
+          src="/icons/kyd-dashboard-mark.svg"
+          alt=""
+          h="11px"
+          w="19px"
+          flexShrink={0}
+          aria-hidden
+        />
+        <Text
+          fontSize="16px"
+          fontWeight="semibold"
+          lineHeight="18px"
+          whiteSpace="nowrap"
+          css={{
+            backgroundImage: platformEyebrowGradient,
+            backgroundClip: "text",
+            WebkitBackgroundClip: "text",
+            color: "transparent",
+          }}
+        >
+          KYD Dashboard
+        </Text>
+      </Flex>
+      <Heading
+        as="h2"
+        pt="6"
+        color="fg"
+        textStyle="platformHeading"
+        textWrap="balance"
+      >
+        Ticketing,
+        <br />
+        built for control.
+      </Heading>
+    </Box>
+  )
+}
 
 interface FeatureProgressTrackProps {
   isActive: boolean
@@ -68,7 +182,7 @@ function FeatureProgressTrack({
       position="relative"
       h="1px"
       w="full"
-      bg="rgba(255, 255, 255, 0.075)"
+      bg="rgba(255, 255, 255, 0.1)"
       aria-hidden
     >
       {isActive ? (
@@ -79,14 +193,16 @@ function FeatureProgressTrack({
           left="0"
           h="100%"
           w="100%"
-          bg="fg"
-          className={animateProgress ? "feature-progress-fill" : undefined}
+          className={
+            animateProgress
+              ? "feature-progress-fill"
+              : "feature-progress-fill feature-progress-fill--complete"
+          }
           style={
             animateProgress
               ? ({ ["--feature-dwell-ms" as string]: `${dwellMs}ms` } as const)
               : undefined
           }
-          css={animateProgress ? undefined : { transform: "scaleX(1)" }}
           onAnimationEnd={handleAnimationEnd}
         />
       ) : null}
@@ -99,6 +215,9 @@ interface FeatureListItemProps {
   title: string
   body: string
   isActive: boolean
+  enterDirection: NavDirection
+  contentKey: number
+  prefersReducedMotion: boolean
   cycleKey: number
   animateProgress: boolean
   onSelect: (index: number) => void
@@ -110,6 +229,9 @@ function FeatureListItem({
   title,
   body,
   isActive,
+  enterDirection,
+  contentKey,
+  prefersReducedMotion,
   cycleKey,
   animateProgress,
   onSelect,
@@ -125,6 +247,9 @@ function FeatureListItem({
       onSelect(index)
     }
   }
+
+  const motionless = prefersReducedMotion
+  const enterOffset = getEnterOffset(enterDirection)
 
   return (
     <Box as="li" listStyleType="none">
@@ -148,49 +273,49 @@ function FeatureListItem({
         bg="transparent"
         cursor="pointer"
         py="4"
-        color={isActive ? "fg" : "fgMuted"}
+        color="fg"
         fontSize="16px"
-        fontWeight={isActive ? "580" : "medium"}
-        lineHeight="1.4"
-        letterSpacing={isActive ? "0.01em" : "0"}
+        fontWeight={isActive ? "semibold" : "medium"}
+        lineHeight="22.4px"
+        letterSpacing={isActive ? "0.16px" : "0"}
         css={{
-          transitionProperty: "color, font-weight, letter-spacing",
-          transitionDuration: "200ms",
+          transitionProperty: "opacity, letter-spacing, transform",
+          transitionDuration: motionless ? "0ms" : "200ms",
           transitionTimingFunction: iconEase,
-          _hover: { color: "fg" },
+          opacity: isActive ? 1 : 0.75,
+          _hover: { opacity: 1 },
+          _active: motionless ? undefined : { transform: "scale(0.98)" },
         }}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
       >
         {title}
       </chakra.button>
-      <Box
-        id={`platform-interactive-panel-${index}`}
-        role="tabpanel"
-        aria-labelledby={`platform-interactive-tab-${index}`}
-        hidden={!isActive}
-        overflow="hidden"
-        css={{
-          ...panelTransition,
-          opacity: isActive ? 1 : 0,
-          transform: isActive ? "translateY(0)" : "translateY(8px)",
-          filter: isActive ? "blur(0px)" : "blur(4px)",
-          maxHeight: isActive ? "200px" : "0",
-          transitionProperty:
-            "opacity, transform, filter, max-height, padding-bottom",
-          transitionDuration: "300ms",
-          paddingBottom: isActive ? "4" : "0",
-        }}
-      >
-        <Text
-          fontSize="14px"
-          lineHeight="1.6"
-          color="fgMuted"
-          textWrap="pretty"
-          pb="2"
-        >
-          {body}
-        </Text>
+      <Box minH={isActive ? featureBodyMinH : 0} overflow="hidden">
+        {isActive ? (
+          <Box
+            key={contentKey}
+            id={`platform-interactive-panel-${index}`}
+            role="tabpanel"
+            aria-labelledby={`platform-interactive-tab-${index}`}
+            className={motionless ? undefined : "feature-body-enter"}
+            style={
+              motionless
+                ? undefined
+                : ({ ["--feature-enter-y" as string]: enterOffset } as const)
+            }
+          >
+            <Text
+              fontSize="14px"
+              lineHeight="22.4px"
+              color="fgFeature"
+              textWrap="pretty"
+              pb="2"
+            >
+              {body}
+            </Text>
+          </Box>
+        ) : null}
       </Box>
     </Box>
   )
@@ -201,6 +326,12 @@ interface FeatureVisualPlaceholderProps {
   title: string
   icon: string
   isActive: boolean
+  isExiting: boolean
+  enterDirection: NavDirection
+  exitDirection: NavDirection
+  contentKey: number
+  prefersReducedMotion: boolean
+  onExitComplete: (index: number) => void
 }
 
 function FeatureVisualPlaceholder({
@@ -208,9 +339,52 @@ function FeatureVisualPlaceholder({
   title,
   icon,
   isActive,
+  isExiting,
+  enterDirection,
+  exitDirection,
+  contentKey,
+  prefersReducedMotion,
+  onExitComplete,
 }: FeatureVisualPlaceholderProps) {
+  const motionless = prefersReducedMotion
+  const enterOffset = getEnterOffset(enterDirection)
+  const exitOffset = getExitOffset(exitDirection)
+
+  function handleVisualExitEnd(event: AnimationEvent<HTMLDivElement>) {
+    if (event.animationName !== "feature-visual-exit") return
+    onExitComplete(index)
+  }
+
+  if (isExiting) {
+    return (
+      <Flex
+        position="absolute"
+        inset="0"
+        direction="column"
+        align="center"
+        justify="center"
+        gap="4"
+        p="8"
+        zIndex="1"
+        aria-hidden
+        className={motionless ? undefined : "feature-visual-exit"}
+        style={
+          motionless
+            ? undefined
+            : ({ ["--feature-exit-y" as string]: exitOffset } as const)
+        }
+        onAnimationEnd={handleVisualExitEnd}
+      >
+        <FeatureVisualContent index={index} title={title} icon={icon} />
+      </Flex>
+    )
+  }
+
+  if (!isActive) return null
+
   return (
     <Flex
+      key={contentKey}
       position="absolute"
       inset="0"
       direction="column"
@@ -218,15 +392,31 @@ function FeatureVisualPlaceholder({
       justify="center"
       gap="4"
       p="8"
-      aria-hidden={!isActive}
-      css={{
-        ...panelTransition,
-        opacity: isActive ? 1 : 0,
-        transform: isActive ? "translateY(0)" : "translateY(12px)",
-        filter: isActive ? "blur(0px)" : "blur(4px)",
-        pointerEvents: isActive ? "auto" : "none",
-      }}
+      zIndex="1"
+      aria-hidden={false}
+      className={motionless ? undefined : "feature-body-enter"}
+      style={
+        motionless
+          ? undefined
+          : ({ ["--feature-enter-y" as string]: enterOffset } as const)
+      }
     >
+      <FeatureVisualContent index={index} title={title} icon={icon} />
+    </Flex>
+  )
+}
+
+function FeatureVisualContent({
+  index,
+  title,
+  icon,
+}: {
+  index: number
+  title: string
+  icon: string
+}) {
+  return (
+    <>
       <Flex
         align="center"
         justify="center"
@@ -247,12 +437,15 @@ function FeatureVisualPlaceholder({
       <Text fontSize="xs" color="fgDim" textAlign="center">
         Slot {index + 1} of {featureCount}
       </Text>
-    </Flex>
+    </>
   )
 }
 
 export function FeaturesSectionInteractive() {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [exitingIndex, setExitingIndex] = useState<number | null>(null)
+  const [enterDirection, setEnterDirection] = useState<NavDirection>("none")
+  const [exitDirection, setExitDirection] = useState<NavDirection>("none")
   const [cycleKey, setCycleKey] = useState(0)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const cycleKeyRef = useRef(cycleKey)
@@ -272,10 +465,32 @@ export function FeaturesSectionInteractive() {
     return () => mediaQuery.removeEventListener("change", handleChange)
   }, [])
 
+  const navigateTo = useCallback(
+    (index: number, direction: NavDirection) => {
+      if (index === activeIndex) return
+
+      setEnterDirection(direction)
+      setExitDirection(direction)
+      setExitingIndex(activeIndex)
+      setActiveIndex(index)
+      setCycleKey((key) => key + 1)
+
+      if (prefersReducedMotion) {
+        setExitingIndex(null)
+      }
+    },
+    [activeIndex, prefersReducedMotion],
+  )
+
   const advanceToNext = useCallback(() => {
     if (prefersReducedMotion) return
 
-    setActiveIndex((current) => (current + 1) % featureCount)
+    setActiveIndex((current) => {
+      setExitingIndex(current)
+      setEnterDirection("down")
+      setExitDirection("down")
+      return (current + 1) % featureCount
+    })
     setCycleKey((key) => key + 1)
   }, [prefersReducedMotion])
 
@@ -288,48 +503,68 @@ export function FeaturesSectionInteractive() {
     [advanceToNext, prefersReducedMotion],
   )
 
-  const handleSelect = useCallback((index: number) => {
-    setActiveIndex(index)
-    setCycleKey((key) => key + 1)
+  const handleSelect = useCallback(
+    (index: number) => {
+      const direction: NavDirection =
+        index > activeIndex ? "down" : index < activeIndex ? "up" : "none"
+      navigateTo(index, direction)
+    },
+    [activeIndex, navigateTo],
+  )
+
+  const handleExitComplete = useCallback((index: number) => {
+    setExitingIndex((current) => (current === index ? null : current))
   }, [])
+
+  useEffect(() => {
+    if (exitingIndex === null || prefersReducedMotion) return
+
+    const timeoutId = window.setTimeout(() => {
+      handleExitComplete(exitingIndex)
+    }, visualBgEnterDurationMs + 50)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [exitingIndex, handleExitComplete, prefersReducedMotion])
 
   return (
     <Box
       as="section"
       id="platform-interactive"
-      borderTop="1px solid"
-      borderColor="border"
       px={{ base: "6", lg901: "12" }}
       py={{ base: "20", lg901: "28" }}
     >
-      <Container>
-        <Grid
-          templateColumns={{ base: "1fr", lg901: "2fr 3fr" }}
-          gap={{ base: "12", lg901: "16" }}
-          alignItems="start"
+      <Container maxW="containerFramed">
+        <Box
+          w="full"
+          border="1px solid"
+          borderColor="frameBorder"
+          borderRadius="32px"
+          p="25px"
         >
-          <Box>
-            <Box mb="8">
-              <SectionHeading
-                label="Platform"
-                css={{ "& h2": { fontSize: "clamp(2.5rem, 5vw, 4rem)" } }}
-                headline={
-                  <>
-                    Ticketing,
-                    <br />
-                    <Text as="span" color="accent">
-                      built for control.
-                    </Text>
-                  </>
-                }
-              />
-            </Box>
+          <Grid
+            templateColumns={{ base: "1fr", lg901: "2fr 3fr" }}
+            gap={{ base: "12", lg901: "16" }}
+            alignItems="stretch"
+          >
+          <Flex
+            direction="column"
+            h="full"
+            minH="0"
+          >
+            <PlatformInteractiveHeader />
 
-            <Flex mb="10">
+            <Flex mt="8" flexShrink={0}>
               <Button href={links.getInTouch} variant="outline">
                 Get in touch →
               </Button>
             </Flex>
+
+            <Box
+              flex="1"
+              minH={{ base: 0, lg901: "10" }}
+              display={{ base: "none", lg901: "block" }}
+              aria-hidden
+            />
 
             <Box
               as="ul"
@@ -337,6 +572,8 @@ export function FeaturesSectionInteractive() {
               aria-label="Platform features"
               m="0"
               p="0"
+              mt={{ base: "10", lg901: 0 }}
+              flexShrink={0}
             >
               {features.map((feature, index) => (
                 <FeatureListItem
@@ -345,6 +582,9 @@ export function FeaturesSectionInteractive() {
                   title={feature.title}
                   body={feature.body}
                   isActive={activeIndex === index}
+                  enterDirection={enterDirection}
+                  contentKey={cycleKey}
+                  prefersReducedMotion={prefersReducedMotion}
                   cycleKey={cycleKey}
                   animateProgress={animateProgress}
                   onSelect={handleSelect}
@@ -352,19 +592,25 @@ export function FeaturesSectionInteractive() {
                 />
               ))}
             </Box>
-          </Box>
+          </Flex>
 
           <Box
             position="relative"
-            alignSelf="stretch"
-            h="full"
-            minH={{ base: "280px", lg901: "480px" }}
+            w="full"
+            aspectRatio="1/1"
+            alignSelf={{ base: "auto", lg901: "start" }}
             borderRadius="16px"
-            bg="surfaceRaised"
+            bg="bg"
             overflow="hidden"
             aria-live="polite"
             aria-atomic="true"
           >
+            <FeatureVisualBackground
+              activeIndex={activeIndex}
+              exitingIndex={exitingIndex}
+              contentKey={cycleKey}
+              prefersReducedMotion={prefersReducedMotion}
+            />
             {features.map((feature, index) => (
               <FeatureVisualPlaceholder
                 key={feature.title}
@@ -372,10 +618,17 @@ export function FeaturesSectionInteractive() {
                 title={feature.title}
                 icon={feature.icon}
                 isActive={activeIndex === index}
+                isExiting={exitingIndex === index}
+                enterDirection={enterDirection}
+                exitDirection={exitDirection}
+                contentKey={cycleKey}
+                prefersReducedMotion={prefersReducedMotion}
+                onExitComplete={handleExitComplete}
               />
             ))}
           </Box>
         </Grid>
+        </Box>
       </Container>
     </Box>
   )

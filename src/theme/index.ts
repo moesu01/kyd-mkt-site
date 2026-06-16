@@ -8,6 +8,9 @@ import { breakpoints, colors, fonts, sizes } from "./tokens"
 
 const buttonEase = "cubic-bezier(0.2, 0, 0, 1)"
 
+const shadowBorder = "0 0 0 1px rgba(255, 255, 255, 0.1)"
+const shadowBorderHover = "0 0 0 1px rgba(255, 255, 255, 0.13)"
+
 const buttonFocusVisible = {
   outline: "2px solid",
   outlineColor: "rgba(255, 255, 255, 0.45)",
@@ -51,17 +54,21 @@ export const buttonRecipe = defineRecipe({
         },
       },
       outline: {
-        bg: "transparent",
-        borderColor: "rgba(255, 255, 255, 0.35)",
+        bg: "rgba(255, 255, 255, 0.05)",
+        borderColor: "transparent",
         color: "fg",
         fontWeight: "medium",
+        boxShadow: shadowBorder,
         _hover: {
-          bg: "rgba(255, 255, 255, 0.08)",
-          borderColor: "fg",
-          color: "fg",
+          bg: "accent",
+          color: "accentFg",
+          boxShadow: shadowBorderHover,
         },
         _active: {
-          bg: "rgba(255, 255, 255, 0.12)",
+          bg: "accent",
+          color: "accentFg",
+          filter: "brightness(0.96)",
+          boxShadow: shadowBorder,
         },
       },
       "outline-accent": {
@@ -117,9 +124,10 @@ export const buttonRecipe = defineRecipe({
       section: {
         minH: "10",
         borderRadius: "full",
-        px: "26px",
-        py: "13px",
-        fontSize: "sm",
+        px: "27px",
+        py: "11px",
+        fontSize: "14px",
+        lineHeight: "21px",
       },
       compact: {
         minH: "auto",
@@ -186,6 +194,22 @@ const config = defineConfig({
           fontWeight: "bold",
           lineHeight: "0.95",
           letterSpacing: "tight",
+        },
+      },
+      sectionHeading: {
+        value: {
+          fontSize: "clamp(1.75rem, 3vw, 2.75rem)",
+          fontWeight: "bold",
+          lineHeight: "1.05",
+          letterSpacing: "tight",
+        },
+      },
+      platformHeading: {
+        value: {
+          fontSize: "36px",
+          fontWeight: "bold",
+          lineHeight: "1.2",
+          letterSpacing: "-1.57px",
         },
       },
     },

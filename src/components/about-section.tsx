@@ -100,46 +100,34 @@ export function AboutSection() {
         </Grid>
       </Container>
 
-      <Box
-        mt={{ base: "16", lg901: "20" }}
-        ml={{ base: "-6", lg901: "-12" }}
-        mr={{ base: "-6", lg901: "-12" }}
-      >
-        <Box px={{ base: "6", lg901: "12" }} mb="5" textAlign="center">
-          <Text textStyle="eyebrow" color="fgSubtle">
+      <Box mt={{ base: "16", lg901: "20" }}>
+        <Container>
+          <Text mb="5" textAlign="center" textStyle="eyebrow" color="fgSubtle">
             Backed by
           </Text>
-        </Box>
 
-        <Flex
-          as="ul"
-          listStyleType="none"
-          align="center"
-          gap={{ base: "10", lg901: "16" }}
-          overflowX="auto"
-          px={{ base: "6", lg901: "12" }}
-          pb="2"
-          css={{
-            WebkitOverflowScrolling: "touch",
-            scrollbarWidth: "none",
-            "&::-webkit-scrollbar": { display: "none" },
-          }}
-        >
-          {backers.map((backer) => (
-            <Box
-              as="li"
-              key={backer.name}
-              display="flex"
-              flexShrink={0}
-              alignItems="center"
-              justifyContent="center"
-              minH="12"
-              minW="32"
-            >
-              <BackerLogo name={backer.name} logoSrc={backer.logoSrc} />
-            </Box>
-          ))}
-        </Flex>
+          <Flex
+            as="ul"
+            listStyleType="none"
+            align="center"
+            justify="space-between"
+            w="full"
+            pb="2"
+          >
+            {backers.map((backer) => (
+              <Box
+                as="li"
+                key={backer.name}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                minH="12"
+              >
+                <BackerLogo name={backer.name} logoSrc={backer.logoSrc} />
+              </Box>
+            ))}
+          </Flex>
+        </Container>
       </Box>
     </Box>
   )
