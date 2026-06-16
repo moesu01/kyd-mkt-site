@@ -1,6 +1,5 @@
 import { Box, Flex, Grid, Text } from "@chakra-ui/react"
-import { links, stats, venueAudiences } from "../content/site-content"
-import { FeatureCard } from "./feature-card"
+import { links, stats } from "../content/site-content"
 import { Button } from "./ui/button"
 import { Container } from "./ui/container"
 import { SectionHeading } from "./ui/section-heading"
@@ -59,29 +58,10 @@ export function VenuesSection() {
       as="section"
       id="venues"
       px={{ base: "6", lg901: "12" }}
-      py={{ base: "20", lg901: "28" }}
+      pt={{ base: "20", lg901: "28" }}
+      pb={{ base: "20", lg901: "28" }}
     >
       <Container>
-        <Box mb={{ base: "16", lg901: "24" }}>
-          <Text textStyle="eyebrow" mb="8" color="fgSubtle">
-            Who it&apos;s for
-          </Text>
-          <Grid
-            templateColumns={{ base: "1fr", lg901: "repeat(3, 1fr)" }}
-            gap={{ base: "12", lg901: "10" }}
-          >
-            {venueAudiences.map((audience) => (
-              <FeatureCard
-                key={audience.title}
-                layout="compact"
-                icon={audience.icon}
-                title={audience.title}
-                body={audience.body}
-              />
-            ))}
-          </Grid>
-        </Box>
-
         <Grid
           templateColumns={{ base: "1fr", lg901: "1fr 1fr" }}
           alignItems={{ base: "start", lg901: "stretch" }}

@@ -47,9 +47,13 @@ export function FeatureCard({
           <FeatureCardIcon icon={icon} />
         </Flex>
       ) : (
-        <Flex mb="4" aria-hidden>
-          <FeatureCardIcon icon={icon} />
-        </Flex>
+        <>
+          {/* TEMP: audience column icons hidden
+          <Flex mb="4" aria-hidden>
+            <FeatureCardIcon icon={icon} />
+          </Flex>
+          */}
+        </>
       )}
 
       <Heading

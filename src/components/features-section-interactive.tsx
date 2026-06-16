@@ -13,6 +13,7 @@ import unscalpableVisual from "../assets/images/feature-unscalpable.jpg"
 import dataOwnershipVisual from "../assets/images/feature-data-ownership.jpg"
 import { Button } from "./ui/button"
 import { Container } from "./ui/container"
+import { VenueAudiencesGrid } from "./venue-audiences-grid"
 
 const platformEyebrowGradient =
   "linear-gradient(to right, #cccccc 19.928%, #888888 91.667%)"
@@ -533,7 +534,40 @@ export function FeaturesSectionInteractive() {
       px={{ base: "6", lg901: "12" }}
       py={{ base: "20", lg901: "28" }}
     >
-      <Container maxW="containerFramed">
+      <Flex direction="column" gap="12">
+        <Container>
+          <Flex direction="column" gap="12">
+            <Heading
+              as="h5"
+              display="flex"
+              alignItems="center"
+              gap="1.5"
+              w="full"
+              borderTop="1px solid"
+              borderColor="border"
+              pt={{ base: "3", lg901: "4" }}
+              fontSize="18px"
+              fontWeight="bold"
+              lineHeight="1.2"
+              letterSpacing="-0.04em"
+              color="fg"
+              textAlign="left"
+            >
+              <Image
+                src="/icons/kyd-dashboard-mark.svg"
+                alt=""
+                h="11px"
+                w="19px"
+                flexShrink={0}
+                aria-hidden
+                css={{ filter: "brightness(0) invert(1)" }}
+              />
+              The KYD Platform
+            </Heading>
+            <VenueAudiencesGrid />
+          </Flex>
+        </Container>
+        <Container maxW="containerFramed">
         <Box
           w="full"
           border="1px solid"
@@ -631,6 +665,7 @@ export function FeaturesSectionInteractive() {
         </Grid>
         </Box>
       </Container>
+      </Flex>
     </Box>
   )
 }

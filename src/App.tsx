@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react"
 import { AboutSection } from "./components/about-section"
+import { BackedBySection } from "./components/backed-by-section"
 import { FanSection } from "./components/fan-section"
 import { FeaturesSectionInteractive } from "./components/features-section-interactive"
 // TODO: Original FeaturesSection is hidden while evaluating the interactive
@@ -30,6 +31,7 @@ function App() {
       </Box>
       <HeroSplit />
       <AboutSection />
+      <BackedBySection />
       <VenuesSection />
       <FeaturesSectionInteractive />
       {/* TODO: Hidden pending decision on interactive vs. original Platform

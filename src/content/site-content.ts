@@ -36,17 +36,17 @@ export const stats = [
 export const venueAudiences = [
   {
     icon: "◆",
-    title: "Venues",
+    title: "For Venues",
     body: "Looking for ticketing that you control. See what KYD offers and why teams get in touch.",
   },
   {
     icon: "◎",
-    title: "Agents",
+    title: "For Agents",
     body: "Understand KYD's role across ticketing, resale, data, and live-event infrastructure.",
   },
   {
     icon: "✦",
-    title: "Artists",
+    title: "For Artists",
     body: "Run your own touring and ticketing. Keep your fans, your data, and your revenue.",
   },
 ] as const
