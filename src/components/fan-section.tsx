@@ -9,8 +9,6 @@ export function FanSection() {
     <Box
       as="section"
       id="fans"
-      borderTop="1px solid"
-      borderColor="border"
       bg="surface"
       px={{ base: "6", lg901: "12" }}
       py={{ base: "20", lg901: "28" }}

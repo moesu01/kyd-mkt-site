@@ -37,9 +37,9 @@ function App() {
       {/* TODO: Hidden pending decision on interactive vs. original Platform
           section. Remove FeaturesSection entirely if unused. */}
       {/* <FeaturesSection /> */}
-      <FanSection />
       <SocialProofSection />
       <PressSection />
+      <FanSection />
       <Footer />
     </>
   )

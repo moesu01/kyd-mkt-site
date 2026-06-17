@@ -74,3 +74,23 @@ html {
 .feature-visual-exit {
   animation: feature-visual-exit 150ms ease-in forwards;
 }
+
+@keyframes used-by-globe-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.used-by-globe-spin {
+  animation: used-by-globe-spin 24s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .used-by-globe-spin {
+    animation: none;
+  }
+}

@@ -10,6 +10,7 @@ import {
 } from "./about-curved-tagline-dial"
 import { AboutKydMark } from "./about-kyd-mark"
 import { useAboutCurvedTaglineParams } from "./use-about-curved-tagline-params"
+import { prominentEyebrowTextProps } from "../ui/prominent-eyebrow-styles"
 
 export function AboutEmblem() {
   const dial = useDialKit("About curved tagline", aboutCurvedTaglineDialConfig)
@@ -80,13 +81,8 @@ export function AboutEmblem() {
         zIndex="1"
       >
         <Text
+          {...prominentEyebrowTextProps}
           fontSize={`${eyebrowFontSizePx}px`}
-          fontWeight="bold"
-          textTransform="uppercase"
-          letterSpacing="0.1em"
-          color="fg"
-          whiteSpace="nowrap"
-          lineHeight="1"
         >
           {aboutSection.eyebrow}
         </Text>

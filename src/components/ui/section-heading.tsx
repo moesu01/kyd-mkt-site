@@ -1,12 +1,15 @@
 import { Box, Heading, Text, type BoxProps } from "@chakra-ui/react"
 import type { ReactNode } from "react"
+import { prominentEyebrowTextProps } from "./prominent-eyebrow-styles"
 
 type SectionHeadingLevel = "h2" | "h3"
+type EyebrowVariant = "default" | "prominent"
 
 interface SectionHeadingProps extends BoxProps {
   label: string
   headline: ReactNode
   headingAs?: SectionHeadingLevel
+  eyebrowVariant?: EyebrowVariant
 }
 
 function getHeadingTextStyle(level: SectionHeadingLevel) {
@@ -22,17 +25,29 @@ function getHeadingTextStyle(level: SectionHeadingLevel) {
   }
 }
 
+function getEyebrowProps(variant: EyebrowVariant) {
+  switch (variant) {
+    case "prominent":
+      return { ...prominentEyebrowTextProps, mb: "6" }
+    case "default":
+      return { textStyle: "eyebrow", mb: "6", color: "fgSubtle" }
+    default: {
+      const _exhaustive: never = variant
+      return _exhaustive
+    }
+  }
+}
+
 export function SectionHeading({
   label,
   headline,
   headingAs = "h2",
+  eyebrowVariant = "default",
   ...props
 }: SectionHeadingProps) {
   return (
     <Box {...props}>
-      <Text textStyle="eyebrow" mb="6" color="fgSubtle">
-        {label}
-      </Text>
+      <Text {...getEyebrowProps(eyebrowVariant)}>{label}</Text>
       <Heading as={headingAs} textStyle={getHeadingTextStyle(headingAs)}>
         {headline}
       </Heading>

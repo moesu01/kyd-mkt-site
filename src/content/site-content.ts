@@ -87,15 +87,44 @@ export const features = [
   },
 ] as const
 
-export const roster = [
-  { name: "Action Bronson", type: "artist" as const },
-  { name: "[Venue Name]", type: "venue" as const },
-  { name: "[Artist]", type: "artist" as const },
-  { name: "[Venue Name]", type: "venue" as const },
-  { name: "[Artist]", type: "artist" as const },
-  { name: "[Venue Name]", type: "venue" as const },
-  { name: "[Artist]", type: "artist" as const },
-  { name: "[Venue Name]", type: "venue" as const },
+export const usedBy = [
+  {
+    name: "Le Poisson Rouge",
+    subtitle: "New York City, NY",
+    href: "#",
+    imageSrc: "/images/used-by/le-poisson-rouge.jpg",
+  },
+  {
+    name: "The Brooklyn Monarch",
+    subtitle: "Brooklyn, NY",
+    href: "#",
+    imageSrc: "/images/used-by/brooklyn-monarch.jpg",
+  },
+  {
+    name: "SOB's",
+    subtitle: "New York City, NY",
+    href: "#",
+    imageSrc: "/images/used-by/sobs.jpg",
+  },
+  {
+    name: "The Ideal Theater & Bar",
+    subtitle: "Cedar Rapids, IA",
+    href: "#",
+    imageSrc: "/images/used-by/ideal-theater-bar.jpg",
+  },
+  {
+    name: "Pangea Sound",
+    subtitle: "Los Angeles, CA",
+    href: "#",
+    imageSrc: "/images/used-by/pangea-sound.png",
+  },
+  {
+    name: "Action Bronson",
+    subtitle: "Touring Artist",
+    href: "#",
+    imageSrc: "/images/used-by/action-bronson.jpg",
+    objectPosition: "center top",
+  },
 ] as const
 
 export const testimonials = [

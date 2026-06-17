@@ -74,6 +74,7 @@ export function VenuesSection() {
             gap={{ base: "10", lg901: 0 }}
           >
             <SectionHeading
+              eyebrowVariant="prominent"
               label="For Venues & Artists"
               headline={
                 <>

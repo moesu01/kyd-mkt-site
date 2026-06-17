@@ -298,7 +298,7 @@ function getNavMenuPanelRadiusStyles(isMenuOpen: boolean) {
   } as const
 }
 const navMenuCtaPanelStyles = {
-  bg: "rgba(255, 255, 255, 0.15)",
+  bg: "rgba(0, 0, 0, 0.25)",
   borderRadius: navMenuCtaPanelRadius,
   p: navMenuSpacing,
 } as const
