@@ -18,6 +18,14 @@ export const heroFooterLinks = [
   { label: "Press", href: "#press", showIcon: true },
 ] as const
 
+export const aboutSection = {
+  eyebrow: "About KYD",
+  curvedTagline:
+    "Control Your Data. Keep Your Fans. Maximize Your Profit.",
+  headline: "Built for the People Who Actually Create Value.",
+  body: "Live events are the beating heart of culture. For too long, venues and artists have been cut off from the fans and revenue they generate. KYD is the infrastructure to change that.",
+} as const
+
 export const navMenuLinks = [
   { label: "About kyd", href: "#about" },
   { label: "For venues & artists", href: "#venues" },
@@ -121,19 +129,19 @@ export const backers = [
   {
     name: "a16z crypto",
     logoSrc: "/logos/a16z-crypto.png",
-    maxH: "2.5rem",
-    maxW: "11rem",
+    maxH: "2.25rem",
+    maxW: "9.9rem",
   },
   {
     name: "Comcast Ventures",
     logoSrc: "/logos/comcast-ventures.png",
-    maxH: "2.5rem",
-    maxW: "12rem",
+    maxH: "2.125rem",
+    maxW: "10.2rem",
   },
   {
     name: "Techstars",
     logoSrc: "/logos/techstars.png",
-    maxH: "1.75rem",
+    maxH: "2.25rem",
     maxW: "8.5rem",
   },
 ] as const

@@ -1,70 +1,13 @@
-import { Box, Flex, Heading, Link, Text } from "@chakra-ui/react"
-import { heroFooterLinks, links } from "../content/site-content"
-import { HeroNycClock } from "./hero-nyc-clock"
+import { Box, Flex, Heading, Text } from "@chakra-ui/react"
+import { links } from "../content/site-content"
 import { Button } from "./ui/button"
 
-function HeroMiniFooter() {
-  return (
-    <Box
-      borderTop="1px solid"
-      borderColor="fg"
-      px={{ base: "6", lg901: "10" }}
-      py="4"
-    >
-      <Flex
-        maxW="container"
-        mx="auto"
-        align="center"
-        justify="space-between"
-        gap="4"
-        flexWrap="wrap"
-      >
-        <Text
-          fontSize="10px"
-          letterSpacing="-0.2px"
-          textTransform="uppercase"
-          color="fg"
-          whiteSpace="nowrap"
-        >
-          NYC BASED
-        </Text>
-
-        <HeroNycClock />
-
-        <Flex
-          align="center"
-          gap={{ base: "4", lg901: "6" }}
-          flexWrap="wrap"
-          justify={{ base: "flex-start", lg901: "flex-end" }}
-        >
-          {heroFooterLinks.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              display="inline-flex"
-              alignItems="center"
-              gap="1"
-              fontSize="10px"
-              letterSpacing="-0.2px"
-              textTransform="uppercase"
-              color="fg"
-              textDecoration="none"
-              whiteSpace="nowrap"
-              _hover={{ opacity: 0.75 }}
-            >
-              {item.label}
-              {item.showIcon ? (
-                <Text as="span" fontSize="10px" aria-hidden>
-                  +
-                </Text>
-              ) : null}
-            </Link>
-          ))}
-        </Flex>
-      </Flex>
-    </Box>
-  )
-}
+// TEMP: hero mini footer hidden — restore imports and uncomment block below
+// import { Link } from "@chakra-ui/react"
+// import { heroFooterLinks } from "../content/site-content"
+// import { HeroNycClock } from "./hero-nyc-clock"
+//
+// function HeroMiniFooter() { ... see git history }
 
 export function HeroSplit() {
   return (
@@ -74,7 +17,7 @@ export function HeroSplit() {
       direction="column"
       minH="heroMinHeight"
       h="100vh"
-      bg="black"
+      bg="#000"
       overflow="hidden"
     >
       <Flex
@@ -138,7 +81,7 @@ export function HeroSplit() {
         </Flex>
       </Flex>
 
-      <HeroMiniFooter />
+      {/* TEMP: hero mini footer hidden — <HeroMiniFooter /> */}
     </Flex>
   )
 }

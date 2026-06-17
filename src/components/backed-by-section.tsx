@@ -52,7 +52,7 @@ export function BackedBySection() {
       as="section"
       id="backed-by"
       px={{ base: "6", lg901: "12" }}
-      py={{ base: "16", lg901: "24" }}
+      py={{ base: "12", lg901: "16" }}
       backgroundImage={backedBySectionGradient}
     >
       <Container>
@@ -60,8 +60,11 @@ export function BackedBySection() {
           mb="0"
           w="full"
           textAlign="center"
-          textStyle="eyebrow"
-          color="fgSubtle"
+          fontWeight="bold"
+          fontSize="14px"
+          textTransform="uppercase"
+          letterSpacing="-0.2px"
+          color="fg"
         >
           Backed by
         </Text>
@@ -71,8 +74,10 @@ export function BackedBySection() {
           listStyleType="none"
           align="stretch"
           justify="space-between"
-          gap={{ base: "4", lg901: "6" }}
+          gap="0"
           w="full"
+          maxW="80%"
+          mx="auto"
           pt="5"
           pb="2"
         >
@@ -110,5 +115,4 @@ export function BackedBySection() {
   )
 }
 
-const backedBySectionGradient =
-  "linear-gradient(to top, #111 0.141%, black 49.859%, #111 99.859%)"
+const backedBySectionGradient = "linear-gradient(to bottom, #000, #111)"

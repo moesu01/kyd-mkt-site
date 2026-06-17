@@ -30,8 +30,8 @@ function App() {
         <Nav />
       </Box>
       <HeroSplit />
-      <AboutSection />
       <BackedBySection />
+      <AboutSection />
       <VenuesSection />
       <FeaturesSectionInteractive />
       {/* TODO: Hidden pending decision on interactive vs. original Platform

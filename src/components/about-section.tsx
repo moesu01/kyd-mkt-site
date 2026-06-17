@@ -1,6 +1,7 @@
-import { Box, Grid, Heading, Text } from "@chakra-ui/react"
+import { Box, Flex, Heading, Text } from "@chakra-ui/react"
+import { aboutSection } from "../content/site-content"
+import { AboutEmblem } from "./about/about-emblem"
 import { Container } from "./ui/container"
-import { SectionHeading } from "./ui/section-heading"
 
 export function AboutSection() {
   return (
@@ -13,51 +14,42 @@ export function AboutSection() {
       pb={{ base: "10", lg901: "14" }}
     >
       <Container>
-        <Grid
-          templateColumns={{ base: "1fr", lg901: "1fr 1fr" }}
-          alignItems="start"
-          gap={{ base: "12", lg901: "24" }}
+        <Flex
+          direction="column"
+          align="center"
+          gap={{ base: "10", lg901: "14" }}
         >
-          <SectionHeading
-            label="About KYD"
-            headline={
-              <>
-                Built for the People Who Actually{" "}
-                <Text as="span" color="accent">
-                  Create Value.
-                </Text>
-              </>
-            }
-          />
+          <AboutEmblem />
 
-          <Box>
+          <Flex
+            direction="column"
+            align="center"
+            gap="6"
+            w="full"
+            maxW="75rem"
+            pt={{ base: "4", lg901: "6" }}
+          >
+            <Heading
+              as="h2"
+              textAlign="center"
+              textStyle="displayHeading"
+              maxW="54.625rem"
+              letterSpacing="-0.025em"
+              lineHeight="1.1"
+            >
+              {aboutSection.headline}
+            </Heading>
             <Text
-              mb="8"
+              textAlign="center"
               textStyle="sectionBody"
               letterSpacing="-0.02em"
               color="fgMuted"
+              maxW="33.25rem"
             >
-              Live events are the beating heart of culture. For too long, venues
-              and artists have been cut off from the fans and revenue they
-              generate. KYD is the infrastructure to change that.
+              {aboutSection.body}
             </Text>
-            <Heading
-              as="p"
-              fontSize="clamp(1.5rem, 2.5vw, 2rem)"
-              fontWeight="black"
-              lineHeight="1.05"
-              letterSpacing="tight"
-            >
-              Control Your Data.
-              <br />
-              Keep Your Fans.
-              <br />
-              <Text as="span" color="accent">
-                Maximize Your Profit.
-              </Text>
-            </Heading>
-          </Box>
-        </Grid>
+          </Flex>
+        </Flex>
       </Container>
     </Box>
   )
