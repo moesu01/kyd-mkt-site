@@ -1,9 +1,9 @@
 import { Box, Flex, Heading, Image, Text, chakra } from "@chakra-ui/react"
 import { useEffect, useRef, useState, type MouseEvent } from "react"
 import { usedBy } from "../content/site-content"
+import { PixelGlobe } from "./used-by/pixel-globe"
 
 const ChakraLink = chakra("a")
-const ChakraImg = chakra("img")
 
 interface UsedByCardProps {
   name: string
@@ -141,7 +141,15 @@ const usedByImageShadowHover =
 
 export function UsedBySection() {
   return (
-    <Flex mb="16" align="center" justify="space-between" gap="8">
+    <Flex
+      mb="16"
+      pt={{ base: "6", lg901: "8" }}
+      align="center"
+      justify="space-between"
+      gap="8"
+      borderTop="1px solid"
+      borderColor="border"
+    >
       <Box minW="0">
         <Heading
           as="h2"
@@ -155,17 +163,7 @@ export function UsedBySection() {
         </Heading>
       </Box>
 
-      <ChakraImg
-        src="/images/used-by/pixel-globe.svg"
-        alt=""
-        aria-hidden
-        className="used-by-globe-spin"
-        w="132px"
-        h="132px"
-        flexShrink={0}
-        display="block"
-        objectFit="contain"
-      />
+      <PixelGlobe />
     </Flex>
   )
 }
@@ -220,11 +218,22 @@ export function UsedByCarousel() {
 
   return (
     <Box
-      mb={{ base: "16", lg901: "24" }}
       ml={{ base: "-6", lg901: "-12" }}
       mr={{ base: "-6", lg901: "-12" }}
       onMouseEnter={handlePause}
       onMouseLeave={handleResume}
+      css={{
+        maskImage:
+          "linear-gradient(to right, transparent, #000 2.5rem, #000 calc(100% - 2.5rem), transparent)",
+        WebkitMaskImage:
+          "linear-gradient(to right, transparent, #000 2.5rem, #000 calc(100% - 2.5rem), transparent)",
+        "@media (min-width: 901px)": {
+          maskImage:
+            "linear-gradient(to right, transparent, #000 4rem, #000 calc(100% - 4rem), transparent)",
+          WebkitMaskImage:
+            "linear-gradient(to right, transparent, #000 4rem, #000 calc(100% - 4rem), transparent)",
+        },
+      }}
     >
       <Flex
         ref={scrollRef}
@@ -233,7 +242,8 @@ export function UsedByCarousel() {
         gap="8"
         overflowX="hidden"
         px={{ base: "6", lg901: "12" }}
-        pb="2"
+        pt="1"
+        pb="12"
         aria-label="Venues and artists using KYD"
         css={{
           WebkitOverflowScrolling: "touch",
@@ -248,6 +258,7 @@ export function UsedByCarousel() {
             flex="0 0 auto"
             flexShrink={0}
             w={{ base: "280px", md: "320px", lg901: "360px" }}
+            py="1"
           >
             <UsedByCard
               name={item.name}

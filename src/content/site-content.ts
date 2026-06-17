@@ -152,6 +152,22 @@ export const testimonials = [
     logoSrc: "/logos/testimonials/placeholder.svg",
     placeholder: false,
   },
+  {
+    quote:
+      "Our team needed ticketing that could keep up with how fast rooms sell out. KYD gave us cleaner reporting, fewer support tickets, and a checkout flow fans actually finish.",
+    attribution: "mock up",
+    role: "place holder",
+    logoSrc: "/logos/testimonials/placeholder.svg",
+    placeholder: false,
+  },
+  {
+    quote:
+      "The difference is ownership. We are not renting our audience from another platform and hoping the data is still there after the show ends.",
+    attribution: "mock up",
+    role: "place holder",
+    logoSrc: "/logos/testimonials/placeholder.svg",
+    placeholder: false,
+  },
 ] as const
 
 export const backers = [

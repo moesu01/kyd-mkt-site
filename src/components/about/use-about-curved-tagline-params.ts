@@ -9,7 +9,7 @@ interface DialCurvedTaglineValues {
   typography: CurvedTaglineParams["typography"]
   path: CurvedTaglineParams["path"]
   mark: CurvedTaglineParams["mark"]
-  stack: CurvedTaglineParams["stack"]
+  layout: CurvedTaglineParams["layout"]
 }
 
 export function useAboutCurvedTaglineParams(
@@ -42,6 +42,6 @@ export function useAboutCurvedTaglineParams(
     typography: dial.typography,
     path: dial.path,
     mark: dial.mark,
-    stack: dial.stack,
+    layout: dial.layout,
   }
 }

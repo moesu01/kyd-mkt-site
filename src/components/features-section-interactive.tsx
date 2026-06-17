@@ -545,7 +545,7 @@ export function FeaturesSectionInteractive() {
               w="full"
               borderTop="1px solid"
               borderColor="border"
-              pt={{ base: "3", lg901: "4" }}
+              pt={{ base: "3", lg901: "24px" }}
               fontSize="18px"
               fontWeight="bold"
               lineHeight="1.2"

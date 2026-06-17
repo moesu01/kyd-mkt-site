@@ -1,32 +1,36 @@
-import { Box, Heading } from "@chakra-ui/react"
+import { Box, Flex, Heading } from "@chakra-ui/react"
 import { Container } from "./ui/container"
 import { TestimonialCarousel } from "./testimonial-carousel"
-import { UsedByCarousel, UsedBySection } from "./used-by-section"
 
 export function SocialProofSection() {
   return (
     <Box
       as="section"
       px={{ base: "6", lg901: "12" }}
-      py={{ base: "20", lg901: "28" }}
+      pt="0"
+      pb={{ base: "20", lg901: "28" }}
       backgroundImage={socialProofSectionGradient}
     >
       <Container>
-        <UsedBySection />
-      </Container>
-
-      <UsedByCarousel />
-
-      <Container>
-        <Heading
-          as="h2"
-          mb={{ base: "10", lg901: "12" }}
-          color="fg"
-          textStyle="platformHeading"
-          textWrap="balance"
+        <Flex
+          mb="16"
+          pt={{ base: "6", lg901: "8" }}
+          flexDirection="column"
+          align="center"
+          gap="6"
         >
-          What People Are Saying
-        </Heading>
+          <Heading
+            as="h2"
+            color="fg"
+            textStyle="platformHeading"
+            textWrap="balance"
+            textAlign="center"
+          >
+            What venues, artists, and
+            <br />
+            the industry are saying
+          </Heading>
+        </Flex>
       </Container>
 
       <TestimonialCarousel />

@@ -12,6 +12,7 @@ import { HeroSplit } from "./components/hero-split"
 import { Nav } from "./components/nav"
 import { PressSection } from "./components/press-section"
 import { SocialProofSection } from "./components/social-proof-section"
+import { UsedByPageSection } from "./components/used-by-page-section"
 import { VenuesSection } from "./components/venues-section"
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
       {/* TODO: Hidden pending decision on interactive vs. original Platform
           section. Remove FeaturesSection entirely if unused. */}
       {/* <FeaturesSection /> */}
+      <UsedByPageSection />
       <SocialProofSection />
       <PressSection />
       <FanSection />

@@ -86,11 +86,75 @@ html {
 }
 
 .used-by-globe-spin {
+  --globe-dot-fill: #888;
+  --globe-dot-ping-fill: #fff;
   animation: used-by-globe-spin 24s linear infinite;
+}
+
+@keyframes globe-dot-ping {
+  0%,
+  82%,
+  100% {
+    fill: var(--globe-dot-fill, #888);
+  }
+
+  4%,
+  14% {
+    fill: var(--globe-dot-ping-fill, #fff);
+  }
+
+  18% {
+    fill: var(--globe-dot-fill, #888);
+  }
+}
+
+@keyframes globe-dot-ping-stutter {
+  0%,
+  72%,
+  100% {
+    fill: var(--globe-dot-fill, #888);
+  }
+
+  3%,
+  8% {
+    fill: var(--globe-dot-ping-fill, #fff);
+  }
+
+  12% {
+    fill: var(--globe-dot-fill, #888);
+  }
+
+  16%,
+  21% {
+    fill: var(--globe-dot-ping-fill, #fff);
+  }
+
+  25% {
+    fill: var(--globe-dot-fill, #888);
+  }
+}
+
+.globe-dot {
+  fill: var(--globe-dot-fill, #888);
+  animation: globe-dot-ping var(--twinkle-duration, 4s) step-end infinite;
+  animation-delay: var(--twinkle-delay, 0s);
+}
+
+.globe-dot--stutter {
+  animation-name: globe-dot-ping-stutter;
+}
+
+.used-by-globe-paused.used-by-globe-spin,
+.used-by-globe-paused .globe-dot {
+  animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .used-by-globe-spin {
+    animation: none;
+  }
+
+  .globe-dot {
     animation: none;
   }
 }

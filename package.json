@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "typegen": "chakra typegen ./src/theme/index.ts",
+    "extract-globe-dots": "node scripts/extract-globe-dots.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

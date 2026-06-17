@@ -347,7 +347,7 @@ export function Nav() {
           <Image
             src="/kyd-labs-logo.svg"
             alt="KYD Labs"
-            h="25px"
+            h="36px"
             w="auto"
             maxW="none"
             objectFit="contain"

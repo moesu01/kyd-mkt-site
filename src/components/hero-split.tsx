@@ -36,18 +36,8 @@ export function HeroSplit() {
           gap={{ base: "8", lg901: "12" }}
         >
           <Box flexShrink={0}>
-            <Text
-              fontWeight="bold"
-              fontSize="14px"
-              textTransform="uppercase"
-              letterSpacing="-0.2px"
-              color="fg"
-            >
-              KYD LABS
-            </Text>
             <Heading
               as="h1"
-              mt="6"
               fontSize="clamp(2.5rem, 6vw, 4.15rem)"
               fontWeight="bold"
               lineHeight="1.02"

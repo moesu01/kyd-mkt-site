@@ -42,6 +42,7 @@ function BackerLogo({
       objectFit="contain"
       flexShrink={0}
       onError={() => setHasError(true)}
+      css={{ filter: "grayscale(1)" }}
     />
   )
 }

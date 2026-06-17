@@ -4,28 +4,24 @@ export interface CurvedTaglinePath {
   arcRadius: number
   arcCenterY: number
   viewBoxWidth: number
-  viewBoxHeight: number
 }
 
 export interface CurvedTaglineParams {
   typography: CurvedTaglineTypography
   path: CurvedTaglinePath
   mark: CurvedTaglineMark
-  stack: EmblemStack
+  layout: EmblemLayout
+}
+
+export interface EmblemLayout {
+  maxWidthRem: number
+  markGap: number
+  markAlign: number
 }
 
 export interface CurvedTaglineMark {
   widthMax: number
   widthMin: number
-  referenceWidth: number
-}
-
-export interface EmblemStack {
-  bottomPercent: number
-  eyebrowGapMax: number
-  eyebrowGapMin: number
-  eyebrowFontSizeMax: number
-  eyebrowFontSizeMin: number
   referenceWidth: number
 }
 
@@ -48,20 +44,16 @@ export const aboutCurvedTaglineDesktopParams: CurvedTaglineParams = {
     arcRadius: 370,
     arcCenterY: 390,
     viewBoxWidth: 772,
-    viewBoxHeight: 774,
   },
   mark: {
     widthMax: 300,
     widthMin: 200,
     referenceWidth: 1160,
   },
-  stack: {
-    bottomPercent: 11,
-    eyebrowGapMax: 69,
-    eyebrowGapMin: 40,
-    eyebrowFontSizeMax: 14,
-    eyebrowFontSizeMin: 10,
-    referenceWidth: 1160,
+  layout: {
+    maxWidthRem: 48.25,
+    markGap: 22,
+    markAlign: 0.4,
   },
 }
 
@@ -84,20 +76,16 @@ export const aboutCurvedTaglineMobileParams: CurvedTaglineParams = {
     arcRadius: 270,
     arcCenterY: 280,
     viewBoxWidth: 770,
-    viewBoxHeight: 770,
   },
   mark: {
     widthMax: 219,
     widthMin: 140,
     referenceWidth: 770,
   },
-  stack: {
-    bottomPercent: 11,
-    eyebrowGapMax: 48,
-    eyebrowGapMin: 28,
-    eyebrowFontSizeMax: 12,
-    eyebrowFontSizeMin: 9,
-    referenceWidth: 770,
+  layout: {
+    maxWidthRem: 48.25,
+    markGap: 22,
+    markAlign: 0.4,
   },
 }
 
@@ -128,35 +116,16 @@ export const aboutCurvedTaglineDialConfig = {
     arcRadius: [370, 200, 500] as [number, number, number],
     arcCenterY: [390, 200, 600] as [number, number, number],
     viewBoxWidth: [772, 400, 1200] as [number, number, number],
-    viewBoxHeight: [774, 400, 1200] as [number, number, number],
   },
   mark: {
     widthMax: [300, 100, 400] as [number, number, number],
     widthMin: [200, 80, 300] as [number, number, number],
     referenceWidth: [1160, 320, 1400] as [number, number, number],
   },
-  stack: {
-    bottomPercent: [11, 0, 30, 0.1] as [number, number, number, number],
-    eyebrowGapMax: [69, 20, 120] as [number, number, number],
-    eyebrowGapMin: [40, 15, 80] as [number, number, number],
-    eyebrowFontSizeMax: [14, 8, 20] as [number, number, number],
-    eyebrowFontSizeMin: [10, 8, 14] as [number, number, number],
-    referenceWidth: [1160, 320, 1400] as [number, number, number],
-  },
-  container: {
-    topPercentMobile: [5, 0, 30, 0.1] as [number, number, number, number],
-    topPercentDesktop: [9.3, 0, 30, 0.1] as [number, number, number, number],
-    leftPercentDesktop: [16.72, 0, 50, 0.1] as [number, number, number, number],
-    widthPercentMobile: [96, 50, 100, 0.5] as [number, number, number, number],
-    widthPercentDesktop: [66.5, 40, 100, 0.5] as [number, number, number, number],
+  layout: {
     maxWidthRem: [48.25, 20, 72, 0.25] as [number, number, number, number],
-    aspectRatioW: [772, 400, 1200] as [number, number, number],
-    aspectRatioH: [774, 400, 1200] as [number, number, number],
-  },
-  emblem: {
-    maxWidthRem: [72.5, 40, 90, 0.5] as [number, number, number, number],
-    aspectRatioW: [1160, 800, 1400] as [number, number, number],
-    aspectRatioH: [462, 300, 600] as [number, number, number],
+    markGap: [22, 0, 60, 1] as [number, number, number, number],
+    markAlign: [0.4, 0, 1, 0.01] as [number, number, number, number],
   },
 }
 
@@ -173,6 +142,79 @@ export interface CurvedTaglineTypography {
   lengthAdjust: "spacing" | "spacingAndGlyphs" | string
   startOffset: number
   textAnchor: "start" | "middle" | "end" | string
+}
+
+export const KYD_MARK_VIEWBOX_WIDTH = 300
+export const KYD_MARK_VIEWBOX_HEIGHT = 170
+export const KYD_MARK_BAR_TOP_Y = 129.316
+
+export function getMarkLayout({
+  arcCenterY,
+  viewBoxWidth,
+  containerWidthPx,
+  mark,
+  markGap,
+  markAlign,
+}: {
+  arcCenterY: number
+  viewBoxWidth: number
+  containerWidthPx: number
+  mark: CurvedTaglineMark
+  markGap: number
+  markAlign: number
+}) {
+  const markWidthPx = getMarkWidthPx({
+    emblemWidthPx: containerWidthPx,
+    mark,
+  })
+  const markWidthUnits =
+    containerWidthPx > 0
+      ? (markWidthPx / containerWidthPx) * viewBoxWidth
+      : mark.widthMax
+  const markScale = markWidthUnits / KYD_MARK_VIEWBOX_WIDTH
+  const markHeightUnits = KYD_MARK_VIEWBOX_HEIGHT * markScale
+  const markBarTopRatio = KYD_MARK_BAR_TOP_Y / KYD_MARK_VIEWBOX_HEIGHT
+  const markX = (viewBoxWidth - markWidthUnits) / 2
+  const raisedMarkY = arcCenterY - markGap - markHeightUnits
+  const loweredMarkY = arcCenterY - markBarTopRatio * markHeightUnits
+  const markY = raisedMarkY + (loweredMarkY - raisedMarkY) * markAlign
+
+  return {
+    markX,
+    markY,
+    markScale,
+    markHeightUnits,
+    markBottom: markY + markHeightUnits,
+  }
+}
+
+export function getEmblemViewBox({
+  arcCenterY,
+  arcRadius,
+  viewBoxWidth,
+  markBottom,
+  bottomPadding,
+  fontSizeUserUnits,
+}: {
+  arcCenterY: number
+  arcRadius: number
+  viewBoxWidth: number
+  markBottom: number
+  bottomPadding: number
+  fontSizeUserUnits: number
+}) {
+  const viewBoxMinY = Math.max(
+    0,
+    arcCenterY - arcRadius - fontSizeUserUnits * 0.85,
+  )
+  const viewBoxMaxY = markBottom + bottomPadding
+  const viewBoxHeight = viewBoxMaxY - viewBoxMinY
+
+  return {
+    minY: viewBoxMinY,
+    width: viewBoxWidth,
+    height: viewBoxHeight,
+  }
 }
 
 export function getTargetFontSizePx({
@@ -269,27 +311,4 @@ export function getMarkWidthPx({
     min: mark.widthMin,
     referenceWidth: mark.referenceWidth,
   })
-}
-
-export function getEmblemStackMetrics({
-  emblemWidthPx,
-  stack,
-}: {
-  emblemWidthPx: number
-  stack: EmblemStack
-}) {
-  return {
-    eyebrowGapPx: getScaledEmblemPx({
-      emblemWidthPx,
-      max: stack.eyebrowGapMax,
-      min: stack.eyebrowGapMin,
-      referenceWidth: stack.referenceWidth,
-    }),
-    eyebrowFontSizePx: getScaledEmblemPx({
-      emblemWidthPx,
-      max: stack.eyebrowFontSizeMax,
-      min: stack.eyebrowFontSizeMin,
-      referenceWidth: stack.referenceWidth,
-    }),
-  }
 }

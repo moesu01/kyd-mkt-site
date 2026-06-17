@@ -10,8 +10,7 @@ export function AboutSection() {
       id="about"
       bg="transparent"
       px={{ base: "6", lg901: "12" }}
-      pt={{ base: "20", lg901: "28" }}
-      pb={{ base: "10", lg901: "14" }}
+      py={{ base: "20", lg901: "28" }}
     >
       <Container>
         <Flex
@@ -33,6 +32,7 @@ export function AboutSection() {
               as="h2"
               textAlign="center"
               textStyle="displayHeading"
+              fontWeight="900"
               maxW="54.625rem"
               letterSpacing="-0.025em"
               lineHeight="1.1"
