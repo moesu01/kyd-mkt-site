@@ -10,6 +10,9 @@ interface SectionHeadingProps extends BoxProps {
   headline: ReactNode
   headingAs?: SectionHeadingLevel
   eyebrowVariant?: EyebrowVariant
+  headingTextStyle?: "displayHeading" | "cossetteDisplayHeading"
+  headingTextTransform?: "none" | "uppercase"
+  headingFontWeight?: "normal" | "bold"
 }
 
 function getHeadingTextStyle(level: SectionHeadingLevel) {
@@ -43,12 +46,28 @@ export function SectionHeading({
   headline,
   headingAs = "h2",
   eyebrowVariant = "default",
+  headingTextStyle,
+  headingTextTransform,
+  headingFontWeight,
   ...props
 }: SectionHeadingProps) {
+  const resolvedHeadingTextStyle =
+    headingTextStyle ?? getHeadingTextStyle(headingAs)
+
   return (
     <Box {...props}>
       <Text {...getEyebrowProps(eyebrowVariant)}>{label}</Text>
-      <Heading as={headingAs} textStyle={getHeadingTextStyle(headingAs)}>
+      <Heading
+        as={headingAs}
+        textStyle={resolvedHeadingTextStyle}
+        textTransform={headingTextTransform}
+        fontWeight={headingFontWeight}
+        whiteSpace={
+          typeof headline === "string" && headline.includes("\n")
+            ? "pre-line"
+            : undefined
+        }
+      >
         {headline}
       </Heading>
     </Box>

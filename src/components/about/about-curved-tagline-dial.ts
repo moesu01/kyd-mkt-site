@@ -28,12 +28,12 @@ export interface CurvedTaglineMark {
 export const aboutCurvedTaglineDesktopParams: CurvedTaglineParams = {
   typography: {
     useFontSizeClamp: true,
-    fontSize: 48,
+    fontSize: 72,
     fontSizeMin: 17,
-    fontSizeMax: 44,
+    fontSizeMax: 72,
     referenceWidth: 730,
-    letterSpacing: -4,
-    fontWeight: 900,
+    letterSpacing: -0.785,
+    fontWeight: 700,
     useTextLength: true,
     textLengthScale: 1,
     lengthAdjust: "spacing",
@@ -60,12 +60,12 @@ export const aboutCurvedTaglineDesktopParams: CurvedTaglineParams = {
 export const aboutCurvedTaglineMobileParams: CurvedTaglineParams = {
   typography: {
     useFontSizeClamp: true,
-    fontSize: 48,
+    fontSize: 72,
     fontSizeMin: 17,
-    fontSizeMax: 33,
+    fontSizeMax: 40,
     referenceWidth: 770,
-    letterSpacing: -4,
-    fontWeight: 900,
+    letterSpacing: -0.785,
+    fontWeight: 700,
     useTextLength: true,
     textLengthScale: 1,
     lengthAdjust: "spacing",
@@ -92,12 +92,12 @@ export const aboutCurvedTaglineMobileParams: CurvedTaglineParams = {
 export const aboutCurvedTaglineDialConfig = {
   typography: {
     useFontSizeClamp: true,
-    fontSize: [48, 8, 120] as [number, number, number],
+    fontSize: [72, 8, 120] as [number, number, number],
     fontSizeMin: [17, 8, 44] as [number, number, number],
-    fontSizeMax: [44, 20, 120] as [number, number, number],
+    fontSizeMax: [72, 20, 120] as [number, number, number],
     referenceWidth: [730, 320, 1200] as [number, number, number],
-    letterSpacing: [-4, -4, 4, 0.01] as [number, number, number, number],
-    fontWeight: [900, 100, 900, 100] as [number, number, number, number],
+    letterSpacing: [-0.785, -4, 4, 0.01] as [number, number, number, number],
+    fontWeight: [700, 100, 900, 100] as [number, number, number, number],
     useTextLength: true,
     textLengthScale: [1, 0.5, 1.2, 0.01] as [number, number, number, number],
     lengthAdjust: {

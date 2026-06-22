@@ -58,11 +58,12 @@ export function FeatureCard({
 
       <Heading
         as="h3"
-        fontSize="20px"
-        fontWeight="500"
+        fontFamily={layout === "compact" ? "cossetteTexte" : undefined}
+        fontSize={layout === "compact" ? "22px" : "20px"}
+        fontWeight={layout === "compact" ? "normal" : "500"}
         lineHeight="28px"
         letterSpacing="-0.5px"
-        color="fg"
+        color={layout === "compact" ? "warmDisplay" : "fg"}
         textWrap="balance"
       >
         {title}
@@ -71,10 +72,11 @@ export function FeatureCard({
       <Text
         as="p"
         pt="2"
+        fontFamily={layout === "compact" ? "sans" : undefined}
         fontSize="14px"
-        lineHeight="1.6"
+        lineHeight={layout === "compact" ? "1.4" : "1.6"}
         letterSpacing="0"
-        color="fgMuted"
+        color={layout === "compact" ? "warmMuted" : "fgMuted"}
         textWrap="pretty"
       >
         {body}

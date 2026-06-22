@@ -1,6 +1,7 @@
 import { Box, type BoxProps } from "@chakra-ui/react"
 import { useEffect, useRef, useState } from "react"
 import { aboutSection } from "../../content/site-content"
+import { colors } from "../../theme/tokens"
 import {
   getEmblemViewBox,
   getMarkLayout,
@@ -127,14 +128,15 @@ export function AboutCurvedTagline({
           />
         </defs>
         <text
-          fill="#888"
+          fill={colors.warmMuted.value}
           textAnchor={textPathAlignment.textAnchor}
           style={{
-            fontFamily: "Inter, sans-serif",
+            fontFamily: '"Cossette Titre", sans-serif',
             fontWeight: typography.fontWeight,
             textTransform: "none",
             letterSpacing: `${typography.letterSpacing}px`,
             fontSize: fontSizeUserUnits,
+            lineHeight: 1.2,
           }}
         >
           <textPath

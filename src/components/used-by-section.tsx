@@ -61,31 +61,28 @@ function UsedByCard({
       }
       _focusVisible={usedByCardFocusVisible}
     >
-      <Box>
+      <Box display="flex" flexDirection="column" gap="1.5">
         <Box
           display="inline-flex"
           alignItems="center"
           gap="2"
-          fontSize="15px"
-          fontWeight="medium"
-          lineHeight="18px"
-          letterSpacing="-0.5px"
-          color={isHovered ? "accent" : "fg"}
           transitionProperty="color"
           transitionDuration="200ms"
           transitionTimingFunction={usedByCardEase}
         >
-          <Text as="span">{name}</Text>
+          <Text
+            as="span"
+            textStyle="touringArtistName"
+          >
+            {name}
+          </Text>
           <ExternalLinkArrow isHovered={isHovered} />
         </Box>
         <Text
           as="p"
           mt="0"
-          fontSize="15px"
-          fontWeight="normal"
-          lineHeight="18px"
-          letterSpacing="-0.5px"
-          color={isHovered ? "fg" : "fgMuted"}
+          textStyle="usedByLocation"
+          color={isHovered ? "fg" : "warmMuted"}
           transitionProperty="color"
           transitionDuration="200ms"
           transitionTimingFunction={usedByCardEase}
@@ -142,7 +139,6 @@ const usedByImageShadowHover =
 export function UsedBySection() {
   return (
     <Flex
-      mb="16"
       pt={{ base: "6", lg901: "8" }}
       align="center"
       justify="space-between"
@@ -153,13 +149,15 @@ export function UsedBySection() {
       <Box minW="0">
         <Heading
           as="h2"
-          color="fg"
-          textStyle="platformHeading"
+          textStyle="cossetteDisplayHeading"
+          color="warmDisplay"
           textWrap="balance"
         >
           Used by venues and artists
           <br />
-          across the country
+          <Text as="span" color="warmMuted">
+            across the country
+          </Text>
         </Heading>
       </Box>
 
@@ -242,8 +240,8 @@ export function UsedByCarousel() {
         gap="8"
         overflowX="hidden"
         px={{ base: "6", lg901: "12" }}
-        pt="1"
-        pb="12"
+        pt="0"
+        pb="0"
         aria-label="Venues and artists using KYD"
         css={{
           WebkitOverflowScrolling: "touch",

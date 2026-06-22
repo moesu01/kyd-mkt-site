@@ -127,6 +127,60 @@ export const usedBy = [
   },
 ] as const
 
+export const touringArtists = [
+  {
+    name: "Action Bronson",
+    category: "Touring Artist",
+    logoSrc: "/images/touring/action-bronson-logo.png",
+    logoMaxH: "38px",
+    logoMaxW: "213px",
+    logoCrop: {
+      width: "115.36%",
+      height: "214.29%",
+      left: "-6.83%",
+      top: "-47.25%",
+    },
+    showsHref: "#",
+  },
+  {
+    name: "Pangea Sound",
+    category: "Touring Group",
+    logoSrc: "/images/touring/pangea-sound-logo.png",
+    logoMaxH: "64px",
+    logoMaxW: "131px",
+    logoObjectFit: "cover",
+    showsHref: "#",
+  },
+  {
+    name: "DJ Mike Nasty",
+    category: "Touring DJ",
+    logoSrc: "/images/touring/dj-mike-nasty-logo.svg",
+    logoMaxH: "54px",
+    logoMaxW: "120px",
+    showsHref: "#",
+  },
+  {
+    name: "We Touch Grass",
+    category: "Touring Events",
+    logoSrc: "/images/touring/we-touch-grass-logo.png",
+    logoMaxH: "72px",
+    logoMaxW: "134px",
+    logoCrop: {
+      width: "107.44%",
+      height: "200.53%",
+      left: "-3.43%",
+      top: "-29.67%",
+    },
+    showsHref: "#",
+  },
+  {
+    name: "+ Many More",
+    category: "Want to work with KYD?",
+    showsHref: links.getInTouch,
+    linkLabel: "Get In Touch",
+  },
+] as const
+
 export const testimonials = [
   {
     quote:

@@ -4,7 +4,7 @@ import {
   defineConfig,
   defineRecipe,
 } from "@chakra-ui/react"
-import { breakpoints, colors, fonts, sizes } from "./tokens"
+import { breakpoints, colors, fonts, shadows, sizes } from "./tokens"
 
 const buttonEase = "cubic-bezier(0.2, 0, 0, 1)"
 
@@ -40,7 +40,7 @@ export const buttonRecipe = defineRecipe({
     variant: {
       primary: {
         bg: "accent",
-        color: "accentFg",
+        color: "pageBg",
         fontWeight: "semibold",
         borderColor: "transparent",
         _hover: {
@@ -145,7 +145,7 @@ export const buttonRecipe = defineRecipe({
         px: "6",
         py: "3.5",
         fontSize: "14px",
-        letterSpacing: "-0.2px",
+        letterSpacing: "0",
         lineHeight: "1",
       },
     },
@@ -171,20 +171,12 @@ const config = defineConfig({
       colors,
       fonts,
       sizes,
-    },
-    semanticTokens: {
-      colors: {
-        bg: {
-          DEFAULT: {
-            value: { _light: "{colors.white}", _dark: "#111" },
-          },
-        },
-      },
+      shadows,
     },
     textStyles: {
       eyebrow: {
         value: {
-          fontFamily: "mono",
+          fontFamily: "cossetteTexte",
           fontSize: "12px",
           fontWeight: "semibold",
           textTransform: "uppercase",
@@ -205,6 +197,17 @@ const config = defineConfig({
           letterSpacing: "tight",
         },
       },
+      cossetteDisplayHeading: {
+        value: {
+          fontFamily: "cossetteTitre",
+          fontWeight: "normal",
+          fontSize: "72px",
+          lineHeight: "1.1",
+          letterSpacing: "1%",
+          textTransform: "uppercase",
+          color: "warmDisplay",
+        },
+      },
       sectionHeading: {
         value: {
           fontSize: "clamp(1.75rem, 3vw, 2.75rem)",
@@ -221,6 +224,46 @@ const config = defineConfig({
           letterSpacing: "-1.57px",
         },
       },
+      touringArtistName: {
+        value: {
+          fontFamily: "cossetteTitre",
+          fontSize: { base: "28px", lg901: "36px" },
+          fontWeight: "normal",
+          lineHeight: "1",
+          textTransform: "uppercase",
+          color: "warmSoft",
+        },
+      },
+      touringCategory: {
+        value: {
+          fontFamily: "cossetteTexte",
+          fontSize: { base: "18px", lg901: "24px" },
+          fontWeight: "normal",
+          lineHeight: "1",
+          textTransform: "uppercase",
+          color: "warmMuted",
+        },
+      },
+      usedByLocation: {
+        value: {
+          fontFamily: "cossetteTexte",
+          fontSize: "16px",
+          fontWeight: "normal",
+          lineHeight: "1",
+          textTransform: "uppercase",
+          color: "warmMuted",
+        },
+      },
+      touringShowsLink: {
+        value: {
+          fontFamily: "sans",
+          fontSize: { base: "16px", lg901: "20px" },
+          fontWeight: "medium",
+          lineHeight: "1",
+          letterSpacing: "-0.5px",
+          color: "warmMuted",
+        },
+      },
     },
     recipes: {
       kydButton: buttonRecipe,
@@ -231,9 +274,10 @@ const config = defineConfig({
       scrollBehavior: "smooth",
       fontFamily: "Inter, sans-serif",
       fontFeatureSettings: "'liga' 1, 'calt' 1",
+      bg: "pageBg",
     },
     body: {
-      bg: "bg",
+      bg: "pageBg",
       color: "fg",
       fontFamily: "sans",
       fontSize: "base",
@@ -241,7 +285,7 @@ const config = defineConfig({
       overflowX: "hidden",
     },
     "#root": {
-      bg: "bg",
+      bg: "pageBg",
       minH: "100dvh",
     },
     "h1, h2, h3": {

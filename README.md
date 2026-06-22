@@ -30,8 +30,9 @@ npm run preview
 
 ## Design
 
-- **Fonts:** Inter (sans), IBM Plex Mono (labels/meta) — loaded via Google Fonts in `index.html`
+- **Fonts:** Inter (sans), IBM Plex Mono (labels/meta), Cossette Titre (display titles), Cossette Texte (touring labels) — loaded via Google Fonts and rsms.me in `index.html`
 - **Theme:** Grayscale OKLCH tokens in `src/theme/tokens.ts`, composed in `src/theme/index.ts`
+- **Page background:** Use the `pageBg` primitive (not Chakra’s semantic `bg`) so the token value in `tokens.ts` is what renders. See the TODO in `tokens.ts` — `fg`, `border`, `accent`, and other names may still collide with Chakra defaults and need a full audit before launch.
 - **Provider:** `src/components/ui/provider.tsx` wraps the app with `ChakraProvider` (preflight enabled) and a forced dark theme
 - **Breakpoint:** Custom `lg901` (901px) for desktop layouts
 - **Hero:** Split hero (`HeroSplit`) with centered overlay copy

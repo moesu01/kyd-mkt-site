@@ -2,6 +2,7 @@ import { Box, Flex, Image, Text } from "@chakra-ui/react"
 import { useState } from "react"
 import { backers } from "../content/site-content"
 import { Container } from "./ui/container"
+import { prominentEyebrowTextProps } from "./ui/prominent-eyebrow-styles"
 
 function BackerLogo({
   name,
@@ -58,14 +59,10 @@ export function BackedBySection() {
     >
       <Container>
         <Text
+          {...prominentEyebrowTextProps}
           mb="0"
           w="full"
           textAlign="center"
-          fontWeight="bold"
-          fontSize="14px"
-          textTransform="uppercase"
-          letterSpacing="-0.2px"
-          color="fg"
         >
           Backed by
         </Text>

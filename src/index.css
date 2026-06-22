@@ -16,7 +16,30 @@ html {
 .feature-progress-fill {
   transform-origin: left center;
   transform: scaleX(0);
-  background: linear-gradient(to right, #444444, #ffffff);
+  background: linear-gradient(
+    125deg,
+    rgba(255, 200, 200, 0.4) 0%,
+    rgba(255, 230, 150, 0.4) 15%,
+    rgba(150, 255, 200, 0.4) 30%,
+    rgba(150, 200, 255, 0.4) 45%,
+    rgba(200, 150, 255, 0.4) 60%,
+    rgba(255, 150, 220, 0.4) 75%,
+    rgba(255, 200, 200, 0.4) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(0, 0, 0, 0.55) 20%,
+    #000 75%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(0, 0, 0, 0.55) 20%,
+    #000 75%,
+    #000 100%
+  );
   animation: feature-progress-fill var(--feature-dwell-ms, 6000ms) linear forwards;
 }
 

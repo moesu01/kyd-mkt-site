@@ -31,19 +31,23 @@ export function AboutSection() {
             <Heading
               as="h2"
               textAlign="center"
-              textStyle="displayHeading"
-              fontWeight="900"
-              maxW="54.625rem"
-              letterSpacing="-0.025em"
+              fontFamily="cossetteTitre"
+              fontWeight="bold"
+              fontSize={{ base: "48px", lg901: "75.8px" }}
               lineHeight="1.1"
+              color="warmDisplay"
+              maxW="54.625rem"
             >
               {aboutSection.headline}
             </Heading>
             <Text
               textAlign="center"
-              textStyle="sectionBody"
-              letterSpacing="-0.02em"
-              color="fgMuted"
+              fontFamily="sans"
+              fontWeight="normal"
+              fontSize="18px"
+              lineHeight="27px"
+              letterSpacing="-0.36px"
+              color="warmMuted"
               maxW="33.25rem"
             >
               {aboutSection.body}

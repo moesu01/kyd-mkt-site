@@ -21,14 +21,12 @@ export function SocialProofSection() {
         >
           <Heading
             as="h2"
-            color="fg"
-            textStyle="platformHeading"
+            textStyle="cossetteDisplayHeading"
+            color="warmDisplay"
             textWrap="balance"
             textAlign="center"
           >
-            What venues, artists, and
-            <br />
-            the industry are saying
+            What our customers and the industry are saying
           </Heading>
         </Flex>
       </Container>

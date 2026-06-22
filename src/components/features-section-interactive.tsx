@@ -7,16 +7,12 @@ import {
   type AnimationEvent,
   type KeyboardEvent,
 } from "react"
-import { features, links } from "../content/site-content"
+import { features } from "../content/site-content"
 import platformVisualBg from "../assets/images/platform-visual-temp.jpg"
 import unscalpableVisual from "../assets/images/feature-unscalpable.jpg"
 import dataOwnershipVisual from "../assets/images/feature-data-ownership.jpg"
-import { Button } from "./ui/button"
 import { Container } from "./ui/container"
 import { VenueAudiencesGrid } from "./venue-audiences-grid"
-
-const platformEyebrowGradient =
-  "linear-gradient(to right, #cccccc 19.928%, #888888 91.667%)"
 
 const dwellMs = 6000
 const iconEase = "cubic-bezier(0.2, 0, 0, 1)"
@@ -31,6 +27,25 @@ const featureVisuals: Record<string, string> = {
 
 function getFeatureVisualSrc(title: string) {
   return featureVisuals[title] ?? platformVisualBg
+}
+
+const kydMarkSmPath =
+  "M19 11V8.3675H12.6155L17.1212 3.7706L15.3192 1.88453L10.8135 6.48143V0H8.18652L8.2016 6.43536L3.72748 1.88453L1.87882 3.7706L6.39954 8.3675H0V11H19Z"
+
+function KydMarkSm({ color }: { color: string }) {
+  return (
+    <Box
+      as="span"
+      aria-hidden
+      display="inline-flex"
+      flexShrink={0}
+      color={color}
+    >
+      <chakra.svg width="19px" height="11px" viewBox="0 0 19 11" fill="none">
+        <path d={kydMarkSmPath} fill="currentColor" />
+      </chakra.svg>
+    </Box>
+  )
 }
 
 interface FeatureVisualBackgroundProps {
@@ -95,45 +110,62 @@ function getExitOffset(direction: NavDirection) {
   return "-8px"
 }
 
+function PlatformSectionLabel({
+  label,
+  headingAs = "h5",
+}: {
+  label: string
+  headingAs?: "h5" | "p"
+}) {
+  return (
+    <Heading
+      as={headingAs}
+      display="flex"
+      alignItems="center"
+      gap="1.5"
+      w={headingAs === "h5" ? "full" : undefined}
+      flexShrink={0}
+      fontFamily="cossetteTexte"
+      fontSize="14px"
+      fontWeight="bold"
+      lineHeight="1.2"
+      letterSpacing="0"
+      color="warmMuted"
+      textAlign="left"
+    >
+      <KydMarkSm color="inherit" />
+      {label}
+    </Heading>
+  )
+}
+
 function PlatformInteractiveHeader() {
   return (
-    <Box>
-      <Flex align="center" gap="1.5">
-        <Image
-          src="/icons/kyd-dashboard-mark.svg"
-          alt=""
-          h="11px"
-          w="19px"
-          flexShrink={0}
-          aria-hidden
-        />
-        <Text
-          fontSize="16px"
-          fontWeight="semibold"
-          lineHeight="18px"
-          whiteSpace="nowrap"
-          css={{
-            backgroundImage: platformEyebrowGradient,
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
-            color: "transparent",
-          }}
+    <Flex
+      direction="column"
+      flex={{ base: "initial", lg901: "1" }}
+      minH={{ base: "auto", lg901: "10" }}
+      minW="0"
+    >
+      <PlatformSectionLabel label="Features" headingAs="p" />
+      <Flex flex="1" align="center" minH="0">
+        <Heading
+          as="h2"
+          pt={{ base: "6", lg901: 0 }}
+          color="warmDisplay"
+          fontFamily="cossetteTitre"
+          fontSize="54px"
+          fontWeight="400"
+          lineHeight="1.1"
+          letterSpacing="0"
+          textWrap="balance"
         >
-          KYD Dashboard
-        </Text>
+          Ticketing,
+          <br />
+          built for control.
+        </Heading>
       </Flex>
-      <Heading
-        as="h2"
-        pt="6"
-        color="fg"
-        textStyle="platformHeading"
-        textWrap="balance"
-      >
-        Ticketing,
-        <br />
-        built for control.
-      </Heading>
-    </Box>
+    </Flex>
   )
 }
 
@@ -275,8 +307,9 @@ function FeatureListItem({
         cursor="pointer"
         py="4"
         color="fg"
+        fontFamily="cossetteTexte"
         fontSize="16px"
-        fontWeight={isActive ? "semibold" : "medium"}
+        fontWeight={isActive ? "700" : "400"}
         lineHeight="22.4px"
         letterSpacing={isActive ? "0.16px" : "0"}
         css={{
@@ -307,9 +340,12 @@ function FeatureListItem({
             }
           >
             <Text
+              as="p"
+              fontFamily="sans"
               fontSize="14px"
-              lineHeight="22.4px"
-              color="fgFeature"
+              lineHeight="1.4"
+              letterSpacing="0"
+              color="warmMuted"
               textWrap="pretty"
               pb="2"
             >
@@ -534,47 +570,22 @@ export function FeaturesSectionInteractive() {
       px={{ base: "6", lg901: "12" }}
       py={{ base: "20", lg901: "28" }}
     >
-      <Flex direction="column" gap="12">
+      <Flex direction="column" gap="12" w="full">
+        <Box w="full" borderTop="1px solid" borderColor="border">
+          <Container pt={{ base: "3", lg901: "16px" }}>
+            <PlatformSectionLabel label="The KYD Platform" />
+          </Container>
+        </Box>
         <Container>
-          <Flex direction="column" gap="12">
-            <Heading
-              as="h5"
-              display="flex"
-              alignItems="center"
-              gap="1.5"
-              w="full"
-              borderTop="1px solid"
-              borderColor="border"
-              pt={{ base: "3", lg901: "24px" }}
-              fontSize="18px"
-              fontWeight="bold"
-              lineHeight="1.2"
-              letterSpacing="-0.04em"
-              color="fg"
-              textAlign="left"
-            >
-              <Image
-                src="/icons/kyd-dashboard-mark.svg"
-                alt=""
-                h="11px"
-                w="19px"
-                flexShrink={0}
-                aria-hidden
-                css={{ filter: "brightness(0) invert(1)" }}
-              />
-              The KYD Platform
-            </Heading>
-            <VenueAudiencesGrid />
-          </Flex>
+          <VenueAudiencesGrid />
         </Container>
         <Container maxW="containerFramed">
         <Box
           w="full"
-          border="1px solid"
-          borderColor="frameBorder"
           borderRadius="32px"
-          bg="black"
+          bg="frameBg"
           p="25px"
+          boxShadow="frame"
         >
           <Grid
             templateColumns={{ base: "1fr", lg901: "2fr 3fr" }}
@@ -587,19 +598,6 @@ export function FeaturesSectionInteractive() {
             minH="0"
           >
             <PlatformInteractiveHeader />
-
-            <Flex mt="8" flexShrink={0}>
-              <Button href={links.getInTouch} variant="outline">
-                Get in touch →
-              </Button>
-            </Flex>
-
-            <Box
-              flex="1"
-              minH={{ base: 0, lg901: "10" }}
-              display={{ base: "none", lg901: "block" }}
-              aria-hidden
-            />
 
             <Box
               as="ul"
@@ -635,7 +633,7 @@ export function FeaturesSectionInteractive() {
             aspectRatio="1/1"
             alignSelf={{ base: "auto", lg901: "start" }}
             borderRadius="16px"
-            bg="bg"
+            bg="pageBg"
             overflow="hidden"
             aria-live="polite"
             aria-atomic="true"

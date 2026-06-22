@@ -14,17 +14,18 @@ function StatRow({
   isFirst: boolean
 }) {
   return (
-    <Box
-      position="relative"
+    <Flex
+      align="center"
+      gap={{ base: "4", lg901: "6" }}
       minH={{ base: "102px", lg901: "122px" }}
-      borderTop={isFirst ? "1px solid" : undefined}
-      borderBottom="1px solid"
+      py={{ base: "5", lg901: "8" }}
+      borderTop={isFirst ? "3px solid" : undefined}
+      borderBottom="3px solid"
       borderColor="border"
+      w="full"
     >
       <Text
-        position="absolute"
-        left="0"
-        top={{ base: "20px", lg901: "31px" }}
+        flexShrink={0}
         fontFamily="sans"
         fontSize={{ base: "3rem", lg901: "72px" }}
         fontWeight="100"
@@ -36,19 +37,14 @@ function StatRow({
         {value}
       </Text>
       <Text
-        position="absolute"
-        right="0"
-        top={{ base: "48px", lg901: "65px" }}
-        maxW="224px"
-        fontSize="16px"
-        lineHeight="20px"
-        letterSpacing="-0.1504px"
+        flex="1"
+        minW="0"
+        textStyle="touringCategory"
         textAlign="right"
-        color="fg"
       >
         {label}
       </Text>
-    </Box>
+    </Flex>
   )
 }
 
@@ -75,27 +71,34 @@ export function VenuesSection() {
           >
             <SectionHeading
               eyebrowVariant="prominent"
+              headingTextStyle="cossetteDisplayHeading"
+              headingTextTransform="none"
+              headingFontWeight="bold"
               label="For Venues & Artists"
-              headline={
-                <>
-                  Your Tickets.
-                  <br />
-                  Your Fans.
-                  <br />
-                  <Text as="span" color="accent">
-                    Your Money.
-                  </Text>
-                </>
-              }
+              headline={"Your tickets.\nYour fans.\nYour money."}
             />
-            <Text maxW="bodyCopy" textStyle="sectionBody" color="fgMuted">
+            <Text
+              maxW="bodyCopy"
+              fontFamily="sans"
+              fontWeight="normal"
+              fontSize="18px"
+              lineHeight="27px"
+              letterSpacing="-0.36px"
+              color="warmMuted"
+            >
               A next-gen, whitelabel ticketing and marketing platform for
               independent artists, touring acts, and venues. Own your ticketing.
               Keep your fan data. Automate your marketing. Deliver 10x results
               &mdash; and never rent your audience again.
             </Text>
             <Box alignSelf="flex-start">
-              <Button href={links.getInTouch}>Get in touch →</Button>
+              <Button
+                href={links.getInTouch}
+                size="hero"
+                css={{ fontWeight: "bold" }}
+              >
+                Get in touch →
+              </Button>
             </Box>
           </Flex>
 

@@ -38,11 +38,11 @@ export function HeroSplit() {
           <Box flexShrink={0}>
             <Heading
               as="h1"
-              fontSize="clamp(2.5rem, 6vw, 4.15rem)"
+              fontFamily="cossetteTitre"
               fontWeight="bold"
-              lineHeight="1.02"
-              letterSpacing="-0.02em"
-              color="fg"
+              fontSize={{ base: "48px", lg901: "75.8px" }}
+              lineHeight="1.1"
+              color="warmDisplay"
             >
               Modern Ticketing
               <br />

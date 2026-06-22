@@ -1,5 +1,25 @@
+/**
+ * KYD color primitives. Names like `pageBg` (not `bg`) avoid colliding with
+ * Chakra's built-in semantic tokens (`bg`, `fg`, `border`, etc.) from
+ * defaultConfig — those semantics win over same-named primitives.
+ *
+ * TODO(before launch): Audit semantic vs primitive token usage site-wide
+ * (pageBg, fg, border, accent, …) and either override Chakra semantics in
+ * index.ts or rename all primitives that conflict.
+ */
+
+/** Shared warm-tint hue (degrees). Adjust to shift all warm-tinted UI colors together. */
+export const warmHue = 63.9
+
+/** Shared warm-tint chroma. Adjust to shift saturation of all warm-tinted UI colors together. */
+export const warmChroma = 0.010
+
+function oklchWarm(l: number | string): string {
+  return `oklch(${l} ${warmChroma} ${warmHue})`
+}
+
 export const colors = {
-  bg: { value: "#111" },
+  pageBg: { value: "oklch(0.178 .01 63.9)" },
   surface: { value: "oklch(0.12 0 0)" },
   surfaceRaised: { value: "oklch(0.25 0 0)" },
   fg: { value: "oklch(0.93 0 0)" },
@@ -13,7 +33,10 @@ export const colors = {
   accentFg: { value: "oklch(0.05 0 0)" },
   border: { value: "oklch(0.3 0 0)" },
   borderStrong: { value: "oklch(0.4 0 0)" },
-  frameBorder: { value: "rgba(255, 255, 255, 0.08)" },
+  frameBg: { value: oklchWarm(0.15) },
+  warmDisplay: { value: oklchWarm(0.96) },
+  warmSoft: { value: oklchWarm(0.88) },
+  warmMuted: { value: oklchWarm(0.71) },
 }
 
 export const fonts = {
@@ -22,6 +45,12 @@ export const fonts = {
   },
   mono: {
     value: '"IBM Plex Mono", ui-monospace, "SF Mono", monospace',
+  },
+  cossetteTitre: {
+    value: '"Cossette Titre", sans-serif',
+  },
+  cossetteTexte: {
+    value: '"Cossette Texte", sans-serif',
   },
 }
 
@@ -37,4 +66,9 @@ export const sizes = {
 
 export const breakpoints = {
   lg901: "901px",
+}
+
+/** Dark-mode ring shadow — use with boxShadow, not colors. */
+export const shadows = {
+  frame: { value: "0 0 2px 1px rgba(255, 255, 255, 0.05)" },
 }
