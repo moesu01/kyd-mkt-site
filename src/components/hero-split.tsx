@@ -2,6 +2,8 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/react"
 import { links } from "../content/site-content"
 import { Button } from "./ui/button"
 
+const HERO_BG_VIDEO = "/videos/ascii-animation-7.mp4"
+
 // TEMP: hero mini footer hidden — restore imports and uncomment block below
 // import { Link } from "@chakra-ui/react"
 // import { heroFooterLinks } from "../content/site-content"
@@ -19,8 +21,42 @@ export function HeroSplit() {
       h="100vh"
       bg="#000"
       overflow="hidden"
+      css={{
+        "@media (prefers-reduced-motion: reduce)": {
+          "& video": { display: "none" },
+        },
+      }}
     >
+      <Box
+        as="video"
+        src={HERO_BG_VIDEO}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden
+        position="absolute"
+        inset="0"
+        w="full"
+        h="full"
+        objectFit="cover"
+        objectPosition="center"
+        pointerEvents="none"
+        zIndex={0}
+      />
+
+      <Box
+        position="absolute"
+        inset="0"
+        zIndex={1}
+        pointerEvents="none"
+        backgroundImage="linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.28) 42%, rgba(0,0,0,0.12) 100%)"
+      />
+
       <Flex
+        position="relative"
+        zIndex={2}
         flex="1"
         align="flex-end"
         px={{ base: "6", lg901: "10" }}
