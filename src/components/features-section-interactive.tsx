@@ -155,7 +155,7 @@ function PlatformInteractiveHeader() {
           color="warmDisplay"
           fontFamily="cossetteTitre"
           fontSize="54px"
-          fontWeight="400"
+          fontWeight="700"
           lineHeight="1.1"
           letterSpacing="0"
           textWrap="balance"

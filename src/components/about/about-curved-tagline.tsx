@@ -13,6 +13,7 @@ import {
 } from "./about-curved-tagline-dial"
 
 const ARC_PATH_ID = "about-curved-tagline-arc"
+const ARC_INK_BLEED_FILTER_ID = "about-arc-ink-bleed"
 const KYD_MARK_PATH =
   "M300 170V129.316H199.193L270.334 58.2728L241.884 29.1247L170.738 100.168V0H129.262L129.499 99.4556L58.8557 29.1247L29.6662 58.2728L101.046 129.316H0V170H300Z"
 
@@ -126,6 +127,14 @@ export function AboutCurvedTagline({
             id={ARC_PATH_ID}
             d={`M ${arcStartX} ${arcCenterY} A ${arcRadius} ${arcRadius} 0 0 1 ${arcEndX} ${arcCenterY}`}
           />
+          <filter
+            id={ARC_INK_BLEED_FILTER_ID}
+            colorInterpolationFilters="sRGB"
+          >
+            <feComponentTransfer>
+              <feFuncA type="discrete" tableValues="0 1 1 1" />
+            </feComponentTransfer>
+          </filter>
         </defs>
         <text
           fill={colors.warmMuted.value}
@@ -137,6 +146,7 @@ export function AboutCurvedTagline({
             letterSpacing: `${typography.letterSpacing}px`,
             fontSize: fontSizeUserUnits,
             lineHeight: 1.2,
+            filter: `blur(0.7px) url(#${ARC_INK_BLEED_FILTER_ID})`,
           }}
         >
           <textPath

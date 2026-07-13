@@ -28,9 +28,9 @@ export interface CurvedTaglineMark {
 export const aboutCurvedTaglineDesktopParams: CurvedTaglineParams = {
   typography: {
     useFontSizeClamp: true,
-    fontSize: 72,
+    fontSize: 66,
     fontSizeMin: 17,
-    fontSizeMax: 72,
+    fontSizeMax: 66,
     referenceWidth: 730,
     letterSpacing: -0.785,
     fontWeight: 700,
@@ -92,9 +92,9 @@ export const aboutCurvedTaglineMobileParams: CurvedTaglineParams = {
 export const aboutCurvedTaglineDialConfig = {
   typography: {
     useFontSizeClamp: true,
-    fontSize: [72, 8, 120] as [number, number, number],
+    fontSize: [66, 8, 120] as [number, number, number],
     fontSizeMin: [17, 8, 44] as [number, number, number],
-    fontSizeMax: [72, 20, 120] as [number, number, number],
+    fontSizeMax: [66, 20, 120] as [number, number, number],
     referenceWidth: [730, 320, 1200] as [number, number, number],
     letterSpacing: [-0.785, -4, 4, 0.01] as [number, number, number, number],
     fontWeight: [700, 100, 900, 100] as [number, number, number, number],

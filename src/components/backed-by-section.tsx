@@ -97,6 +97,7 @@ export function BackedBySection() {
                   maxW={backer.maxW}
                 />
               </Flex>
+              {/* TEMP: backer name labels hidden — restore when ready.
               <Text
                 textStyle="eyebrow"
                 color="fgSubtle"
@@ -105,6 +106,7 @@ export function BackedBySection() {
               >
                 {backer.name}
               </Text>
+              */}
             </Box>
           ))}
         </Flex>

@@ -234,7 +234,7 @@ export const backers = [
   {
     name: "Comcast Ventures",
     logoSrc: "/logos/comcast-ventures.png",
-    maxH: "2.125rem",
+    maxH: "2rem",
     maxW: "10.2rem",
   },
   {

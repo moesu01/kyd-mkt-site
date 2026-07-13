@@ -5,6 +5,13 @@ import { TestimonialBlock } from "./testimonial-block"
 
 const AUTO_SCROLL_MS = 5000
 
+/** Resting tilts in [-2, 1.5] — shuffled so neighbors don't look progressive */
+const TESTIMONIAL_ROTATIONS = [-1.8, 1.2, -0.6, 0.9, -2, 1.5, -1.1, 0.4] as const
+
+function getTestimonialRotationDeg(index: number): number {
+  return TESTIMONIAL_ROTATIONS[index % TESTIMONIAL_ROTATIONS.length] ?? 0
+}
+
 export function TestimonialCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
@@ -91,7 +98,8 @@ export function TestimonialCarousel() {
         gap="8"
         overflowX="auto"
         px={{ base: "6", lg901: "12" }}
-        pb="2"
+        pt="3"
+        pb="5"
         aria-label="Testimonials"
         css={{
           WebkitOverflowScrolling: "touch",
@@ -121,6 +129,9 @@ export function TestimonialCarousel() {
               role={testimonial.role}
               logoSrc={testimonial.logoSrc}
               placeholder={testimonial.placeholder}
+              rotateDeg={
+                activeIndex === index ? 0 : getTestimonialRotationDeg(index)
+              }
             />
           </Box>
         ))}
