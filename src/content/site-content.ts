@@ -276,12 +276,13 @@ export const pressCoverage = [
   },
 ] as const
 
-export const footerLinks = [
+export const footerPrimaryLinks = [
   { label: "For Fans", href: links.forFans },
   { label: "For Venues & Artists", href: links.forVenues },
-  { label: "TIX", href: links.tix },
+  { label: "Get Help", href: "#fans" },
+] as const
+
+export const footerLegalLinks = [
   { label: "Terms of Service", href: links.terms },
   { label: "Privacy Policy", href: links.privacy },
-  { label: "Contact us", href: links.contact },
-  { label: "Press", href: links.pressEmail },
 ] as const

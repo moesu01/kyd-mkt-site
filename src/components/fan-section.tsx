@@ -22,15 +22,23 @@ export function FanSection() {
         >
           <Box flex="1" minW="0">
             <SectionHeading
+              eyebrowVariant="prominent"
+              headingTextStyle="cossetteDisplayHeading"
+              headingTextTransform="none"
+              headingFontWeight="bold"
+              headingAs="h2"
               label="For Fans"
               headline="Need Ticket Help?"
-              headingAs="h3"
             />
             <Text
               mt="6"
               maxW="bodyCopy"
-              textStyle="sectionBody"
-              color="fgMuted"
+              fontFamily="sans"
+              fontWeight="normal"
+              fontSize="18px"
+              lineHeight="27px"
+              letterSpacing="-0.36px"
+              color="warmMuted"
             >
               Locate your tickets. You&apos;re in the right place.
             </Text>

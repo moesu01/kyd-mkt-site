@@ -34,7 +34,7 @@ export const colors = {
   border: { value: "oklch(0.3 0 0)" },
   borderStrong: { value: "oklch(0.4 0 0)" },
   frameBg: { value: oklchWarm(0.15) },
-  warmDisplay: { value: oklchWarm(0.96) },
+  warmDisplay: { value: oklchWarm(0.90) },
   warmSoft: { value: oklchWarm(0.88) },
   warmMuted: { value: oklchWarm(0.71) },
 }

@@ -10,7 +10,8 @@ import { FeaturesSectionInteractive } from "./components/features-section-intera
 import { Footer } from "./components/footer"
 import { HeroSplit } from "./components/hero-split"
 import { Nav } from "./components/nav"
-import { PressSection } from "./components/press-section"
+// TEMP: Press section hidden — restore import and <PressSection /> below when ready.
+// import { PressSection } from "./components/press-section"
 import { SocialProofSection } from "./components/social-proof-section"
 import { UsedByPageSection } from "./components/used-by-page-section"
 import { VenuesSection } from "./components/venues-section"
@@ -40,7 +41,7 @@ function App() {
       {/* <FeaturesSection /> */}
       <UsedByPageSection />
       <SocialProofSection />
-      <PressSection />
+      {/* TEMP: Press section hidden — <PressSection /> */}
       <FanSection />
       <Footer />
     </>
