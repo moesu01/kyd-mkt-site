@@ -46,13 +46,13 @@ export function HeroSplit() {
         zIndex={0}
       />
 
-      <Box
+      {/* <Box
         position="absolute"
         inset="0"
         zIndex={1}
         pointerEvents="none"
         backgroundImage="linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.28) 42%, rgba(0,0,0,0.12) 100%)"
-      />
+      /> */}
 
       <Flex
         position="relative"
@@ -76,9 +76,21 @@ export function HeroSplit() {
               as="h1"
               fontFamily="cossetteTitre"
               fontWeight="bold"
-              fontSize={{ base: "48px", lg901: "75.8px" }}
-              lineHeight="1.1"
+              fontSize={{
+                base: "40px",
+                md: "56px",
+                lg901: "72px",
+                xl: "100px",
+              }}
+              lineHeight="1"
               color="warmDisplay"
+              css={{
+                transition: "font-size var(--resize-dur) var(--resize-ease)",
+                willChange: "font-size",
+                "@media (prefers-reduced-motion: reduce)": {
+                  transition: "none",
+                },
+              }}
             >
               Modern Ticketing
               <br />
@@ -96,6 +108,7 @@ export function HeroSplit() {
 
           <Text
             maxW="353px"
+            alignSelf={{ lg901: "center" }}
             fontSize="clamp(1rem, 1.5vw, 1.2rem)"
             lineHeight="1.2"
             letterSpacing="-0.02em"

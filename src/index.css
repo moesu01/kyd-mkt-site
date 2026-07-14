@@ -1,3 +1,8 @@
+:root {
+  --resize-dur: 300ms;
+  --resize-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 html {
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
