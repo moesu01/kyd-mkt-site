@@ -12,30 +12,82 @@ const HERO_BG_VIDEO = "/videos/ascii-animation-7.mp4"
 //
 // function HeroMiniFooter() { ... see git history }
 
-export function HeroSplit() {
-  const videoRef = useRef<HTMLVideoElement>(null)
+/**
+ * Safari (especially iOS) requires the muted + playsinline attributes to exist
+ * on the real DOM node before autoplay is allowed. React does not reliably
+ * write `muted` to the DOM (longstanding bug), so we inject the <video> as HTML
+ * and force the muted/playsInline properties before calling play().
+ */
+function HeroBgVideo() {
+  const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const video = videoRef.current
+    const container = containerRef.current
+    if (!container) return
+
+    const video = container.querySelector("video")
     if (!video) return
 
-    const playVideo = () => {
-      video.play().catch(() => {
-        // Autoplay was prevented, likely by browser policy
+    video.defaultMuted = true
+    video.muted = true
+    video.playsInline = true
+    video.setAttribute("muted", "")
+    video.setAttribute("playsinline", "")
+    video.setAttribute("webkit-playsinline", "")
+
+    const tryPlay = () => {
+      void video.play().catch(() => {
+        // Autoplay can still be blocked (e.g. Low Power Mode). Retry on gesture.
       })
     }
 
-    if (video.readyState >= 3) {
-      playVideo()
-    } else {
-      video.addEventListener("canplay", playVideo, { once: true })
+    tryPlay()
+    video.addEventListener("loadeddata", tryPlay)
+    video.addEventListener("canplay", tryPlay)
+
+    const handleGesture = () => {
+      tryPlay()
     }
+    window.addEventListener("touchstart", handleGesture, {
+      once: true,
+      passive: true,
+    })
+    window.addEventListener("click", handleGesture, { once: true })
 
     return () => {
-      video.removeEventListener("canplay", playVideo)
+      video.removeEventListener("loadeddata", tryPlay)
+      video.removeEventListener("canplay", tryPlay)
+      window.removeEventListener("touchstart", handleGesture)
+      window.removeEventListener("click", handleGesture)
     }
   }, [])
 
+  return (
+    <Box
+      ref={containerRef}
+      position="absolute"
+      inset="0"
+      zIndex={0}
+      pointerEvents="none"
+      aria-hidden
+      css={{
+        "& video": {
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          objectPosition: "center",
+        },
+      }}
+      dangerouslySetInnerHTML={{
+        __html: `<video autoplay muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true"><source src="${HERO_BG_VIDEO}" type="video/mp4" /></video>`,
+      }}
+    />
+  )
+}
+
+export function HeroSplit() {
   return (
     <Flex
       as="header"
@@ -51,27 +103,7 @@ export function HeroSplit() {
         },
       }}
     >
-      <Box
-        as="video"
-        ref={videoRef}
-        src={HERO_BG_VIDEO}
-        autoPlay
-        muted
-        loop
-        playsInline
-        // @ts-expect-error webkit-playsinline is required for older Safari versions
-        webkit-playsinline=""
-        preload="auto"
-        aria-hidden
-        position="absolute"
-        inset="0"
-        w="full"
-        h="full"
-        objectFit="cover"
-        objectPosition="center"
-        pointerEvents="none"
-        zIndex={0}
-      />
+      <HeroBgVideo />
 
       {/* <Box
         position="absolute"
