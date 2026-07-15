@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 import { Box, Flex, Heading, Text } from "@chakra-ui/react"
 import { links } from "../content/site-content"
 import { Button } from "./ui/button"
@@ -12,6 +13,29 @@ const HERO_BG_VIDEO = "/videos/ascii-animation-7.mp4"
 // function HeroMiniFooter() { ... see git history }
 
 export function HeroSplit() {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const playVideo = () => {
+      video.play().catch(() => {
+        // Autoplay was prevented, likely by browser policy
+      })
+    }
+
+    if (video.readyState >= 3) {
+      playVideo()
+    } else {
+      video.addEventListener("canplay", playVideo, { once: true })
+    }
+
+    return () => {
+      video.removeEventListener("canplay", playVideo)
+    }
+  }, [])
+
   return (
     <Flex
       as="header"
@@ -29,11 +53,14 @@ export function HeroSplit() {
     >
       <Box
         as="video"
+        ref={videoRef}
         src={HERO_BG_VIDEO}
         autoPlay
         muted
         loop
         playsInline
+        // @ts-expect-error webkit-playsinline is required for older Safari versions
+        webkit-playsinline=""
         preload="auto"
         aria-hidden
         position="absolute"
