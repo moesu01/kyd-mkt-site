@@ -15,6 +15,25 @@
     />
   </head>
   <body>
+    <!-- Outside React so Safari can honor autoplay during HTML parse -->
+    <video
+      id="hero-bg-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      webkit-playsinline
+      preload="auto"
+      aria-hidden="true"
+    >
+      <source src="/videos/ascii-animation-7.mp4" type="video/mp4" />
+    </video>
+    <script>
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        var heroBgVideo = document.getElementById("hero-bg-video")
+        if (heroBgVideo) heroBgVideo.style.display = "none"
+      }
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

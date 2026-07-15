@@ -1,9 +1,9 @@
-import { useEffect, useRef } from "react"
+import type { MouseEvent } from "react"
 import { Box, Flex, Heading, Text } from "@chakra-ui/react"
 import { links } from "../content/site-content"
 import { Button } from "./ui/button"
 
-const HERO_BG_VIDEO = "/videos/ascii-animation-7.mp4"
+const HERO_BG_VIDEO_ID = "hero-bg-video"
 
 // TEMP: hero mini footer hidden — restore imports and uncomment block below
 // import { Link } from "@chakra-ui/react"
@@ -12,82 +12,44 @@ const HERO_BG_VIDEO = "/videos/ascii-animation-7.mp4"
 //
 // function HeroMiniFooter() { ... see git history }
 
-/**
- * Safari (especially iOS) requires the muted + playsinline attributes to exist
- * on the real DOM node before autoplay is allowed. React does not reliably
- * write `muted` to the DOM (longstanding bug), so we inject the <video> as HTML
- * and force the muted/playsInline properties before calling play().
- */
-function HeroBgVideo() {
-  const containerRef = useRef<HTMLDivElement>(null)
+function toggleHeroBgVideo() {
+  const video = document.getElementById(HERO_BG_VIDEO_ID)
+  if (!(video instanceof HTMLVideoElement)) return
+  if (getComputedStyle(video).display === "none") return
 
-  useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
-
-    const video = container.querySelector("video")
-    if (!video) return
-
-    video.defaultMuted = true
-    video.muted = true
-    video.playsInline = true
-    video.setAttribute("muted", "")
-    video.setAttribute("playsinline", "")
-    video.setAttribute("webkit-playsinline", "")
-
-    const tryPlay = () => {
-      void video.play().catch(() => {
-        // Autoplay can still be blocked (e.g. Low Power Mode). Retry on gesture.
-      })
-    }
-
-    tryPlay()
-    video.addEventListener("loadeddata", tryPlay)
-    video.addEventListener("canplay", tryPlay)
-
-    const handleGesture = () => {
-      tryPlay()
-    }
-    window.addEventListener("touchstart", handleGesture, {
-      once: true,
-      passive: true,
+  if (video.paused) {
+    void video.play().catch(() => {
+      // Play can still fail until a user gesture is trusted by the browser.
     })
-    window.addEventListener("click", handleGesture, { once: true })
+    return
+  }
 
-    return () => {
-      video.removeEventListener("loadeddata", tryPlay)
-      video.removeEventListener("canplay", tryPlay)
-      window.removeEventListener("touchstart", handleGesture)
-      window.removeEventListener("click", handleGesture)
-    }
-  }, [])
+  video.pause()
+}
 
-  return (
-    <Box
-      ref={containerRef}
-      position="absolute"
-      inset="0"
-      zIndex={0}
-      pointerEvents="none"
-      aria-hidden
-      css={{
-        "& video": {
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          objectPosition: "center",
-        },
-      }}
-      dangerouslySetInnerHTML={{
-        __html: `<video autoplay muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true"><source src="${HERO_BG_VIDEO}" type="video/mp4" /></video>`,
-      }}
-    />
-  )
+function shouldIgnoreHeroVideoToggle(target: EventTarget | null) {
+  if (!(target instanceof Element)) return true
+
+  // Keep CTAs / real controls working.
+  if (target.closest("a, button, input, textarea, select, [role='button']"))
+    return true
+
+  // Allow selecting / highlighting copy without toggling playback.
+  if (target.closest("h1, h2, h3, h4, h5, h6, p, span, label")) return true
+
+  return false
 }
 
 export function HeroSplit() {
+  const handleHeroClick = (event: MouseEvent<HTMLElement>) => {
+    if (shouldIgnoreHeroVideoToggle(event.target)) return
+
+    const selection = window.getSelection()
+    if (selection && !selection.isCollapsed) return
+
+    toggleHeroBgVideo()
+  }
+
   return (
     <Flex
       as="header"
@@ -95,16 +57,15 @@ export function HeroSplit() {
       direction="column"
       minH="heroMinHeight"
       h="100vh"
-      bg="#000"
+      bg="transparent"
       overflow="hidden"
+      onClick={handleHeroClick}
       css={{
         "@media (prefers-reduced-motion: reduce)": {
-          "& video": { display: "none" },
+          cursor: "default",
         },
       }}
     >
-      <HeroBgVideo />
-
       {/* <Box
         position="absolute"
         inset="0"

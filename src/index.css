@@ -8,6 +8,32 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Let the static hero video (outside React) show through the first viewport.
+   Body keeps pageBg as the page fallback; Chakra also paints #root pageBg. */
+#root {
+  background: transparent !important;
+  position: relative;
+  z-index: 1;
+}
+
+#hero-bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #hero-bg-video {
+    display: none !important;
+  }
+}
+
 @keyframes feature-progress-fill {
   from {
     transform: scaleX(0);
