@@ -114,11 +114,11 @@ export function AlternateNav() {
       position="relative"
       w="full"
       maxW="container"
-      bg="#000"
+      bg="frameBg"
       px={{ base: "4", lg901: "5" }}
       py="3"
       borderRadius="16px"
-      boxShadow="0 0 0 1px rgba(255, 255, 255, 0.08)"
+      boxShadow="frame"
     >
       <Flex align="center" justify="space-between" w="full">
         <LogoLink />

@@ -18,7 +18,6 @@ const dwellMs = 6000
 const iconEase = "cubic-bezier(0.2, 0, 0, 1)"
 const visualBgEnterDurationMs = 300
 const featureCount = features.length
-const featureBodyMinH = "7.5rem"
 
 const featureVisuals: Record<string, string> = {
   Unscalpable: unscalpableVisual,
@@ -146,22 +145,30 @@ function PlatformInteractiveHeader() {
       flex={{ base: "initial", lg901: "1" }}
       minH={{ base: "auto", lg901: "10" }}
       minW="0"
+      w="full"
     >
       <PlatformSectionLabel label="Features" headingAs="p" />
-      <Flex flex="1" align="center" minH="0">
+      <Flex flex="1" align="center" minH="0" minW="0" w="full">
         <Heading
           as="h2"
-          pt={{ base: "6", lg901: 0 }}
+          py="3"
+          w="full"
+          maxW="100%"
           color="warmDisplay"
           fontFamily="cossetteTitre"
-          fontSize="54px"
+          fontSize={{
+            base: "32px",
+            md: "40px",
+            lg901: "clamp(2rem, 2.6vw, 2.75rem)",
+            xl: "clamp(2.25rem, 3.2vw, 3.375rem)",
+          }}
           fontWeight="700"
           lineHeight="1.1"
           letterSpacing="0"
           textWrap="balance"
         >
           Ticketing,
-          <br />
+          <Box as="br" display={{ base: "none", lg: "inline" }} />
           built for control.
         </Heading>
       </Flex>
@@ -318,14 +325,14 @@ function FeatureListItem({
           transitionTimingFunction: iconEase,
           opacity: isActive ? 1 : 0.75,
           _hover: { opacity: 1 },
-          _active: motionless ? undefined : { transform: "scale(0.98)" },
+          _active: motionless ? undefined : { transform: "scale(0.96)" },
         }}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
       >
         {title}
       </chakra.button>
-      <Box minH={isActive ? featureBodyMinH : 0} overflow="hidden">
+      <Box overflow="hidden">
         {isActive ? (
           <Box
             key={contentKey}
@@ -342,12 +349,12 @@ function FeatureListItem({
             <Text
               as="p"
               fontFamily="sans"
-              fontSize="14px"
+              fontSize={{ base: "13px", lg: "14px" }}
               lineHeight="1.4"
               letterSpacing="0"
               color="warmMuted"
               textWrap="pretty"
-              pb="2"
+              pb={{ base: "1rem", lg: "2rem" }}
             >
               {body}
             </Text>
@@ -589,7 +596,7 @@ export function FeaturesSectionInteractive() {
         >
           <Grid
             templateColumns={{ base: "1fr", lg901: "2fr 3fr" }}
-            gap={{ base: "12", lg901: "16" }}
+            gap={{ base: "6", lg901: "6" }}
             alignItems="stretch"
           >
           <Flex
