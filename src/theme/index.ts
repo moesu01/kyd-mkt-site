@@ -6,10 +6,18 @@ import {
 } from "@chakra-ui/react"
 import { breakpoints, colors, fonts, shadows, sizes } from "./tokens"
 
-const buttonEase = "cubic-bezier(0.2, 0, 0, 1)"
+const buttonEase = "cubic-bezier(0.33, 1, 0.68, 1)"
+const buttonDuration = "220ms"
 
 const shadowBorder = "0 0 0 1px rgba(255, 255, 255, 0.1)"
-const shadowBorderHover = "0 0 0 1px rgba(255, 255, 255, 0.13)"
+
+const primaryShadowRest =
+  "0 2px 10px rgba(0, 0, 0, 0), inset 0 1px 0 rgba(255, 255, 255, 0)"
+const primaryShadowHover =
+  "0 2px 10px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.28)"
+
+const outlineAccentShadowRest = "inset 0 0 0 1px rgba(255, 255, 255, 0)"
+const outlineAccentShadowHover = "inset 0 0 0 1px rgba(255, 255, 255, 0.12)"
 
 const buttonFocusVisible = {
   outline: "2px solid",
@@ -27,10 +35,24 @@ export const buttonRecipe = defineRecipe({
     fontFamily: "sans",
     border: "1px solid",
     borderColor: "transparent",
+    cursor: "pointer",
+    transform: "scale(1)",
+    filter: "brightness(1)",
     transitionProperty:
       "transform, filter, border-color, color, background-color, box-shadow",
-    transitionDuration: "150ms",
+    transitionDuration: buttonDuration,
     transitionTimingFunction: buttonEase,
+    "& .cta-arrow": {
+      display: "inline-block",
+      transitionProperty: "transform",
+      transitionDuration: buttonDuration,
+      transitionTimingFunction: buttonEase,
+    },
+    _hover: {
+      "& .cta-arrow": {
+        transform: "translateX(3px)",
+      },
+    },
     _focusVisible: buttonFocusVisible,
     _active: {
       transform: "scale(0.96)",
@@ -43,14 +65,16 @@ export const buttonRecipe = defineRecipe({
         color: "pageBg",
         fontWeight: "semibold",
         borderColor: "transparent",
+        boxShadow: primaryShadowRest,
         _hover: {
+          transform: "scale(1.02)",
           filter: "brightness(1.06)",
-          boxShadow:
-            "0 1px 2px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
+          boxShadow: primaryShadowHover,
         },
         _active: {
+          transform: "scale(0.96)",
           filter: "brightness(1)",
-          boxShadow: "none",
+          boxShadow: primaryShadowRest,
         },
       },
       outline: {
@@ -62,7 +86,8 @@ export const buttonRecipe = defineRecipe({
         _hover: {
           bg: "accent",
           color: "accentFg",
-          boxShadow: shadowBorderHover,
+          boxShadow:
+            "0 0 0 1px rgba(255, 255, 255, 0.18), 0 2px 8px rgba(0, 0, 0, 0.2)",
         },
         _active: {
           bg: "accent",
@@ -72,17 +97,23 @@ export const buttonRecipe = defineRecipe({
         },
       },
       "outline-accent": {
-        bg: "transparent",
+        bg: "rgba(0, 0, 0, 0.63)",
         borderColor: "accent",
         color: "fg",
         fontWeight: "medium",
+        boxShadow: outlineAccentShadowRest,
+        backdropFilter: "blur(5px)",
+        WebkitBackdropFilter: "blur(5px)",
+        filter: "none",
         _hover: {
           borderColor: "fg",
           color: "fg",
-          bg: "rgba(255, 255, 255, 0.06)",
+          bg: "rgba(0, 0, 0, 0.72)",
+          boxShadow: outlineAccentShadowHover,
         },
         _active: {
-          bg: "rgba(255, 255, 255, 0.1)",
+          bg: "rgba(0, 0, 0, 0.78)",
+          boxShadow: outlineAccentShadowRest,
         },
       },
       ghost: {
@@ -92,7 +123,7 @@ export const buttonRecipe = defineRecipe({
         fontWeight: "medium",
         _hover: {
           color: "fg",
-          bg: "rgba(255, 255, 255, 0.06)",
+          bg: "rgba(255, 255, 255, 0.08)",
         },
       },
       dark: {
@@ -101,8 +132,8 @@ export const buttonRecipe = defineRecipe({
         fontWeight: "semibold",
         borderColor: "transparent",
         _hover: {
-          bg: "rgba(255, 255, 255, 0.14)",
-          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.25)",
+          bg: "rgba(255, 255, 255, 0.16)",
+          boxShadow: "0 2px 10px rgba(0, 0, 0, 0.28)",
         },
         _active: {
           boxShadow: "none",
@@ -116,7 +147,7 @@ export const buttonRecipe = defineRecipe({
         _hover: {
           borderColor: "fg",
           color: "fg",
-          bg: "rgba(255, 255, 255, 0.06)",
+          bg: "rgba(255, 255, 255, 0.08)",
         },
       },
     },
@@ -227,7 +258,7 @@ const config = defineConfig({
       touringArtistName: {
         value: {
           fontFamily: "cossetteTitre",
-          fontSize: { base: "28px", lg901: "36px" },
+          fontSize: { base: "28px", lg901: "29px", xl1048: "36px" },
           fontWeight: "normal",
           lineHeight: "1",
           textTransform: "uppercase",
@@ -237,7 +268,7 @@ const config = defineConfig({
       touringCategory: {
         value: {
           fontFamily: "cossetteTexte",
-          fontSize: { base: "18px", lg901: "24px" },
+          fontSize: { base: "18px", lg901: "19px", xl1048: "24px" },
           fontWeight: "normal",
           lineHeight: "1",
           textTransform: "uppercase",
@@ -257,7 +288,7 @@ const config = defineConfig({
       touringShowsLink: {
         value: {
           fontFamily: "sans",
-          fontSize: { base: "16px", lg901: "20px" },
+          fontSize: { base: "16px", lg901: "16px", xl1048: "20px" },
           fontWeight: "medium",
           lineHeight: "1",
           letterSpacing: "-0.5px",

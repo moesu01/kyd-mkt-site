@@ -16,20 +16,82 @@ html {
   z-index: 1;
 }
 
+/* Matches tokens.colors.surface — under the video so the bottom fade reveals it */
+#hero-bg-surface {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  min-height: 620px;
+  background: oklch(0.12 0 0);
+  z-index: 0;
+  pointer-events: none;
+}
+
 #hero-bg-video {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
+  min-height: 620px;
   object-fit: cover;
   object-position: center;
   z-index: 0;
   pointer-events: none;
+  /* Tight fade at the bottom into the surface plate / Backed By section */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 calc(100% - 56px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 calc(100% - 56px),
+    transparent 100%
+  );
 }
 
 @media (prefers-reduced-motion: reduce) {
   #hero-bg-video {
+    display: none !important;
+  }
+}
+
+/* Hidden at body until Footer mounts them (avoids a flash at top). */
+body > #footer-bg-surface,
+body > #footer-bg-video {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Warm dark plate under the dimmed footer video (Figma #15100d). */
+#footer-bg-surface {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: #15100d;
+}
+
+#footer-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.24;
+  mix-blend-mode: screen;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #footer-bg-video {
     display: none !important;
   }
 }

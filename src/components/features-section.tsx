@@ -1,7 +1,7 @@
 import { Box, Flex, Grid, Text } from "@chakra-ui/react"
 import { features, links } from "../content/site-content"
 import { FeatureCard } from "./feature-card"
-import { Button } from "./ui/button"
+import { Button, CtaArrow } from "./ui/button"
 import { Container } from "./ui/container"
 import { SectionHeading } from "./ui/section-heading"
 
@@ -66,7 +66,12 @@ export function FeaturesSection() {
         </Flex>
 
         <Flex justify="center" mt="12">
-          <Button href={links.getInTouch}>Get in touch →</Button>
+          <Button href={links.getInTouch}>
+            <span>
+              Get in touch
+              <CtaArrow />
+            </span>
+          </Button>
         </Flex>
       </Container>
     </Box>

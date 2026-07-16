@@ -1,7 +1,7 @@
 import type { MouseEvent } from "react"
 import { Box, Flex, Heading, Text } from "@chakra-ui/react"
 import { links } from "../content/site-content"
-import { Button } from "./ui/button"
+import { Button, CtaArrow } from "./ui/button"
 
 const HERO_BG_VIDEO_ID = "hero-bg-video"
 
@@ -87,17 +87,18 @@ export function HeroSplit() {
           maxW="container"
           mx="auto"
           direction={{ base: "column", lg901: "row" }}
-          align={{ base: "flex-start", lg901: "flex-end" }}
+          align={{ base: "center", lg901: "flex-end" }}
           justify="space-between"
           gap={{ base: "8", lg901: "12" }}
+          textAlign={{ base: "center", lg901: "left" }}
         >
-          <Box flexShrink={0}>
+          <Box flexShrink={0} w={{ base: "full", lg901: "auto" }}>
             <Heading
               as="h1"
               fontFamily="cossetteTitre"
               fontWeight="bold"
               fontSize={{
-                base: "40px",
+                base: "52px",
                 md: "56px",
                 lg901: "72px",
                 xl: "100px",
@@ -116,9 +117,18 @@ export function HeroSplit() {
               <br />
               Built for Venues
             </Heading>
-            <Flex flexWrap="wrap" align="center" gap="6" mt="6">
+            <Flex
+              flexWrap="wrap"
+              align="center"
+              justify={{ base: "center", lg901: "flex-start" }}
+              gap="6"
+              mt="6"
+            >
               <Button href={links.getInTouch} size="hero">
-                Get in touch →
+                <span>
+                  Get in touch
+                  <CtaArrow />
+                </span>
               </Button>
               <Button href={links.tickets} variant="outline-accent" size="hero">
                 Find my tickets
@@ -127,9 +137,9 @@ export function HeroSplit() {
           </Box>
 
           <Text
-            maxW="353px"
-            alignSelf={{ lg901: "center" }}
-            fontSize="clamp(1rem, 1.5vw, 1.2rem)"
+            maxW={{ base: "full", lg901: "353px" }}
+            alignSelf={{ base: "center", lg901: "center" }}
+            fontSize={{ base: "18px", lg901: "clamp(1rem, 1.5vw, 1.2rem)" }}
             lineHeight="1.2"
             letterSpacing="-0.02em"
             color="fg"

@@ -34,9 +34,20 @@ function ExternalLinkArrow({ isHovered }: { isHovered: boolean }) {
       transitionTimingFunction={rowEase}
       aria-hidden
     >
-      <Image src="/icons/external-link-arrow.svg" alt="" w="13.828px" h="12px" />
+      <Image
+        src="/icons/external-link-arrow.svg"
+        alt=""
+        w={{ base: "13.828px", lg901: "11px", xl1048: "13.828px" }}
+        h={{ base: "12px", lg901: "10px", xl1048: "12px" }}
+      />
     </Box>
   )
+}
+
+function scalePxSize(size: string, factor: number) {
+  const match = /^([\d.]+)px$/.exec(size)
+  if (!match) return size
+  return `${Math.round(parseFloat(match[1]) * factor)}px`
 }
 
 function TouringArtistRow({
@@ -52,6 +63,8 @@ function TouringArtistRow({
 }: TouringArtistRowProps) {
   const [isHovered, setIsHovered] = useState(false)
   const isPlaceholderLink = showsHref === "#"
+  const compactLogoMaxH = logoMaxH ? scalePxSize(logoMaxH, 0.8) : undefined
+  const compactLogoMaxW = logoMaxW ? scalePxSize(logoMaxW, 0.8) : undefined
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (isPlaceholderLink) event.preventDefault()
@@ -62,26 +75,34 @@ function TouringArtistRow({
       borderBottom="3px solid"
       borderColor="rgba(255, 255, 255, 0.1)"
       py={{ base: "4", lg901: "3" }}
-      minH={{ base: "auto", lg901: "100px" }}
+      minH={{ base: "auto", lg901: "80px", xl1048: "100px" }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <Grid
-        templateColumns={{ base: "1fr", lg901: "minmax(0, 500px) 1fr 1fr" }}
+        templateColumns={{
+          base: "1fr",
+          lg901: "minmax(0, 400px) 1fr 1fr",
+          xl1048: "minmax(0, 500px) 1fr 1fr",
+        }}
         alignItems="center"
         gap={{ base: "4", lg901: 0 }}
-        minH={{ base: "auto", lg901: "76px" }}
+        minH={{ base: "auto", lg901: "61px", xl1048: "76px" }}
       >
         <Flex
           align="center"
-          gap={{ base: "4", lg901: "6" }}
+          gap={{ base: "4", lg901: "5", xl1048: "6" }}
           minW="0"
           flexWrap={{ base: "wrap", lg901: "nowrap" }}
         >
           <Text
             as="span"
             textStyle="touringArtistName"
-            flex={{ base: "1 1 auto", lg901: "0 0 260px" }}
+            flex={{
+              base: "1 1 auto",
+              lg901: "0 0 208px",
+              xl1048: "0 0 260px",
+            }}
             minW="0"
             wordBreak="break-word"
           >
@@ -94,9 +115,25 @@ function TouringArtistRow({
               alignItems="center"
               justifyContent="flex-start"
               position="relative"
-              h={logoMaxH}
-              w={logoCrop || logoObjectFit === "cover" ? logoMaxW : undefined}
-              maxW={logoMaxW}
+              h={{
+                base: logoMaxH,
+                lg901: compactLogoMaxH,
+                xl1048: logoMaxH,
+              }}
+              w={
+                logoCrop || logoObjectFit === "cover"
+                  ? {
+                      base: logoMaxW,
+                      lg901: compactLogoMaxW,
+                      xl1048: logoMaxW,
+                    }
+                  : undefined
+              }
+              maxW={{
+                base: logoMaxW,
+                lg901: compactLogoMaxW,
+                xl1048: logoMaxW,
+              }}
               overflow={logoCrop || logoObjectFit === "cover" ? "hidden" : undefined}
             >
               {logoCrop ? (
@@ -115,9 +152,31 @@ function TouringArtistRow({
                 <Image
                   src={logoSrc}
                   alt=""
-                  h={logoMaxH}
-                  w={logoObjectFit === "cover" ? logoMaxW : (logoMaxW ?? "auto")}
-                  maxW={logoMaxW}
+                  h={{
+                    base: logoMaxH,
+                    lg901: compactLogoMaxH,
+                    xl1048: logoMaxH,
+                  }}
+                  w={
+                    logoObjectFit === "cover"
+                      ? {
+                          base: logoMaxW,
+                          lg901: compactLogoMaxW,
+                          xl1048: logoMaxW,
+                        }
+                      : (logoMaxW
+                          ? {
+                              base: logoMaxW,
+                              lg901: compactLogoMaxW,
+                              xl1048: logoMaxW,
+                            }
+                          : "auto")
+                  }
+                  maxW={{
+                    base: logoMaxW,
+                    lg901: compactLogoMaxW,
+                    xl1048: logoMaxW,
+                  }}
                   objectFit={logoObjectFit}
                   flexShrink={0}
                 />

@@ -343,6 +343,18 @@ export function Nav() {
           flexShrink={0}
           textDecoration="none"
           aria-label="KYD Labs home"
+          css={{
+            transitionProperty: "opacity",
+            transitionDuration: "150ms",
+            transitionTimingFunction: iconEase,
+            _hover: { opacity: 0.8 },
+            _active: { opacity: 0.7 },
+            _focusVisible: {
+              outline: "2px solid",
+              outlineColor: "rgba(255, 255, 255, 0.45)",
+              outlineOffset: "2px",
+            },
+          }}
         >
           <Image
             src="/kyd-labs-logo.svg"
@@ -367,14 +379,21 @@ export function Nav() {
             bg="transparent"
             cursor="pointer"
             p="0"
+            borderRadius="md"
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMenuOpen}
             aria-controls="nav-menu-panel"
             css={{
-              transitionProperty: "transform",
+              transitionProperty: "transform, background-color",
               transitionDuration: "150ms",
-              transitionTimingFunction: "ease-out",
-              _active: { transform: "scale(0.96)" },
+              transitionTimingFunction: iconEase,
+              _hover: { bg: "rgba(255, 255, 255, 0.1)" },
+              _active: { transform: "scale(0.96)", bg: "rgba(255, 255, 255, 0.14)" },
+              _focusVisible: {
+                outline: "2px solid",
+                outlineColor: "rgba(255, 255, 255, 0.45)",
+                outlineOffset: "2px",
+              },
             }}
             onClick={handleToggleMenu}
           >

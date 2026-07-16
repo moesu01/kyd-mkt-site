@@ -66,6 +66,7 @@ export const sizes = {
 
 export const breakpoints = {
   lg901: "901px",
+  xl1048: "1048px",
 }
 
 /** Dark-mode ring shadow — use with boxShadow, not colors. */

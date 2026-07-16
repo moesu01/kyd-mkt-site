@@ -3,6 +3,11 @@ import { useState } from "react"
 import { navMenuLinks } from "../content/site-content"
 
 const interactionEase = "cubic-bezier(0.2, 0, 0, 1)"
+const navShellRadius = 16
+const navMenuButtonRadius = 8
+const navGlassBg = "oklch(0.15 0.01 63.9 / 0.65)"
+const navMenuGlassBg = "oklch(0.15 0.01 63.9 / 0.8)"
+const navGlassFilter = "blur(8px) saturate(4)"
 
 const navLinkStyles = {
   display: "inline-flex",
@@ -98,6 +103,44 @@ function LogoLink() {
   )
 }
 
+function getMobileMenuPanelMotion(isOpen: boolean) {
+  return {
+    transform: isOpen ? "translateY(0)" : "translateY(-12px)",
+    visibility: isOpen ? "visible" : "hidden",
+    pointerEvents: isOpen ? "auto" : "none",
+    transitionProperty: "transform, visibility",
+    // Transform runs immediately; visibility waits for the exit to finish.
+    transitionDuration: isOpen ? "220ms, 0ms" : "150ms, 0ms",
+    transitionDelay: isOpen ? "0ms, 0ms" : "0ms, 150ms",
+    transitionTimingFunction: isOpen
+      ? `${interactionEase}, linear`
+      : "ease-in, linear",
+  } as const
+}
+
+function getMobileMenuItemMotion({
+  index,
+  isOpen,
+  totalItems,
+}: {
+  index: number
+  isOpen: boolean
+  totalItems: number
+}) {
+  const enterDelay = `${index * 80}ms`
+  const exitDelay = `${Math.max(totalItems - index - 1, 0) * 30}ms`
+
+  return {
+    opacity: isOpen ? 1 : 0,
+    transform: isOpen ? "translateY(0)" : "translateY(12px)",
+    filter: isOpen ? "blur(0px)" : "blur(4px)",
+    transitionProperty: "opacity, transform, filter",
+    transitionDuration: isOpen ? "220ms" : "150ms",
+    transitionTimingFunction: isOpen ? interactionEase : "ease-in",
+    transitionDelay: isOpen ? enterDelay : exitDelay,
+  } as const
+}
+
 export function AlternateNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -110,119 +153,139 @@ export function AlternateNav() {
   }
 
   return (
-    <Box
-      position="relative"
-      w="full"
-      maxW="container"
-      bg="frameBg"
-      px={{ base: "4", lg901: "5" }}
-      py="3"
-      borderRadius="16px"
-      boxShadow="frame"
-    >
-      <Flex align="center" justify="space-between" w="full">
-        <LogoLink />
+    <Box position="relative" w="full" maxW="container">
+      <Box
+        bg={navGlassBg}
+        backdropFilter={navGlassFilter}
+        css={{ WebkitBackdropFilter: navGlassFilter }}
+        pl={{ base: "4", lg901: "5" }}
+        pr="3"
+        py="3"
+        borderRadius={`${navShellRadius}px`}
+        boxShadow="frame"
+      >
+        <Flex align="center" justify="space-between" w="full">
+          <LogoLink />
 
-        <Flex
-          as="nav"
-          display={{ base: "none", lg901: "flex" }}
-          align="center"
-          gap="2"
-          aria-label="Page sections"
-        >
-          {navMenuLinks.map((item, index) => {
-            const isLast = index === navMenuLinks.length - 1
+          <Flex
+            as="nav"
+            display={{ base: "none", lg901: "flex" }}
+            align="center"
+            gap="2"
+            aria-label="Page sections"
+          >
+            {navMenuLinks.map((item, index) => {
+              const isLast = index === navMenuLinks.length - 1
 
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                css={{
-                  ...navLinkStyles,
-                  ...(isLast ? { pr: "0" } : {}),
-                }}
-              >
-                {item.label}
-              </Link>
-            )
-          })}
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  css={{
+                    ...navLinkStyles,
+                    ...(isLast ? { pr: "0" } : {}),
+                  }}
+                >
+                  {item.label}
+                </Link>
+              )
+            })}
+          </Flex>
+
+          <chakra.button
+            type="button"
+            display={{ base: "flex", lg901: "none" }}
+            alignItems="center"
+            justifyContent="center"
+            minW="10"
+            minH="10"
+            p="0"
+            border="none"
+            borderRadius={`${navMenuButtonRadius}px`}
+            bg="oklch(0.178 0.01 63.9 / 0.25)"
+            color="fg"
+            cursor="pointer"
+            boxShadow="0 0 0 1px rgba(255, 255, 255, 0.1)"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
+            aria-controls="alternate-nav-menu"
+            css={{
+              transitionProperty: "background-color, box-shadow, transform",
+              transitionDuration: "180ms",
+              transitionTimingFunction: interactionEase,
+              _hover: {
+                bg: "oklch(0.178 0.01 63.9 / 0.4)",
+                boxShadow: "0 0 0 1px rgba(255, 255, 255, 0.16)",
+              },
+              _active: { transform: "scale(0.96)" },
+              _focusVisible: {
+                outline: "2px solid",
+                outlineColor: "rgba(255, 255, 255, 0.45)",
+                outlineOffset: "2px",
+              },
+            }}
+            onClick={handleToggleMenu}
+          >
+            <MenuIcon isOpen={isMenuOpen} />
+          </chakra.button>
         </Flex>
+      </Box>
 
-        <chakra.button
-          type="button"
-          display={{ base: "flex", lg901: "none" }}
-          alignItems="center"
-          justifyContent="center"
-          minW="10"
-          minH="10"
-          p="0"
-          border="none"
-          borderRadius="4px"
-          bg="pageBg"
-          color="fg"
-          cursor="pointer"
-          boxShadow="0 0 0 1px rgba(255, 255, 255, 0.08)"
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={isMenuOpen}
-          aria-controls="alternate-nav-menu"
-          css={{
-            transitionProperty: "background-color, box-shadow, transform",
-            transitionDuration: "180ms",
-            transitionTimingFunction: interactionEase,
-            _hover: {
-              bg: "surfaceRaised",
-              boxShadow: "0 0 0 1px rgba(255, 255, 255, 0.16)",
-            },
-            _active: { transform: "scale(0.96)" },
-            _focusVisible: {
-              outline: "2px solid",
-              outlineColor: "rgba(255, 255, 255, 0.45)",
-              outlineOffset: "2px",
-            },
-          }}
-          onClick={handleToggleMenu}
-        >
-          <MenuIcon isOpen={isMenuOpen} />
-        </chakra.button>
-      </Flex>
-
-      <Flex
-        id="alternate-nav-menu"
-        as="nav"
-        display={{ base: "flex", lg901: "none" }}
-        direction="column"
-        gap="2"
+      {/*
+        Menu is a sibling of the glass shell (not nested inside backdrop-filter).
+        Opacity stays off the glass layer so backdrop blur keeps working.
+      */}
+      <Box
+        display={{ base: "block", lg901: "none" }}
         position="absolute"
         top="calc(100% + 8px)"
         left="0"
         right="0"
-        p="2"
-        bg="pageBg"
-        borderRadius="8px"
-        boxShadow="0 0 0 1px rgba(255, 255, 255, 0.08), 0 12px 32px rgba(0, 0, 0, 0.28)"
-        opacity={isMenuOpen ? 1 : 0}
-        transform={isMenuOpen ? "translateY(0)" : "translateY(-8px)"}
-        visibility={isMenuOpen ? "visible" : "hidden"}
-        pointerEvents={isMenuOpen ? "auto" : "none"}
-        transitionProperty="opacity, transform, visibility"
-        transitionDuration="200ms"
-        transitionTimingFunction={interactionEase}
-        aria-label="Mobile page sections"
-        aria-hidden={!isMenuOpen}
+        zIndex={1}
+        css={getMobileMenuPanelMotion(isMenuOpen)}
       >
-        {navMenuLinks.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            w="full"
-            tabIndex={isMenuOpen ? 0 : -1}
-            css={navLinkStyles}
-            onClick={handleCloseMenu}
-          >
-            {item.label}
-          </Link>
-        ))}
-      </Flex>
+        <Flex
+          id="alternate-nav-menu"
+          as="nav"
+          direction="column"
+          gap="2"
+          p="2"
+          bg={navMenuGlassBg}
+          backdropFilter={navGlassFilter}
+          css={{ WebkitBackdropFilter: navGlassFilter }}
+          borderRadius={`${navShellRadius}px`}
+          boxShadow="frame"
+          aria-label="Mobile page sections"
+          aria-hidden={!isMenuOpen}
+        >
+          {navMenuLinks.map((item, index) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              w="full"
+              tabIndex={isMenuOpen ? 0 : -1}
+              css={{
+                ...navLinkStyles,
+                fontSize: "18px",
+                minH: "12",
+                px: "4",
+                py: "3",
+                // Link hover/active transform must not fight the enter motion.
+                transitionProperty:
+                  "opacity, transform, filter, background-color",
+                ...getMobileMenuItemMotion({
+                  index,
+                  isOpen: isMenuOpen,
+                  totalItems: navMenuLinks.length,
+                }),
+              }}
+              onClick={handleCloseMenu}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </Flex>
+      </Box>
     </Box>
   )
 }

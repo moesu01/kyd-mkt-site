@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion } from "motion/react"
 
 const FRAME_COUNT = 48
-const FRAME_DURATION_MS = 150
+const PIXELS_PER_FRAME = 12
 const SCALE_POP_MS = 75
 const EXIT_FADE_MS = 50
 const FRAME_BASE_PATH = "/anim/kyd%20logo%20loop"
@@ -30,6 +30,7 @@ interface AboutLogoLoopProps {
 }
 
 export function AboutLogoLoop({ className }: AboutLogoLoopProps) {
+  const containerRef = useRef<HTMLDivElement>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
@@ -55,11 +56,44 @@ export function AboutLogoLoop({ className }: AboutLogoLoopProps) {
   useEffect(() => {
     if (prefersReducedMotion || LOGO_LOOP_FRAMES.length <= 1) return
 
-    const intervalId = window.setInterval(() => {
-      setCurrentIndex((previous) => (previous + 1) % LOGO_LOOP_FRAMES.length)
-    }, FRAME_DURATION_MS)
+    const element = containerRef.current
+    if (!element) return
 
-    return () => window.clearInterval(intervalId)
+    let isInView = false
+    let lastScrollY = window.scrollY
+    let accumulatedPx = 0
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isInView = entry?.isIntersecting ?? false
+        lastScrollY = window.scrollY
+      },
+      { threshold: 0.15 },
+    )
+    observer.observe(element)
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+      const delta = Math.abs(scrollY - lastScrollY)
+      lastScrollY = scrollY
+
+      if (!isInView || delta === 0) return
+
+      accumulatedPx += delta
+      const steps = Math.floor(accumulatedPx / PIXELS_PER_FRAME)
+      if (steps <= 0) return
+
+      accumulatedPx -= steps * PIXELS_PER_FRAME
+      setCurrentIndex(
+        (previous) => (previous + steps) % LOGO_LOOP_FRAMES.length,
+      )
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      observer.disconnect()
+    }
   }, [prefersReducedMotion])
 
   const currentSrc = LOGO_LOOP_FRAMES[currentIndex] ?? LOGO_LOOP_FRAMES[0]
@@ -68,6 +102,7 @@ export function AboutLogoLoop({ className }: AboutLogoLoopProps) {
   if (prefersReducedMotion) {
     return (
       <div
+        ref={containerRef}
         className={className}
         style={{
           position: "relative",
@@ -94,6 +129,7 @@ export function AboutLogoLoop({ className }: AboutLogoLoopProps) {
 
   return (
     <div
+      ref={containerRef}
       className={className}
       style={{
         position: "relative",

@@ -1,6 +1,6 @@
 import { Box, Flex, Grid, Text } from "@chakra-ui/react"
 import { links, stats } from "../content/site-content"
-import { Button } from "./ui/button"
+import { Button, CtaArrow } from "./ui/button"
 import { Container } from "./ui/container"
 import { SectionHeading } from "./ui/section-heading"
 
@@ -53,6 +53,7 @@ export function VenuesSection() {
     <Box
       as="section"
       id="venues"
+      bg="pageBg"
       px={{ base: "6", lg901: "12" }}
       pt={{ base: "20", lg901: "28" }}
       pb={{ base: "20", lg901: "28" }}
@@ -97,7 +98,10 @@ export function VenuesSection() {
                 size="hero"
                 css={{ fontWeight: "bold" }}
               >
-                Get in touch →
+                <span>
+                  Get in touch
+                  <CtaArrow />
+                </span>
               </Button>
             </Box>
           </Flex>

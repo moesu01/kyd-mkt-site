@@ -30,6 +30,16 @@ type ButtonProps = ButtonAsButton | ButtonAsLink
 
 const ChakraButton = chakra("button")
 const ChakraLink = chakra("a")
+const ChakraSpan = chakra("span")
+
+/** Trailing arrow that nudges on button hover via `.cta-arrow` in the recipe. */
+export function CtaArrow() {
+  return (
+    <ChakraSpan className="cta-arrow" aria-hidden ms="0.2em">
+      →
+    </ChakraSpan>
+  )
+}
 
 export function Button({
   children,

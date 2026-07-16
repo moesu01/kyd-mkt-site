@@ -10,7 +10,7 @@ export function AboutSection() {
     <Box
       as="section"
       id="about"
-      bg="transparent"
+      bg="pageBg"
       px={{ base: "6", lg901: "12" }}
       py={{ base: "20", lg901: "28" }}
     >

@@ -574,11 +574,12 @@ export function FeaturesSectionInteractive() {
     <Box
       as="section"
       id="platform-interactive"
+      bg="pageBg"
       px={{ base: "6", lg901: "12" }}
       py={{ base: "20", lg901: "28" }}
     >
       <Flex direction="column" gap="12" w="full">
-        <Box w="full" borderTop="1px solid" borderColor="border">
+        <Box w="full">
           <Container pt={{ base: "3", lg901: "16px" }}>
             <PlatformSectionLabel label="The KYD Platform" />
           </Container>

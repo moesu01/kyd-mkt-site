@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react"
 import { links } from "../content/site-content"
-import { Button } from "./ui/button"
+import { Button, CtaArrow } from "./ui/button"
 import { Container } from "./ui/container"
 import { SectionHeading } from "./ui/section-heading"
 
@@ -46,7 +46,10 @@ export function FanSection() {
 
           <Flex flexShrink={0} align="center">
             <Button href={links.tickets} variant="outline">
-              Find My Tickets →
+              <span>
+                Find My Tickets
+                <CtaArrow />
+              </span>
             </Button>
           </Flex>
         </Flex>

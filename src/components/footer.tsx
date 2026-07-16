@@ -1,263 +1,287 @@
-import { Box, Flex, Link, Text } from "@chakra-ui/react"
-import { useLayoutEffect, useRef, useState } from "react"
-import {
-  footerLegalLinks,
-  footerPrimaryLinks,
-} from "../content/site-content"
-import { colors } from "../theme/tokens"
+import { Box, Flex, Image, Link, Text } from "@chakra-ui/react"
+import { useLayoutEffect, useRef } from "react"
+import { footerLegalLinks, links } from "../content/site-content"
+import { Button, CtaArrow } from "./ui/button"
+
+const FOOTER_BG_SURFACE_ID = "footer-bg-surface"
+const FOOTER_BG_VIDEO_ID = "footer-bg-video"
 
 const footerLinkStyles = {
   fontSize: "13px",
   lineHeight: "19.5px",
   color: "warmMuted",
+  bg: "#000",
+  borderRadius: "2px",
+  px: "8px",
+  py: "4px",
   textDecoration: "none",
-  transitionProperty: "colors",
+  transitionProperty: "color, background-color",
   transitionDuration: "150ms",
-  _hover: { color: "warmSoft" },
+  transitionTimingFunction: "cubic-bezier(0.2, 0, 0, 1)",
+  _hover: { color: "fg", bg: "rgba(0, 0, 0, 0.82)" },
+  _active: { color: "fg", transform: "scale(0.96)" },
+  _focusVisible: {
+    outline: "2px solid",
+    outlineColor: "rgba(255, 255, 255, 0.45)",
+    outlineOffset: "2px",
+  },
 } as const
 
-const footerBgGradient = `linear-gradient(180deg, ${colors.surface.value} 0%, ${colors.surface.value} 2.57%, #4E0000 63.93%, #7B0000 100%)`
+function mountFooterBackground({ footerElement }: { footerElement: HTMLElement }) {
+  const surface = document.getElementById(FOOTER_BG_SURFACE_ID)
+  const video = document.getElementById(FOOTER_BG_VIDEO_ID)
 
-const footerWordmarkGradient =
-  "linear-gradient(180deg, #D99F71 0%, #A85616 32.69%, #6A0803 67.31%, #300402 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.91), rgba(0, 0, 0, 0.91)), linear-gradient(180deg, #F9E1CD -11.68%, #B1774E 68.17%, #891913 106.95%)"
+  if (surface) footerElement.prepend(surface)
 
-const WORDMARK_TEXT = "KYD Labs"
-const WORDMARK_PULL_DOWN = "20px"
+  if (video instanceof HTMLVideoElement) {
+    if (surface?.parentElement === footerElement) surface.after(video)
+    else footerElement.prepend(video)
 
-const footerWordmarkGrain = `url("data:image/svg+xml,${encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>',
-)}")`
-
-interface WordmarkLayout {
-  marginLeft: number
-  width: number
-}
-
-interface GradientLayout {
-  footerHeight: number
-  wordmarkOffset: number
-}
-
-function fitFontSizeToWidth({
-  textElement,
-  targetWidth,
-}: {
-  textElement: HTMLElement
-  targetWidth: number
-}): number {
-  if (targetWidth <= 0) return 16
-
-  let low = 1
-  let high = 600
-  let best = low
-
-  while (low <= high) {
-    const mid = Math.floor((low + high) / 2)
-    textElement.style.fontSize = `${mid}px`
-    const width = textElement.scrollWidth
-
-    if (width <= targetWidth) {
-      best = mid
-      low = mid + 1
-    } else {
-      high = mid - 1
+    if (getComputedStyle(video).display !== "none" && video.paused) {
+      void video.play().catch(() => {
+        // Autoplay can still fail until a trusted gesture; muted + playsinline usually works.
+      })
     }
   }
+}
 
-  return best
+function smoothstep(value: number) {
+  const t = Math.min(1, Math.max(0, value))
+  return t * t * (3 - 2 * t)
+}
+
+function getFooterRevealProgress({
+  footerHeight,
+  viewportHeight,
+  scrollY,
+  scrollHeight,
+}: {
+  footerHeight: number
+  viewportHeight: number
+  scrollY: number
+  scrollHeight: number
+}) {
+  const maxScroll = Math.max(1, scrollHeight - viewportHeight)
+  const remaining = Math.max(0, maxScroll - scrollY)
+  // Start fading a bit before the sticky curtain lifts, finish at page end.
+  const fadeRange = Math.max(footerHeight * 0.9, viewportHeight * 0.65)
+  return smoothstep(1 - Math.min(1, remaining / fadeRange))
+}
+
+function syncFooterReveal({
+  footerElement,
+  prefersReducedMotion,
+}: {
+  footerElement: HTMLElement
+  prefersReducedMotion: boolean
+}) {
+  if (prefersReducedMotion) {
+    footerElement.style.opacity = "1"
+    footerElement.style.pointerEvents = "auto"
+    return
+  }
+
+  const progress = getFooterRevealProgress({
+    footerHeight: footerElement.offsetHeight,
+    viewportHeight: window.innerHeight,
+    scrollY: window.scrollY,
+    scrollHeight: document.documentElement.scrollHeight,
+  })
+
+  footerElement.style.opacity = String(progress)
+  footerElement.style.pointerEvents = progress < 0.08 ? "none" : "auto"
 }
 
 export function Footer() {
   const footerRef = useRef<HTMLElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
-  const leftAnchorRef = useRef<HTMLAnchorElement>(null)
-  const rightAnchorRef = useRef<HTMLParagraphElement>(null)
-  const wordmarkRef = useRef<HTMLParagraphElement>(null)
-  const [wordmarkLayout, setWordmarkLayout] = useState<WordmarkLayout>({
-    marginLeft: 0,
-    width: 0,
-  })
-  const [fontSize, setFontSize] = useState(16)
-  const [gradientLayout, setGradientLayout] = useState<GradientLayout>({
-    footerHeight: 0,
-    wordmarkOffset: 0,
-  })
 
   useLayoutEffect(() => {
     const footerElement = footerRef.current
-    const contentElement = contentRef.current
-    const leftAnchor = leftAnchorRef.current
-    const rightAnchor = rightAnchorRef.current
-    const wordmarkElement = wordmarkRef.current
+    if (!footerElement) return
 
-    if (
-      !footerElement ||
-      !contentElement ||
-      !leftAnchor ||
-      !rightAnchor ||
-      !wordmarkElement
-    ) {
-      return
-    }
+    mountFooterBackground({ footerElement })
 
-    const updateLayout = () => {
-      const contentRect = contentElement.getBoundingClientRect()
-      const left = leftAnchor.getBoundingClientRect().left - contentRect.left
-      const right = rightAnchor.getBoundingClientRect().right - contentRect.left
-      const width = Math.max(0, right - left)
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+    let frameId = 0
 
-      setWordmarkLayout({ marginLeft: left, width })
-
-      const fittedSize = fitFontSizeToWidth({
-        textElement: wordmarkElement,
-        targetWidth: width,
-      })
-      setFontSize(fittedSize)
-
-      const footerRect = footerElement.getBoundingClientRect()
-      const wordmarkRect = wordmarkElement.getBoundingClientRect()
-      setGradientLayout({
-        footerHeight: footerRect.height,
-        wordmarkOffset: wordmarkRect.top - footerRect.top,
+    const updateReveal = () => {
+      syncFooterReveal({
+        footerElement,
+        prefersReducedMotion: motionQuery.matches,
       })
     }
 
-    const runUpdate = () => {
-      updateLayout()
+    const scheduleReveal = () => {
+      if (frameId) return
+      frameId = window.requestAnimationFrame(() => {
+        frameId = 0
+        updateReveal()
+      })
     }
 
-    runUpdate()
+    updateReveal()
+    window.addEventListener("scroll", scheduleReveal, { passive: true })
+    window.addEventListener("resize", scheduleReveal)
+    motionQuery.addEventListener("change", updateReveal)
 
-    const resizeObserver = new ResizeObserver(runUpdate)
-    resizeObserver.observe(contentElement)
+    const resizeObserver = new ResizeObserver(scheduleReveal)
     resizeObserver.observe(footerElement)
-    resizeObserver.observe(wordmarkElement)
 
-    const fontLoadPromise = document.fonts?.ready
-    if (fontLoadPromise) {
-      void fontLoadPromise.then(runUpdate)
+    return () => {
+      if (frameId) window.cancelAnimationFrame(frameId)
+      window.removeEventListener("scroll", scheduleReveal)
+      window.removeEventListener("resize", scheduleReveal)
+      motionQuery.removeEventListener("change", updateReveal)
+      resizeObserver.disconnect()
     }
-
-    return () => resizeObserver.disconnect()
   }, [])
 
   return (
     <Box
       as="footer"
       ref={footerRef}
-      pt="12"
+      position="sticky"
+      bottom="0"
+      zIndex={0}
+      display="flex"
+      flexDirection="column"
+      minH={{ base: "760px", md: "850px" }}
+      pt={{ base: "24", md: "156px" }}
+      pb={{ base: "8", md: "12" }}
+      px={{ base: "6", md: "12" }}
       w="full"
       overflow="hidden"
-      backgroundImage={footerBgGradient}
+      bg="transparent"
+      opacity={0}
+      css={{
+        "@media (prefers-reduced-motion: reduce)": {
+          opacity: "1 !important",
+          pointerEvents: "auto !important",
+        },
+      }}
     >
-      <Box ref={contentRef} w="full">
-        <Flex
-          direction={{ base: "column", lg901: "row" }}
-          align={{ base: "flex-start", lg901: "center" }}
-          justify="space-between"
-          gap={{ base: "6", lg901: "8" }}
-          px={{ base: "6", lg901: "12" }}
-          py="6"
-          w="full"
-        >
-          <Flex
-            as="nav"
-            aria-label="Footer"
-            flexWrap="wrap"
-            gap="6"
-            listStyleType="none"
-          >
-            {footerPrimaryLinks.map((link, index) => (
-              <Link
-                key={link.label}
-                ref={index === 0 ? leftAnchorRef : undefined}
-                href={link.href}
-                fontWeight="medium"
-                {...footerLinkStyles}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </Flex>
-
-          <Flex
-            direction={{ base: "column", lg901: "row" }}
-            align={{ base: "flex-start", lg901: "center" }}
-            flexWrap="wrap"
-            gap="6"
-          >
-            {footerLegalLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                fontWeight="normal"
-                {...footerLinkStyles}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <Text
-              ref={rightAnchorRef}
-              fontSize="12px"
-              lineHeight="18px"
-              color="warmMuted"
-              whiteSpace="nowrap"
-            >
-              © 2025 KYD Labs. All rights reserved.
-            </Text>
-          </Flex>
-        </Flex>
-
+      <Flex
+        position="relative"
+        zIndex={1}
+        direction="column"
+        align="center"
+        gap="8"
+        mx="auto"
+        w="full"
+        maxW="628px"
+        textAlign="center"
+      >
         <Link
           href="#"
           display="block"
-          ml={`${wordmarkLayout.marginLeft}px`}
-          w={wordmarkLayout.width > 0 ? `${wordmarkLayout.width}px` : "full"}
-          textDecoration="none"
           aria-label="KYD Labs home"
-          transform={`translateY(${WORDMARK_PULL_DOWN})`}
+          css={{
+            transitionProperty: "opacity, transform",
+            transitionDuration: "180ms",
+            transitionTimingFunction: "cubic-bezier(0.2, 0, 0, 1)",
+            _hover: { opacity: 0.88, transform: "scale(1.01)" },
+            _active: { transform: "scale(0.96)" },
+            _focusVisible: {
+              outline: "2px solid",
+              outlineColor: "rgba(255, 255, 255, 0.45)",
+              outlineOffset: "6px",
+            },
+          }}
         >
-          <Text
-            ref={wordmarkRef}
-            fontFamily="cossetteTitre"
-            fontWeight="bold"
-            fontSize={`${fontSize}px`}
-            lineHeight="0.8"
-            whiteSpace="nowrap"
-            w="full"
-            textAlign="left"
-            css={{
-              position: "relative",
-              backgroundImage: footerWordmarkGradient,
-              backgroundSize:
-                gradientLayout.footerHeight > 0
-                  ? `100% ${gradientLayout.footerHeight}px`
-                  : "100% 100%",
-              backgroundPosition: `0 -${gradientLayout.wordmarkOffset}px`,
-              WebkitBackgroundClip: "text",
-              backgroundClip: "text",
-              color: "transparent",
-              "&::after": {
-                content: '""',
-                position: "absolute",
-                inset: 0,
-                backgroundImage: footerWordmarkGrain,
-                backgroundRepeat: "repeat",
-                backgroundSize: "180px 180px",
-                opacity: 0.35,
-                mixBlendMode: "overlay",
-                pointerEvents: "none",
-                WebkitMask: "linear-gradient(#fff 0 0)",
-                WebkitMaskClip: "text",
-                mask: "linear-gradient(#fff 0 0)",
-                maskClip: "text",
-              },
-            }}
-          >
-            {WORDMARK_TEXT}
-          </Text>
+          <Image
+            src="/kyd-labs-logo.svg"
+            alt="KYD Labs"
+            w={{ base: "min(78vw, 360px)", md: "608px" }}
+            h="auto"
+          />
         </Link>
-      </Box>
+
+        <Text
+          maxW="513px"
+          color="fgFeature"
+          opacity={0.9}
+          fontFamily="cossetteTexte"
+          fontSize={{ base: "16px", md: "18px" }}
+          lineHeight={{ base: "24px", md: "27px" }}
+          letterSpacing="0.18px"
+          textWrap="pretty"
+        >
+          Own your data. Capture resale. Activate fans with AI. The
+          infrastructure venues use to run smarter shows.
+        </Text>
+
+        <Flex
+          direction={{ base: "column", sm: "row" }}
+          align="stretch"
+          justify="center"
+          gap="6"
+          w={{ base: "full", sm: "auto" }}
+        >
+          <Button
+            href={links.getInTouch}
+            size="hero"
+            css={{ width: { base: "full", sm: "auto" } }}
+          >
+            <span>
+              Get in touch
+              <CtaArrow />
+            </span>
+          </Button>
+          <Button
+            href={links.tickets}
+            variant="outline-accent"
+            size="hero"
+            css={{ width: { base: "full", sm: "auto" } }}
+          >
+            Find my tickets
+          </Button>
+        </Flex>
+      </Flex>
+
+      <Flex
+        position="relative"
+        zIndex={1}
+        direction={{ base: "column", md: "row" }}
+        align={{ base: "center", md: "flex-end" }}
+        justify="space-between"
+        gap="8"
+        mt="auto"
+        mx="auto"
+        w="full"
+        maxW="1256px"
+      >
+        <Flex as="nav" aria-label="Legal" gap="3" flexWrap="wrap" justify="center">
+          {footerLegalLinks.map((link) => (
+            <Link key={link.label} href={link.href} {...footerLinkStyles}>
+              {link.label}
+            </Link>
+          ))}
+        </Flex>
+
+        <Flex
+          direction="column"
+          align={{ base: "center", md: "flex-end" }}
+          gap="5px"
+        >
+          <Image
+            src="/icons/kyd-dashboard-mark.svg"
+            alt=""
+            aria-hidden="true"
+            w="45px"
+            h="26px"
+          />
+          <Text
+            fontSize="12px"
+            lineHeight="18px"
+            color="warmMuted"
+            textAlign={{ base: "center", md: "right" }}
+            textTransform="uppercase"
+            whiteSpace={{ base: "normal", sm: "nowrap" }}
+          >
+            © 2025 KYD Labs. All rights reserved.
+          </Text>
+        </Flex>
+      </Flex>
     </Box>
   )
 }
