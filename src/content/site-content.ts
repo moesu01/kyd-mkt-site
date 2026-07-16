@@ -27,10 +27,9 @@ export const aboutSection = {
 } as const
 
 export const navMenuLinks = [
-  { label: "About kyd", href: "#about" },
+  { label: "About KYD", href: "#about" },
   { label: "For venues & artists", href: "#venues" },
   { label: "Platform", href: "#platform" },
-  { label: "For fans", href: "#fans" },
   { label: "Press", href: "#press" },
 ] as const
 
