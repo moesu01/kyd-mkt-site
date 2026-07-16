@@ -17,6 +17,7 @@ export function AboutEmblem() {
       mark={mark}
       markGap={layout.markGap}
       markAlign={layout.markAlign}
+      logoLoopScale={layout.logoLoopScale}
     />
   )
 }

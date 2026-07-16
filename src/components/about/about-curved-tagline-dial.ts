@@ -17,6 +17,7 @@ export interface EmblemLayout {
   maxWidthRem: number
   markGap: number
   markAlign: number
+  logoLoopScale: number
 }
 
 export interface CurvedTaglineMark {
@@ -52,8 +53,9 @@ export const aboutCurvedTaglineDesktopParams: CurvedTaglineParams = {
   },
   layout: {
     maxWidthRem: 48.25,
-    markGap: 22,
+    markGap: 60,
     markAlign: 0.4,
+    logoLoopScale: 1.8,
   },
 }
 
@@ -86,6 +88,7 @@ export const aboutCurvedTaglineMobileParams: CurvedTaglineParams = {
     maxWidthRem: 48.25,
     markGap: 22,
     markAlign: 0.4,
+    logoLoopScale: 1,
   },
 }
 
@@ -124,8 +127,9 @@ export const aboutCurvedTaglineDialConfig = {
   },
   layout: {
     maxWidthRem: [48.25, 20, 72, 0.25] as [number, number, number, number],
-    markGap: [22, 0, 60, 1] as [number, number, number, number],
+    markGap: [60, 0, 100, 1] as [number, number, number, number],
     markAlign: [0.4, 0, 1, 0.01] as [number, number, number, number],
+    logoLoopScale: [1.8, 0.5, 2.5, 0.05] as [number, number, number, number],
   },
 }
 

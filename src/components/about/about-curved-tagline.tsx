@@ -8,14 +8,14 @@ import {
   getSvgFontSizeUserUnits,
   getTargetFontSizePx,
   getTextPathAlignment,
+  KYD_MARK_VIEWBOX_WIDTH,
   type CurvedTaglineMark,
   type CurvedTaglineTypography,
 } from "./about-curved-tagline-dial"
+import { AboutLogoLoop } from "./about-logo-loop"
 
 const ARC_PATH_ID = "about-curved-tagline-arc"
 const ARC_INK_BLEED_FILTER_ID = "about-arc-ink-bleed"
-const KYD_MARK_PATH =
-  "M300 170V129.316H199.193L270.334 58.2728L241.884 29.1247L170.738 100.168V0H129.262L129.499 99.4556L58.8557 29.1247L29.6662 58.2728L101.046 129.316H0V170H300Z"
 
 interface AboutCurvedTaglinePath {
   arcRadius: number
@@ -29,6 +29,7 @@ interface AboutCurvedTaglineProps extends BoxProps {
   mark: CurvedTaglineMark
   markGap: number
   markAlign: number
+  logoLoopScale: number
 }
 
 export function AboutCurvedTagline({
@@ -37,6 +38,7 @@ export function AboutCurvedTagline({
   mark,
   markGap,
   markAlign,
+  logoLoopScale,
   ...props
 }: AboutCurvedTaglineProps) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -71,14 +73,26 @@ export function AboutCurvedTagline({
     viewBoxWidth,
   })
 
-  const { markX, markY, markScale, markBottom } = getMarkLayout({
-    arcCenterY,
-    viewBoxWidth,
-    containerWidthPx: containerWidth,
-    mark,
-    markGap,
-    markAlign,
-  })
+  const { markX, markY, markScale, markBottom, markHeightUnits } =
+    getMarkLayout({
+      arcCenterY,
+      viewBoxWidth,
+      containerWidthPx: containerWidth,
+      mark,
+      markGap,
+      markAlign,
+    })
+
+  // Keep layout spacing from the original 300×170 mark, but render a 1:1
+  // frame canvas centered on those bounds so vertical rhythm stays the same.
+  // Non-mobile uses logoLoopScale (1.8) for a larger mark without changing
+  // the emblem layout box that drives section spacing.
+  const markWidthUnits = KYD_MARK_VIEWBOX_WIDTH * markScale
+  const logoLoopSize = markWidthUnits * logoLoopScale
+  const markCenterX = markX + markWidthUnits / 2
+  const markCenterY = markY + markHeightUnits / 2
+  const logoLoopX = markCenterX - logoLoopSize / 2
+  const logoLoopY = markCenterY - logoLoopSize / 2
 
   const lengthAdjust = typography.lengthAdjust as
     | "spacing"
@@ -167,9 +181,20 @@ export function AboutCurvedTagline({
             {aboutSection.curvedTagline}
           </textPath>
         </text>
-        <g transform={`translate(${markX}, ${markY}) scale(${markScale})`}>
-          <path d={KYD_MARK_PATH} fill="currentColor" />
-        </g>
+        <foreignObject
+          x={logoLoopX}
+          y={logoLoopY}
+          width={logoLoopSize}
+          height={logoLoopSize}
+          style={{ overflow: "visible" }}
+        >
+          <div
+            {...{ xmlns: "http://www.w3.org/1999/xhtml" }}
+            style={{ width: "100%", height: "100%" }}
+          >
+            <AboutLogoLoop />
+          </div>
+        </foreignObject>
       </svg>
     </Box>
   )
