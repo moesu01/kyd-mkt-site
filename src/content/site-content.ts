@@ -21,7 +21,7 @@ export const heroFooterLinks = [
 export const heroSection = {
   headlineLine1: "Modern Ticketing",
   headlineLine2: "Built for Venues",
-  body: "Own your data. Capture resale. Activate fans with AI. The infrastructure venues use to run smarter shows.",
+  body: "Own your data. Capture resale. Reach fans with built-in marketing. The infrastructure venues use to run smarter shows.",
   primaryCta: "Get in touch",
   secondaryCta: "Find my tickets",
 } as const
@@ -67,29 +67,29 @@ export const venueAudiences = [
 
 export const features = [
   {
-    icon: "◆",
-    title: "Unscalpable",
-    body: "Tickets stay in fans' hands. KYD reduces unwanted scalping and gives venues control over how and where tickets move.",
-  },
-  {
-    icon: "↻",
-    title: "Resale Capture",
-    body: "Capture resale activity wherever tickets go. Every resale runs through your platform, so the upside stays with the venue, not the secondary market.",
-  },
-  {
     icon: "◎",
     title: "Data Ownership",
     body: "Own your ticketing, resale, and customer data. Build direct relationships with your audience instead of renting access from middlemen.",
   },
   {
+    icon: "✉",
+    title: "Email Campaigns",
+    body: "Build and send targeted email campaigns using your first-party fan data. Reach the right audience and drive ticket sales from one platform.",
+  },
+  {
     icon: "✦",
-    title: "AI-Powered Activation",
-    body: "Models trained on your data drive higher-converting ads, email, and ticketing. Spend smarter and sell more with every show.",
+    title: "On-Platform Meta Ads",
+    body: "Launch and manage Meta ad campaigns directly from KYD. Turn audience insights into targeted promotion without switching tools.",
   },
   {
     icon: "⚡",
     title: "Comprehensive Ticketing",
     body: "Launch events, configure pricing, manage box office, and track performance, all in one place. Your fan CRM and analytics are built in.",
+  },
+  {
+    icon: "↻",
+    title: "Unscalpable Resale Capture",
+    body: "Keep tickets in fans' hands while capturing resale activity wherever tickets move. KYD gives venues control over resale and keeps the upside with the venue, not the secondary market.",
   },
 ] as const
 

@@ -228,22 +228,11 @@ export function AlternateNav({
             gap="2"
             aria-label="Page sections"
           >
-            {navMenuLinks.map((item, index) => {
-              const isLast = index === navMenuLinks.length - 1
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  css={{
-                    ...navLinkStyles,
-                    ...(isLast ? { pr: "0" } : {}),
-                  }}
-                >
-                  {item.label}
-                </Link>
-              )
-            })}
+            {navMenuLinks.map((item) => (
+              <Link key={item.href} href={item.href} css={navLinkStyles}>
+                {item.label}
+              </Link>
+            ))}
           </Flex>
 
           <chakra.button

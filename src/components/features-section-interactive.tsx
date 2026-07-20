@@ -20,7 +20,7 @@ const visualBgEnterDurationMs = 300
 const featureCount = features.length
 
 const featureVisuals: Record<string, string> = {
-  Unscalpable: unscalpableVisual,
+  "Unscalpable Resale Capture": unscalpableVisual,
   "Data Ownership": dataOwnershipVisual,
 }
 

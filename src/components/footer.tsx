@@ -1,6 +1,6 @@
 import { Box, Flex, Image, Link, Text } from "@chakra-ui/react"
 import { useLayoutEffect, useRef } from "react"
-import { footerLegalLinks, links } from "../content/site-content"
+import { footerLegalLinks, heroSection, links } from "../content/site-content"
 import { Button, CtaArrow } from "./ui/button"
 
 const FOOTER_BG_SURFACE_ID = "footer-bg-surface"
@@ -209,8 +209,7 @@ export function Footer() {
           letterSpacing="0.18px"
           textWrap="pretty"
         >
-          Own your data. Capture resale. Activate fans with AI. The
-          infrastructure venues use to run smarter shows.
+          {heroSection.body}
         </Text>
 
         <Flex
