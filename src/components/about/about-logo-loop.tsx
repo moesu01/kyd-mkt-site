@@ -3,6 +3,10 @@ import { motion } from "motion/react"
 
 const FRAME_COUNT = 48
 const HERO_FRAME_DURATION_MS = 55
+/** How many trailing frames are eligible as the scroll-end landing spot. */
+const ENDING_FRAME_OPTIONS = 8
+/** Progress must reach this before we treat the scroll as "settled on an ending". */
+const ENDING_SETTLE_PROGRESS = 0.999
 const FRAME_BASE_PATH = "/anim/kyd%20logo%20loop"
 
 const ROTATION_POOL = [
@@ -34,6 +38,65 @@ const HERO_INTRO_ROTATIONS = FRAME_ROTATIONS.slice(
   FRAME_COUNT - 1,
 )
 
+const LAST_FRAME_INDEX = LOGO_LOOP_FRAMES.length - 1
+const ENDING_ZONE_START = Math.max(
+  0,
+  LAST_FRAME_INDEX - (ENDING_FRAME_OPTIONS - 1),
+)
+
+function shuffleEndingFrameBag() {
+  const bag = Array.from(
+    { length: LAST_FRAME_INDEX - ENDING_ZONE_START + 1 },
+    (_, index) => ENDING_ZONE_START + index,
+  )
+
+  for (let index = bag.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1))
+    const current = bag[index]
+    const swap = bag[swapIndex]
+    if (current === undefined || swap === undefined) continue
+    bag[index] = swap
+    bag[swapIndex] = current
+  }
+
+  return bag
+}
+
+function drawEndingFrameIndex({
+  bagRef,
+  lastDrawnRef,
+}: {
+  bagRef: { current: number[] }
+  lastDrawnRef: { current: number | null }
+}) {
+  if (bagRef.current.length === 0) {
+    bagRef.current = shuffleEndingFrameBag()
+
+    // After a reshuffle, don't lead with the frame we just showed.
+    if (
+      bagRef.current.length > 1 &&
+      bagRef.current[bagRef.current.length - 1] === lastDrawnRef.current
+    ) {
+      const repeat = bagRef.current.pop()
+      if (repeat !== undefined) bagRef.current.unshift(repeat)
+    }
+  }
+
+  const next = bagRef.current.pop()
+  if (next === undefined) return LAST_FRAME_INDEX
+
+  lastDrawnRef.current = next
+  return next
+}
+
+function getScrubbedFrameIndex(progress: number) {
+  return Math.round(Math.min(1, Math.max(0, progress)) * LAST_FRAME_INDEX)
+}
+
+function isSettledAtEnding(progress: number) {
+  return Math.min(1, Math.max(0, progress)) >= ENDING_SETTLE_PROGRESS
+}
+
 interface AboutLogoLoopProps {
   className?: string
   heroOpacity: number
@@ -51,6 +114,9 @@ export function AboutLogoLoop({
 }: AboutLogoLoopProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const hasNotifiedSettledRef = useRef(false)
+  const lockedEndingFrameRef = useRef<number | null>(null)
+  const endingFrameBagRef = useRef<number[]>([])
+  const lastDrawnEndingFrameRef = useRef<number | null>(null)
   const [heroFrameIndex, setHeroFrameIndex] = useState(0)
   const [hasHeroAnimationStarted, setHasHeroAnimationStarted] = useState(false)
   const [isHeroSettled, setIsHeroSettled] = useState(false)
@@ -125,12 +191,25 @@ export function AboutLogoLoop({
   const heroCycleSrc =
     HERO_INTRO_FRAMES[heroFrameIndex] ?? HERO_INTRO_FRAMES[0]
   const heroCycleRotation = HERO_INTRO_ROTATIONS[heroFrameIndex] ?? 0
+
+  const scrubbedFrameIndex = getScrubbedFrameIndex(aboutProgress)
+  const hasSettledAtEnding =
+    !prefersReducedMotion && isSettledAtEnding(aboutProgress)
+
+  if (hasSettledAtEnding) {
+    if (lockedEndingFrameRef.current === null) {
+      lockedEndingFrameRef.current = drawEndingFrameIndex({
+        bagRef: endingFrameBagRef,
+        lastDrawnRef: lastDrawnEndingFrameRef,
+      })
+    }
+  } else {
+    lockedEndingFrameRef.current = null
+  }
+
   const aboutFrameIndex = prefersReducedMotion
-    ? LOGO_LOOP_FRAMES.length - 1
-    : Math.round(
-        Math.min(1, Math.max(0, aboutProgress)) *
-          (LOGO_LOOP_FRAMES.length - 1),
-      )
+    ? LAST_FRAME_INDEX
+    : (lockedEndingFrameRef.current ?? scrubbedFrameIndex)
   const aboutSrc =
     LOGO_LOOP_FRAMES[aboutFrameIndex] ?? LOGO_LOOP_FRAMES[0]
   const aboutRotation = FRAME_ROTATIONS[aboutFrameIndex] ?? 0

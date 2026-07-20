@@ -23,7 +23,7 @@ export function AboutEmblem({ presentation, onHeroSettled }: AboutEmblemProps) {
   return (
     <AboutCurvedTagline
       w="full"
-      maxW={`${layout.maxWidthRem}rem`}
+      maxW="full"
       mx="auto"
       path={path}
       typography={typography}

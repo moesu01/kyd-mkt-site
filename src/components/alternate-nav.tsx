@@ -5,9 +5,10 @@ import { navMenuLinks } from "../content/site-content"
 const interactionEase = "cubic-bezier(0.2, 0, 0, 1)"
 const navShellRadius = 16
 const navMenuButtonRadius = 8
-const navGlassBg = "oklch(0.15 0.01 63.9 / 0.65)"
 const navMenuGlassBg = "oklch(0.15 0.01 63.9 / 0.8)"
 const navGlassFilter = "blur(8px) saturate(4)"
+const navShellShadow =
+  "0 0 0 1px rgba(255, 255, 255, 0.1), 0 2px 10px rgba(0, 0, 0, 0.25)"
 const navIntroDurationMs = 360
 const navIntroEase = "cubic-bezier(0.2, 0, 0, 1)"
 const navIntroOffsetPx = 12
@@ -19,9 +20,9 @@ const navLinkStyles = {
   px: "4",
   bg: "transparent",
   color: "fg",
-  fontFamily: "cossetteTexte",
-  fontSize: { base: "12px", lg901: "14px" },
-  fontWeight: "normal",
+  fontFamily: "sans",
+  fontSize: "13px",
+  fontWeight: "medium",
   lineHeight: "1",
   textDecoration: "none",
   borderRadius: "4px",
@@ -195,7 +196,7 @@ export function AlternateNav({
     <Box
       position="relative"
       w="full"
-      maxW="container"
+      maxW="720px"
       style={
         hasIntroSettled
           ? undefined
@@ -209,14 +210,12 @@ export function AlternateNav({
       onTransitionEnd={handleIntroTransitionEnd}
     >
       <Box
-        bg={navGlassBg}
-        backdropFilter={navGlassFilter}
-        css={{ WebkitBackdropFilter: navGlassFilter }}
+        bg="#000"
         pl={{ base: "4", lg901: "5" }}
         pr="3"
         py="3"
         borderRadius={`${navShellRadius}px`}
-        boxShadow="frame"
+        boxShadow={navShellShadow}
       >
         <Flex align="center" justify="space-between" w="full">
           <LogoLink />

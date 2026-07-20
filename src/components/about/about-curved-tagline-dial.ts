@@ -98,6 +98,7 @@ export const aboutCurvedTaglineDialConfig = {
     fontSize: [66, 8, 120] as [number, number, number],
     fontSizeMin: [17, 8, 44] as [number, number, number],
     fontSizeMax: [66, 20, 120] as [number, number, number],
+    shortViewportFontSizeMax: [58, 20, 120] as [number, number, number],
     referenceWidth: [730, 320, 1200] as [number, number, number],
     letterSpacing: [-0.785, -4, 4, 0.01] as [number, number, number, number],
     fontWeight: [700, 100, 900, 100] as [number, number, number, number],
@@ -122,6 +123,7 @@ export const aboutCurvedTaglineDialConfig = {
   },
   mark: {
     widthMax: [300, 100, 400] as [number, number, number],
+    shortViewportWidthMax: [220, 100, 400] as [number, number, number],
     widthMin: [200, 80, 300] as [number, number, number],
     referenceWidth: [1160, 320, 1400] as [number, number, number],
   },
@@ -129,6 +131,12 @@ export const aboutCurvedTaglineDialConfig = {
     maxWidthRem: [48.25, 20, 72, 0.25] as [number, number, number, number],
     markGap: [100, 0, 100, 1] as [number, number, number, number],
     markAlign: [0.4, 0, 1, 0.01] as [number, number, number, number],
+    shortViewportMarkAlign: [1, 0, 1, 0.01] as [
+      number,
+      number,
+      number,
+      number,
+    ],
     logoLoopScale: [1.8, 0.5, 2.5, 0.05] as [number, number, number, number],
   },
 }

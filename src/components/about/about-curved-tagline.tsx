@@ -134,6 +134,11 @@ export function AboutCurvedTagline({
         transform: `scale(${emblemScale})`,
         transformOrigin: "center center",
         willChange: emblemScale === 1 ? "auto" : "transform",
+        "@media (max-height: 901px)": {
+          "& [data-about-logo-loop]": {
+            transform: "scale(0.82)",
+          },
+        },
       }}
       {...props}
     >
@@ -218,7 +223,12 @@ export function AboutCurvedTagline({
         >
           <div
             {...{ xmlns: "http://www.w3.org/1999/xhtml" }}
-            style={{ width: "100%", height: "100%" }}
+            data-about-logo-loop
+            style={{
+              width: "100%",
+              height: "100%",
+              transformOrigin: "center center",
+            }}
           >
             <AboutLogoLoop
               heroOpacity={heroAnimationOpacity}
