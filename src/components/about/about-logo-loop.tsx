@@ -4,7 +4,6 @@ import { motion } from "motion/react"
 const FRAME_COUNT = 48
 const HERO_FRAME_DURATION_MS = 55
 const FRAME_BASE_PATH = "/anim/kyd%20logo%20loop"
-const HERO_FINAL_FRAME = `${FRAME_BASE_PATH}/last_frame.png`
 
 const ROTATION_POOL = [
   1.7, -2.3, 0.6, -1.4, 2.5, -0.8, 1.9, -2.1, 0.4, -1.7, 2.2, -0.5, 1.3,
@@ -19,8 +18,11 @@ const LOGO_LOOP_FRAMES = Array.from(
     `${FRAME_BASE_PATH}/${String(index + 1).padStart(2, "0")}.png`,
 )
 
-/** Hero intro only — second half of the loop, then last_frame.png. */
-const HERO_INTRO_FRAMES = LOGO_LOOP_FRAMES.slice(Math.floor(FRAME_COUNT / 2))
+/** Hero intro — second half of the loop, ending on the second-to-last frame. */
+const HERO_INTRO_FRAMES = LOGO_LOOP_FRAMES.slice(
+  Math.floor(FRAME_COUNT / 2),
+  FRAME_COUNT - 1,
+)
 
 const FRAME_ROTATIONS = Array.from(
   { length: LOGO_LOOP_FRAMES.length },
@@ -29,6 +31,7 @@ const FRAME_ROTATIONS = Array.from(
 
 const HERO_INTRO_ROTATIONS = FRAME_ROTATIONS.slice(
   Math.floor(FRAME_COUNT / 2),
+  FRAME_COUNT - 1,
 )
 
 interface AboutLogoLoopProps {
@@ -66,7 +69,7 @@ export function AboutLogoLoop({
   }, [])
 
   useEffect(() => {
-    ;[...LOGO_LOOP_FRAMES, HERO_FINAL_FRAME].forEach((src) => {
+    LOGO_LOOP_FRAMES.forEach((src) => {
       const image = new Image()
       image.src = src
     })
@@ -154,43 +157,35 @@ export function AboutLogoLoop({
       >
         {!hasSettled ? (
           <LogoFrame src={heroCycleSrc} rotation={heroCycleRotation} />
-        ) : null}
-        {hasSettled ? (
+        ) : prefersReducedMotion ? null : (
           <motion.img
-            key="hero-final"
-            src={HERO_FINAL_FRAME}
+            key="hero-fade-out"
+            src={heroCycleSrc}
             alt=""
             draggable={false}
-            initial={
-              prefersReducedMotion
-                ? false
-                : {
-                    opacity: 0,
-                    filter: "blur(4px)",
-                  }
-            }
-            animate={{
+            initial={{
               opacity: 1,
               filter: "blur(0px)",
             }}
-            transition={
-              prefersReducedMotion
-                ? { duration: 0 }
-                : {
-                    type: "spring",
-                    duration: 0.5,
-                    bounce: 0,
-                  }
-            }
+            animate={{
+              opacity: 0,
+              filter: "blur(4px)",
+            }}
+            transition={{
+              type: "spring",
+              duration: 0.5,
+              bounce: 0,
+            }}
             style={{
               position: "absolute",
               inset: 0,
               width: "100%",
               height: "100%",
               objectFit: "cover",
+              transform: `rotate(${heroCycleRotation}deg)`,
             }}
           />
-        ) : null}
+        )}
       </div>
       <div
         style={{

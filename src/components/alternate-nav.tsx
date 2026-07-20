@@ -1,5 +1,5 @@
 import { Box, Flex, Image, Link, chakra } from "@chakra-ui/react"
-import { useState } from "react"
+import { useEffect, useState, type TransitionEvent } from "react"
 import { navMenuLinks } from "../content/site-content"
 
 const interactionEase = "cubic-bezier(0.2, 0, 0, 1)"
@@ -8,6 +8,9 @@ const navMenuButtonRadius = 8
 const navGlassBg = "oklch(0.15 0.01 63.9 / 0.65)"
 const navMenuGlassBg = "oklch(0.15 0.01 63.9 / 0.8)"
 const navGlassFilter = "blur(8px) saturate(4)"
+const navIntroDurationMs = 360
+const navIntroEase = "cubic-bezier(0.2, 0, 0, 1)"
+const navIntroOffsetPx = 12
 
 const navLinkStyles = {
   display: "inline-flex",
@@ -141,8 +144,35 @@ function getMobileMenuItemMotion({
   } as const
 }
 
-export function AlternateNav() {
+export function AlternateNav({
+  isIntroVisible = true,
+}: {
+  isIntroVisible?: boolean
+}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  const [hasIntroSettled, setHasIntroSettled] = useState(false)
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+
+    const handleChange = () => {
+      setPrefersReducedMotion(mediaQuery.matches)
+    }
+
+    handleChange()
+    mediaQuery.addEventListener("change", handleChange)
+    return () => mediaQuery.removeEventListener("change", handleChange)
+  }, [])
+
+  useEffect(() => {
+    if (!isIntroVisible) {
+      setHasIntroSettled(false)
+      return
+    }
+
+    if (prefersReducedMotion) setHasIntroSettled(true)
+  }, [isIntroVisible, prefersReducedMotion])
 
   function handleToggleMenu() {
     setIsMenuOpen((isOpen) => !isOpen)
@@ -152,8 +182,32 @@ export function AlternateNav() {
     setIsMenuOpen(false)
   }
 
+  function handleIntroTransitionEnd(event: TransitionEvent<HTMLDivElement>) {
+    if (event.target !== event.currentTarget) return
+    if (event.propertyName !== "opacity") return
+    if (!isIntroVisible) return
+    setHasIntroSettled(true)
+  }
+
+  const isVisible = prefersReducedMotion || isIntroVisible
+
   return (
-    <Box position="relative" w="full" maxW="container">
+    <Box
+      position="relative"
+      w="full"
+      maxW="container"
+      style={
+        hasIntroSettled
+          ? undefined
+          : getNavIntroStyle({
+              isVisible,
+              prefersReducedMotion,
+            })
+      }
+      pointerEvents={isVisible ? "auto" : "none"}
+      aria-hidden={!isVisible}
+      onTransitionEnd={handleIntroTransitionEnd}
+    >
       <Box
         bg={navGlassBg}
         backdropFilter={navGlassFilter}
@@ -292,4 +346,30 @@ export function AlternateNav() {
 
 interface MenuIconProps {
   isOpen: boolean
+}
+
+function getNavIntroStyle({
+  isVisible,
+  prefersReducedMotion,
+}: {
+  isVisible: boolean
+  prefersReducedMotion: boolean
+}) {
+  if (prefersReducedMotion) {
+    return {
+      opacity: isVisible ? 1 : 0,
+      visibility: isVisible ? ("visible" as const) : ("hidden" as const),
+    }
+  }
+
+  return {
+    opacity: isVisible ? 1 : 0,
+    transform: isVisible ? "translateY(0)" : `translateY(-${navIntroOffsetPx}px)`,
+    filter: isVisible ? "blur(0px)" : "blur(4px)",
+    visibility: "visible" as const,
+    transitionProperty: "opacity, transform, filter",
+    transitionDuration: `${navIntroDurationMs}ms`,
+    transitionTimingFunction: navIntroEase,
+    willChange: "opacity, transform, filter",
+  }
 }

@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react"
+import { useCallback, useState } from "react"
 import { AboutSection } from "./components/about-section"
 import { AlternateNav } from "./components/alternate-nav"
 import { BackedBySection } from "./components/backed-by-section"
@@ -20,6 +21,12 @@ import { UsedByPageSection } from "./components/used-by-page-section"
 import { VenuesSection } from "./components/venues-section"
 
 function App() {
+  const [isHeroIntroVisible, setIsHeroIntroVisible] = useState(false)
+
+  const handleHeroSettled = useCallback(() => {
+    setIsHeroIntroVisible(true)
+  }, [])
+
   return (
     <>
       <Box position="relative" zIndex={1}>
@@ -32,10 +39,10 @@ function App() {
           justifyContent="center"
           mb="-70px"
         >
-          <AlternateNav />
+          <AlternateNav isIntroVisible={isHeroIntroVisible} />
         </Box>
         {/* TEMP: Original hero hidden — <HeroSplit /> */}
-        <AboutSection />
+        <AboutSection onHeroSettled={handleHeroSettled} />
         <BackedBySection />
         <VenuesSection />
         <FeaturesSectionInteractive />

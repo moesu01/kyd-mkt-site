@@ -5,20 +5,21 @@ export const aboutHeroTransition = {
   /** Emblem scale at progress 0 (hero). Progress 1 = About scale 1. */
   emblemScaleStart: 0.64,
   /** Ascii bg video opacity at hero start / About end (matches footer). */
-  bgVideoOpacityStart: 0.65,
+  bgVideoOpacityStart: 1,
   bgVideoOpacityEnd: 0.24,
   /** Progress windows: [start, end] for each morph. */
   ranges: {
     /** Hero copy/CTAs blur out while they scroll off. */
     heroCopyExit: [0.02, 0.14] as const,
     /** Preserve a real scroll gesture before the About transition starts. */
-    emblemScale: [0.2, 0.6] as const,
-    bgVideoOpacity: [0.2, 0.6] as const,
-    animationCrossfade: [0.2, 0.3] as const,
-    aboutAnimation: [0.2, 0.88] as const,
-    /** Keep all About text hidden until 60%, then reveal it quickly. */
-    curvedText: [0.6, 0.67] as const,
-    aboutCopy: [0.6, 0.67] as const,
+    emblemScale: [0.17, 0.57] as const,
+    bgVideoOpacity: [0.17, 0.57] as const,
+    animationCrossfade: [0.17, 0.27] as const,
+    aboutAnimation: [0.17, 0.85] as const,
+    /** Reveal About content in three short, sequential scroll windows. */
+    curvedText: [0.5, 0.55] as const,
+    aboutHeadline: [0.55, 0.6] as const,
+    aboutBody: [0.58, 0.63] as const,
   },
 } as const
 
@@ -55,7 +56,8 @@ export function getAboutHeroPresentation({
       heroAnimationOpacity: 0,
       aboutAnimationOpacity: 1,
       aboutAnimationProgress: 1,
-      aboutCopyOpacity: 1,
+      aboutHeadlineOpacity: 1,
+      aboutBodyOpacity: 1,
       heroCopyOpacity: 0,
       heroCopyBlurPx: 4,
       bgVideoOpacity: aboutHeroTransition.bgVideoOpacityEnd,
@@ -80,7 +82,8 @@ export function getAboutHeroPresentation({
     heroAnimationOpacity: 1 - animationCrossfade,
     aboutAnimationOpacity: animationCrossfade,
     aboutAnimationProgress: progressInRange(p, ranges.aboutAnimation),
-    aboutCopyOpacity: progressInRange(p, ranges.aboutCopy),
+    aboutHeadlineOpacity: progressInRange(p, ranges.aboutHeadline),
+    aboutBodyOpacity: progressInRange(p, ranges.aboutBody),
     heroCopyOpacity: 1 - heroCopyExit,
     heroCopyBlurPx: lerp(0, 4, heroCopyExit),
     bgVideoOpacity: lerp(bgVideoOpacityStart, bgVideoOpacityEnd, bgVideoT),
@@ -93,7 +96,8 @@ export interface AboutHeroPresentation {
   heroAnimationOpacity: number
   aboutAnimationOpacity: number
   aboutAnimationProgress: number
-  aboutCopyOpacity: number
+  aboutHeadlineOpacity: number
+  aboutBodyOpacity: number
   heroCopyOpacity: number
   heroCopyBlurPx: number
   bgVideoOpacity: number

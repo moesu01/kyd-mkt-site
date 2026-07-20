@@ -47,7 +47,11 @@ function mountAboutBackground({ stageElement }: { stageElement: HTMLElement }) {
   }
 }
 
-export function AboutSection() {
+export function AboutSection({
+  onHeroSettled: onHeroSettledProp,
+}: {
+  onHeroSettled?: () => void
+} = {}) {
   const sectionRef = useRef<HTMLDivElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
   const emblemSlotRef = useRef<HTMLDivElement>(null)
@@ -63,7 +67,8 @@ export function AboutSection() {
 
   const handleHeroSettled = useCallback(() => {
     setIsHeroSettled(true)
-  }, [])
+    onHeroSettledProp?.()
+  }, [onHeroSettledProp])
 
   useLayoutEffect(() => {
     const stageElement = stageRef.current
@@ -229,7 +234,8 @@ export function AboutSection() {
               <AboutCopyLayer
                 headline={aboutSection.headline}
                 body={aboutSection.body}
-                opacity={presentation.aboutCopyOpacity}
+                headlineOpacity={presentation.aboutHeadlineOpacity}
+                bodyOpacity={presentation.aboutBodyOpacity}
               />
             </Flex>
           </Flex>
@@ -384,7 +390,7 @@ function HeroCopyLayer({
         textAlign="center"
         fontFamily="cossetteTitre"
         fontWeight="bold"
-        fontSize={{ base: "48px", lg901: "75.8px" }}
+        fontSize={{ base: "48px", lg901: "86px" }}
         lineHeight="1.1"
         color="warmDisplay"
         maxW="54.625rem"
@@ -423,13 +429,15 @@ function HeroCopyLayer({
 function AboutCopyLayer({
   headline,
   body,
-  opacity,
+  headlineOpacity,
+  bodyOpacity,
 }: {
   headline: string
   body: string
-  opacity: number
+  headlineOpacity: number
+  bodyOpacity: number
 }) {
-  const isVisible = opacity > 0.02
+  const isVisible = headlineOpacity > 0.02 || bodyOpacity > 0.02
 
   return (
     <Flex
@@ -437,7 +445,6 @@ function AboutCopyLayer({
       align="center"
       gap="6"
       w="full"
-      opacity={opacity}
       pointerEvents="none"
       aria-hidden={!isVisible}
       style={{
@@ -454,6 +461,8 @@ function AboutCopyLayer({
         color="warmDisplay"
         maxW="54.625rem"
         filter={`blur(0.7px) url(#${ABOUT_INK_BLEED_FILTER_ID})`}
+        opacity={headlineOpacity}
+        visibility={headlineOpacity > 0.02 ? "visible" : "hidden"}
       >
         {headline}
       </Heading>
@@ -466,6 +475,8 @@ function AboutCopyLayer({
         letterSpacing="-0.36px"
         color="warmMuted"
         maxW="33.25rem"
+        opacity={bodyOpacity}
+        visibility={bodyOpacity > 0.02 ? "visible" : "hidden"}
       >
         {body}
       </Text>
