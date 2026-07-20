@@ -26,12 +26,12 @@ function StatRow({
     >
       <Text
         flexShrink={0}
-        fontFamily="sans"
+        fontFamily="cossetteTitre"
         fontSize={{ base: "3rem", lg901: "72px" }}
         fontWeight="100"
         lineHeight="1"
-        letterSpacing="-0.15rem"
-        color="accent"
+        letterSpacing="0"
+        color="warmSoft"
         css={{ fontFeatureSettings: '"cv01" 1' }}
       >
         {value}
@@ -41,6 +41,7 @@ function StatRow({
         minW="0"
         textStyle="touringCategory"
         textAlign="right"
+        color="warmSoft"
       >
         {label}
       </Text>
@@ -76,7 +77,7 @@ export function VenuesSection() {
               headingTextTransform="none"
               headingFontWeight="bold"
               label="For Venues & Artists"
-              headline={"Your tickets.\nYour fans.\nYour money."}
+              headline={"Stop renting your audience.\nIt's already yours."}
             />
             <Text
               maxW="bodyCopy"
