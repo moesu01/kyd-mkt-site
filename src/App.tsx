@@ -10,7 +10,9 @@ import { FeaturesSectionInteractive } from "./components/features-section-intera
 // <FeaturesSection /> below, and src/components/features-section.tsx.
 // import { FeaturesSection } from "./components/features-section"
 import { Footer } from "./components/footer"
-import { HeroSplit } from "./components/hero-split"
+// TEMP: Original hero hidden while evaluating the About-scene alternate hero.
+// Restore import and <HeroSplit /> below when ready.
+// import { HeroSplit } from "./components/hero-split"
 // TEMP: Press section hidden — restore import and <PressSection /> below when ready.
 // import { PressSection } from "./components/press-section"
 import { SocialProofSection } from "./components/social-proof-section"
@@ -32,9 +34,9 @@ function App() {
         >
           <AlternateNav />
         </Box>
-        <HeroSplit />
-        <BackedBySection />
+        {/* TEMP: Original hero hidden — <HeroSplit /> */}
         <AboutSection />
+        <BackedBySection />
         <VenuesSection />
         <FeaturesSectionInteractive />
         {/* TODO: Hidden pending decision on interactive vs. original Platform

@@ -1,6 +1,6 @@
 import type { MouseEvent } from "react"
 import { Box, Flex, Heading, Text } from "@chakra-ui/react"
-import { links } from "../content/site-content"
+import { heroSection, links } from "../content/site-content"
 import { Button, CtaArrow } from "./ui/button"
 
 const HERO_BG_VIDEO_ID = "hero-bg-video"
@@ -113,9 +113,9 @@ export function HeroSplit() {
                 },
               }}
             >
-              Modern Ticketing
+              {heroSection.headlineLine1}
               <br />
-              Built for Venues
+              {heroSection.headlineLine2}
             </Heading>
             <Flex
               flexWrap="wrap"
@@ -126,12 +126,12 @@ export function HeroSplit() {
             >
               <Button href={links.getInTouch} size="hero">
                 <span>
-                  Get in touch
+                  {heroSection.primaryCta}
                   <CtaArrow />
                 </span>
               </Button>
               <Button href={links.tickets} variant="outline-accent" size="hero">
-                Find my tickets
+                {heroSection.secondaryCta}
               </Button>
             </Flex>
           </Box>
@@ -144,8 +144,7 @@ export function HeroSplit() {
             letterSpacing="-0.02em"
             color="fg"
           >
-            Own your data. Capture resale. Activate fans with AI. The
-            infrastructure venues use to run smarter shows.
+            {heroSection.body}
           </Text>
         </Flex>
       </Flex>

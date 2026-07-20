@@ -44,12 +44,28 @@
     >
       <source src="/videos/ascii-animation-7.mp4" type="video/mp4" />
     </video>
+    <!-- About-scene media outside React for Safari autoplay; AboutSection mounts on hydrate -->
+    <div id="about-bg-surface" aria-hidden="true"></div>
+    <video
+      id="about-bg-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      webkit-playsinline
+      preload="auto"
+      aria-hidden="true"
+    >
+      <source src="/videos/ascii-animation-7.mp4" type="video/mp4" />
+    </video>
     <script>
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         var heroBgVideo = document.getElementById("hero-bg-video")
         if (heroBgVideo) heroBgVideo.style.display = "none"
         var footerBgVideo = document.getElementById("footer-bg-video")
         if (footerBgVideo) footerBgVideo.style.display = "none"
+        var aboutBgVideo = document.getElementById("about-bg-video")
+        if (aboutBgVideo) aboutBgVideo.style.display = "none"
       }
     </script>
     <div id="root"></div>

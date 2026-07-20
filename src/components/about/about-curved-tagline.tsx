@@ -30,6 +30,12 @@ interface AboutCurvedTaglineProps extends BoxProps {
   markGap: number
   markAlign: number
   logoLoopScale: number
+  curvedTextOpacity?: number
+  emblemScale?: number
+  heroAnimationOpacity?: number
+  aboutAnimationOpacity?: number
+  aboutAnimationProgress?: number
+  onHeroSettled?: () => void
 }
 
 export function AboutCurvedTagline({
@@ -39,6 +45,12 @@ export function AboutCurvedTagline({
   markGap,
   markAlign,
   logoLoopScale,
+  curvedTextOpacity = 1,
+  emblemScale = 1,
+  heroAnimationOpacity = 0,
+  aboutAnimationOpacity = 1,
+  aboutAnimationProgress = 1,
+  onHeroSettled,
   ...props
 }: AboutCurvedTaglineProps) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -49,7 +61,7 @@ export function AboutCurvedTagline({
     if (!element) return
 
     const updateWidth = () => {
-      setContainerWidth(element.getBoundingClientRect().width)
+      setContainerWidth(element.clientWidth)
     }
 
     updateWidth()
@@ -111,8 +123,20 @@ export function AboutCurvedTagline({
     fontSizeUserUnits,
   })
 
+  const isCurvedTextVisible = curvedTextOpacity > 0.01
+
   return (
-    <Box ref={containerRef} position="relative" color="fg" {...props}>
+    <Box
+      ref={containerRef}
+      position="relative"
+      color="fg"
+      css={{
+        transform: `scale(${emblemScale})`,
+        transformOrigin: "center center",
+        willChange: emblemScale === 1 ? "auto" : "transform",
+      }}
+      {...props}
+    >
       <Box
         position="absolute"
         w="1px"
@@ -151,8 +175,9 @@ export function AboutCurvedTagline({
           </filter>
         </defs>
         <text
-          fill={colors.warmMuted.value}
+          fill={colors.warmDisplay.value}
           textAnchor={textPathAlignment.textAnchor}
+          opacity={curvedTextOpacity}
           style={{
             fontFamily: '"Cossette Titre", sans-serif',
             fontWeight: typography.fontWeight,
@@ -160,7 +185,10 @@ export function AboutCurvedTagline({
             letterSpacing: `${typography.letterSpacing}px`,
             fontSize: fontSizeUserUnits,
             lineHeight: 1.2,
-            filter: `blur(0.7px) url(#${ARC_INK_BLEED_FILTER_ID})`,
+            filter: isCurvedTextVisible
+              ? `blur(0.7px) url(#${ARC_INK_BLEED_FILTER_ID})`
+              : undefined,
+            visibility: isCurvedTextVisible ? "visible" : "hidden",
           }}
         >
           <textPath
@@ -192,7 +220,12 @@ export function AboutCurvedTagline({
             {...{ xmlns: "http://www.w3.org/1999/xhtml" }}
             style={{ width: "100%", height: "100%" }}
           >
-            <AboutLogoLoop />
+            <AboutLogoLoop
+              heroOpacity={heroAnimationOpacity}
+              aboutOpacity={aboutAnimationOpacity}
+              aboutProgress={aboutAnimationProgress}
+              onHeroSettled={onHeroSettled}
+            />
           </div>
         </foreignObject>
       </svg>

@@ -1,9 +1,22 @@
 import { useDialKit } from "dialkit"
 import { AboutCurvedTagline } from "./about-curved-tagline"
 import { aboutCurvedTaglineDialConfig } from "./about-curved-tagline-dial"
+import { type AboutHeroPresentation } from "./about-hero-transition"
 import { useAboutCurvedTaglineParams } from "./use-about-curved-tagline-params"
 
-export function AboutEmblem() {
+interface AboutEmblemProps {
+  presentation?: Pick<
+    AboutHeroPresentation,
+    | "emblemScale"
+    | "curvedTextOpacity"
+    | "heroAnimationOpacity"
+    | "aboutAnimationOpacity"
+    | "aboutAnimationProgress"
+  >
+  onHeroSettled?: () => void
+}
+
+export function AboutEmblem({ presentation, onHeroSettled }: AboutEmblemProps) {
   const dial = useDialKit("About curved tagline", aboutCurvedTaglineDialConfig)
   const { typography, path, mark, layout } = useAboutCurvedTaglineParams(dial)
 
@@ -18,6 +31,12 @@ export function AboutEmblem() {
       markGap={layout.markGap}
       markAlign={layout.markAlign}
       logoLoopScale={layout.logoLoopScale}
+      emblemScale={presentation?.emblemScale ?? 1}
+      curvedTextOpacity={presentation?.curvedTextOpacity ?? 1}
+      heroAnimationOpacity={presentation?.heroAnimationOpacity ?? 0}
+      aboutAnimationOpacity={presentation?.aboutAnimationOpacity ?? 1}
+      aboutAnimationProgress={presentation?.aboutAnimationProgress ?? 1}
+      onHeroSettled={onHeroSettled}
     />
   )
 }

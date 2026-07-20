@@ -17,6 +17,12 @@ html {
 }
 
 /* Matches tokens.colors.surface — under the video so the bottom fade reveals it */
+/* TEMP: Hidden with original HeroSplit while evaluating the About-scene hero. */
+#hero-bg-surface,
+#hero-bg-video {
+  display: none !important;
+}
+
 #hero-bg-surface {
   position: absolute;
   top: 0;
@@ -61,15 +67,18 @@ html {
   }
 }
 
-/* Hidden at body until Footer mounts them (avoids a flash at top). */
+/* Hidden at body until Footer/About mounts them (avoids a flash at top). */
 body > #footer-bg-surface,
-body > #footer-bg-video {
+body > #footer-bg-video,
+body > #about-bg-surface,
+body > #about-bg-video {
   visibility: hidden;
   pointer-events: none;
 }
 
-/* Warm dark plate under the dimmed footer video (Figma #15100d). */
-#footer-bg-surface {
+/* Warm dark plate under the dimmed footer/about video (Figma #15100d). */
+#footer-bg-surface,
+#about-bg-surface {
   position: absolute;
   inset: 0;
   z-index: 0;
@@ -77,7 +86,8 @@ body > #footer-bg-video {
   background: #15100d;
 }
 
-#footer-bg-video {
+#footer-bg-video,
+#about-bg-video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -86,12 +96,21 @@ body > #footer-bg-video {
   object-position: center;
   z-index: 0;
   pointer-events: none;
+}
+
+#footer-bg-video {
   opacity: 0.24;
+}
+
+#about-bg-video {
+  /* Fades in with hero settle; AboutSection drives opacity after that. */
+  opacity: 0;
   mix-blend-mode: screen;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #footer-bg-video {
+  #footer-bg-video,
+  #about-bg-video {
     display: none !important;
   }
 }

@@ -1,7 +1,6 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react"
 import { useState } from "react"
 import { backers } from "../content/site-content"
-import { colors } from "../theme/tokens"
 import { Container } from "./ui/container"
 import { prominentEyebrowTextProps } from "./ui/prominent-eyebrow-styles"
 
@@ -56,7 +55,7 @@ export function BackedBySection() {
       id="backed-by"
       px={{ base: "6", lg901: "12" }}
       py={{ base: "12", lg901: "16" }}
-      backgroundImage={backedBySectionGradient}
+      bg="transparent"
     >
       <Container>
         <Text
@@ -115,5 +114,3 @@ export function BackedBySection() {
     </Box>
   )
 }
-
-const backedBySectionGradient = `linear-gradient(to bottom, ${colors.surface.value} 0%, ${colors.pageBg.value} 100%)`

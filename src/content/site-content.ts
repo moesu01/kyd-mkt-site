@@ -18,10 +18,17 @@ export const heroFooterLinks = [
   { label: "Press", href: "#press", showIcon: true },
 ] as const
 
+export const heroSection = {
+  headlineLine1: "Modern Ticketing",
+  headlineLine2: "Built for Venues",
+  body: "Own your data. Capture resale. Activate fans with AI. The infrastructure venues use to run smarter shows.",
+  primaryCta: "Get in touch",
+  secondaryCta: "Find my tickets",
+} as const
+
 export const aboutSection = {
   eyebrow: "About KYD",
-  curvedTagline:
-    "Control Your Data. Keep Your Fans. Maximize Your Profit.",
+  curvedTagline: "Keep your data. Keep your fans. Keep your distribution.",
   headline: "Built for the People Who Actually Create Value.",
   body: "Live events are the beating heart of culture. For too long, venues and artists have been cut off from the fans and revenue they generate. KYD is the infrastructure to change that.",
 } as const
