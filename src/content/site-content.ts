@@ -34,7 +34,7 @@ export const aboutSection = {
 } as const
 
 export const navMenuLinks = [
-  { label: "About KYD", href: "#about" },
+  { label: "About", href: "#about" },
   { label: "For venues & artists", href: "#venues" },
   { label: "Platform", href: "#platform" },
   { label: "Press", href: "#press" },

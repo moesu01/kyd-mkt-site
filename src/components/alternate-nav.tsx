@@ -96,9 +96,9 @@ function LogoLink() {
       }}
     >
       <Image
-        src="/kyd-labs-logo.svg"
+        src="/icons/kyd_horiz.svg"
         alt="KYD Labs"
-        h="36px"
+        h="20px"
         w="auto"
         maxW="none"
         objectFit="contain"
@@ -213,7 +213,7 @@ export function AlternateNav({
         bg="#000"
         pl={{ base: "4", lg901: "5" }}
         pr="3"
-        py="3"
+        py="1.5"
         borderRadius={`${navShellRadius}px`}
         boxShadow={navShellShadow}
       >
