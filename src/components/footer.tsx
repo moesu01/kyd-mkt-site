@@ -265,13 +265,6 @@ export function Footer() {
           align={{ base: "center", md: "flex-end" }}
           gap="5px"
         >
-          <Image
-            src="/icons/kyd-dashboard-mark.svg"
-            alt=""
-            aria-hidden="true"
-            w="45px"
-            h="26px"
-          />
           <Text
             fontSize="12px"
             lineHeight="18px"
