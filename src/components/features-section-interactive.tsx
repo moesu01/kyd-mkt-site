@@ -25,8 +25,16 @@ const featureVisuals: Record<string, string> = {
   "Data Ownership": dataOwnershipVisual,
 }
 
+const featureVisualOverlays: Record<string, string> = {
+  "Email Campaigns": "/images/feat/email_mkt.png",
+}
+
 function getFeatureVisualSrc(title: string) {
   return featureVisuals[title] ?? platformVisualBg
+}
+
+function getFeatureVisualOverlaySrc(title: string) {
+  return featureVisualOverlays[title] ?? null
 }
 
 const kydMarkSmPath =
@@ -71,25 +79,55 @@ function FeatureVisualBackground({
 
         if (!isActive && !isExiting) return null
 
+        const overlaySrc = getFeatureVisualOverlaySrc(feature.title)
+
         return (
-          <Image
+          <Box
             key={isActive ? `${feature.title}-${contentKey}` : feature.title}
             position="absolute"
             inset="0"
-            w="full"
-            h="full"
-            src={getFeatureVisualSrc(feature.title)}
-            alt=""
-            objectFit="cover"
-            objectPosition="center"
             aria-hidden={!isActive}
-            draggable={false}
-            className={isActive && !motionless ? "feature-visual-bg-enter" : undefined}
-            css={{
-              opacity: isExiting ? 1 : motionless ? 1 : undefined,
-              zIndex: isActive ? 2 : 1,
-            }}
-          />
+            css={{ zIndex: isActive ? 2 : 1 }}
+          >
+            <Image
+              position="absolute"
+              inset="0"
+              w="full"
+              h="full"
+              src={getFeatureVisualSrc(feature.title)}
+              alt=""
+              objectFit="cover"
+              objectPosition="center"
+              draggable={false}
+              className={
+                isActive && !motionless ? "feature-visual-bg-enter" : undefined
+              }
+              css={{
+                opacity: isExiting ? 1 : motionless ? 1 : undefined,
+              }}
+            />
+            {overlaySrc ? (
+              <Image
+                position="absolute"
+                inset="0"
+                w="full"
+                h="full"
+                src={overlaySrc}
+                alt=""
+                objectFit="cover"
+                objectPosition="center"
+                draggable={false}
+                className={
+                  isActive && !motionless
+                    ? "feature-visual-overlay-enter"
+                    : undefined
+                }
+                css={{
+                  opacity: isExiting ? 1 : motionless ? 1 : undefined,
+                }}
+              />
+            ) : null}
+          </Box>
         )
       })}
     </>
