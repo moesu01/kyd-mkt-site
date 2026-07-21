@@ -12,6 +12,7 @@ import platformVisualBg from "../assets/images/platform-visual-temp.jpg"
 import unscalpableVisual from "../assets/images/feature-unscalpable.jpg"
 import dataOwnershipVisual from "../assets/images/feature-data-ownership.jpg"
 import { Container } from "./ui/container"
+import { Reveal, RevealGroup } from "./ui/reveal"
 import { VenueAudiencesGrid } from "./venue-audiences-grid"
 
 const dwellMs = 6000
@@ -579,15 +580,21 @@ export function FeaturesSectionInteractive() {
       py={{ base: "20", lg901: "28" }}
     >
       <Flex direction="column" gap="12" w="full">
-        <Box w="full">
-          <Container pt={{ base: "3", lg901: "16px" }}>
-            <PlatformSectionLabel label="The KYD Platform" />
+        <RevealGroup display="flex" flexDirection="column" gap="12" w="full">
+          <Box w="full">
+            <Container pt={{ base: "3", lg901: "16px" }}>
+              <Reveal order={0}>
+                <PlatformSectionLabel label="The KYD Platform" />
+              </Reveal>
+            </Container>
+          </Box>
+          <Container>
+            <VenueAudiencesGrid />
           </Container>
-        </Box>
-        <Container>
-          <VenueAudiencesGrid />
-        </Container>
+        </RevealGroup>
+        <RevealGroup w="full">
         <Container maxW="containerFramed">
+        <Reveal order={0}>
         <Box
           w="full"
           borderRadius="32px"
@@ -668,9 +675,11 @@ export function FeaturesSectionInteractive() {
               />
             ))}
           </Box>
-        </Grid>
+          </Grid>
         </Box>
+        </Reveal>
       </Container>
+        </RevealGroup>
       </Flex>
     </Box>
   )

@@ -1,6 +1,7 @@
 import { Box, Flex, Heading } from "@chakra-ui/react"
 import { colors } from "../theme/tokens"
 import { Container } from "./ui/container"
+import { Reveal, RevealGroup } from "./ui/reveal"
 import { TestimonialCarousel } from "./testimonial-carousel"
 
 export function SocialProofSection() {
@@ -13,27 +14,33 @@ export function SocialProofSection() {
       bg="transparent"
       backgroundImage={socialProofSectionGradient}
     >
-      <Container>
-        <Flex
-          mb="16"
-          pt={{ base: "6", lg901: "8" }}
-          flexDirection="column"
-          align="center"
-          gap="6"
-        >
-          <Heading
-            as="h2"
-            textStyle="cossetteDisplayHeading"
-            color="warmDisplay"
-            textWrap="balance"
-            textAlign="center"
+      <RevealGroup>
+        <Container>
+          <Flex
+            mb="16"
+            pt={{ base: "6", lg901: "8" }}
+            flexDirection="column"
+            align="center"
+            gap="6"
           >
-            What our customers and the industry are saying
-          </Heading>
-        </Flex>
-      </Container>
+            <Reveal order={0}>
+              <Heading
+                as="h2"
+                textStyle="cossetteDisplayHeading"
+                color="warmDisplay"
+                textWrap="balance"
+                textAlign="center"
+              >
+                What our customers and the industry are saying
+              </Heading>
+            </Reveal>
+          </Flex>
+        </Container>
 
-      <TestimonialCarousel />
+        <Reveal order={1}>
+          <TestimonialCarousel />
+        </Reveal>
+      </RevealGroup>
     </Box>
   )
 }

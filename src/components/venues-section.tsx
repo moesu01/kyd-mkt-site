@@ -2,6 +2,7 @@ import { Box, Flex, Grid, Text } from "@chakra-ui/react"
 import { links, stats } from "../content/site-content"
 import { Button, CtaArrow } from "./ui/button"
 import { Container } from "./ui/container"
+import { Reveal, RevealGroup } from "./ui/reveal"
 import { SectionHeading } from "./ui/section-heading"
 
 function StatRow({
@@ -59,66 +60,74 @@ export function VenuesSection() {
       pt={{ base: "20", lg901: "28" }}
       pb={{ base: "20", lg901: "28" }}
     >
-      <Container>
-        <Grid
-          templateColumns={{ base: "1fr", lg901: "1fr 1fr" }}
-          alignItems={{ base: "start", lg901: "stretch" }}
-          gap={{ base: "14", lg901: "24" }}
-        >
-          <Flex
-            direction="column"
-            justify={{ base: "flex-start", lg901: "space-between" }}
-            h={{ base: "auto", lg901: "full" }}
-            gap={{ base: "10", lg901: 0 }}
+      <RevealGroup>
+        <Container>
+          <Grid
+            templateColumns={{ base: "1fr", lg901: "1fr 1fr" }}
+            alignItems={{ base: "start", lg901: "stretch" }}
+            gap={{ base: "14", lg901: "24" }}
           >
-            <SectionHeading
-              eyebrowVariant="prominent"
-              headingTextStyle="cossetteDisplayHeading"
-              headingTextTransform="none"
-              headingFontWeight="bold"
-              label="For Venues & Artists"
-              headline={"Stop renting your audience.\nIt's already yours."}
-            />
-            <Text
-              maxW="bodyCopy"
-              fontFamily="sans"
-              fontWeight="normal"
-              fontSize="18px"
-              lineHeight="27px"
-              letterSpacing="-0.36px"
-              color="warmMuted"
+            <Flex
+              direction="column"
+              justify={{ base: "flex-start", lg901: "space-between" }}
+              h={{ base: "auto", lg901: "full" }}
+              gap={{ base: "10", lg901: 0 }}
             >
-              A next-gen, whitelabel ticketing and marketing platform for
-              independent artists, touring acts, and venues. Own your ticketing.
-              Keep your fan data. Automate your marketing. Deliver 10x results
-              &mdash; and never rent your audience again.
-            </Text>
-            <Box alignSelf="flex-start">
-              <Button
-                href={links.getInTouch}
-                size="hero"
-                css={{ fontWeight: "bold" }}
-              >
-                <span>
-                  Get in touch
-                  <CtaArrow />
-                </span>
-              </Button>
-            </Box>
-          </Flex>
+              <Reveal order={0}>
+                <SectionHeading
+                  eyebrowVariant="prominent"
+                  headingTextStyle="cossetteDisplayHeading"
+                  headingTextTransform="none"
+                  headingFontWeight="bold"
+                  label="For Venues & Artists"
+                  headline={"Stop renting your audience.\nIt's already yours."}
+                />
+              </Reveal>
+              <Reveal order={1}>
+                <Text
+                  maxW="bodyCopy"
+                  fontFamily="sans"
+                  fontWeight="normal"
+                  fontSize="18px"
+                  lineHeight="27px"
+                  letterSpacing="-0.36px"
+                  color="warmMuted"
+                >
+                  A next-gen, whitelabel ticketing and marketing platform for
+                  independent artists, touring acts, and venues. Own your
+                  ticketing. Keep your fan data. Automate your marketing.
+                  Deliver 10x results &mdash; and never rent your audience
+                  again.
+                </Text>
+              </Reveal>
+              <Reveal order={2} alignSelf="flex-start">
+                <Button
+                  href={links.getInTouch}
+                  size="hero"
+                  css={{ fontWeight: "bold" }}
+                >
+                  <span>
+                    Get in touch
+                    <CtaArrow />
+                  </span>
+                </Button>
+              </Reveal>
+            </Flex>
 
-          <Box w="full">
-            {stats.map((stat, index) => (
-              <StatRow
-                key={stat.label}
-                value={stat.value}
-                label={stat.label}
-                isFirst={index === 0}
-              />
-            ))}
-          </Box>
-        </Grid>
-      </Container>
+            <Box w="full">
+              {stats.map((stat, index) => (
+                <Reveal key={stat.label} order={index + 1}>
+                  <StatRow
+                    value={stat.value}
+                    label={stat.label}
+                    isFirst={index === 0}
+                  />
+                </Reveal>
+              ))}
+            </Box>
+          </Grid>
+        </Container>
+      </RevealGroup>
     </Box>
   )
 }

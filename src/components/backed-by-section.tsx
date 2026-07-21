@@ -3,6 +3,7 @@ import { useState } from "react"
 import { backers } from "../content/site-content"
 import { Container } from "./ui/container"
 import { prominentEyebrowTextProps } from "./ui/prominent-eyebrow-styles"
+import { Reveal, RevealGroup } from "./ui/reveal"
 
 function BackerLogo({
   name,
@@ -57,60 +58,65 @@ export function BackedBySection() {
       py={{ base: "12", lg901: "16" }}
       bg="transparent"
     >
-      <Container>
-        <Text
-          {...prominentEyebrowTextProps}
-          mb="0"
-          w="full"
-          textAlign="center"
-        >
-          Backed by
-        </Text>
-
-        <Flex
-          as="ul"
-          listStyleType="none"
-          align="stretch"
-          justify="space-between"
-          gap="0"
-          w="full"
-          maxW="80%"
-          mx="auto"
-          pt="5"
-          pb="2"
-        >
-          {backers.map((backer) => (
-            <Box
-              as="li"
-              key={backer.name}
-              display="flex"
-              flex="1"
-              flexDirection="column"
-              gap="4"
-              p={{ base: "4", lg901: "5" }}
+      <RevealGroup>
+        <Container>
+          <Reveal order={0}>
+            <Text
+              {...prominentEyebrowTextProps}
+              mb="0"
+              w="full"
+              textAlign="center"
             >
-              <Flex flex="1" align="center" justify="center" minH="12">
-                <BackerLogo
-                  name={backer.name}
-                  logoSrc={backer.logoSrc}
-                  maxH={backer.maxH}
-                  maxW={backer.maxW}
-                />
-              </Flex>
-              {/* TEMP: backer name labels hidden — restore when ready.
-              <Text
-                textStyle="eyebrow"
-                color="fgSubtle"
-                w="full"
-                textAlign="center"
+              Backed by
+            </Text>
+          </Reveal>
+
+          <Flex
+            as="ul"
+            listStyleType="none"
+            align="stretch"
+            justify="space-between"
+            gap="0"
+            w="full"
+            maxW="80%"
+            mx="auto"
+            pt="5"
+            pb="2"
+          >
+            {backers.map((backer, index) => (
+              <Reveal
+                as="li"
+                order={index + 1}
+                key={backer.name}
+                display="flex"
+                flex="1"
+                flexDirection="column"
+                gap="4"
+                p={{ base: "4", lg901: "5" }}
               >
-                {backer.name}
-              </Text>
-              */}
-            </Box>
-          ))}
-        </Flex>
-      </Container>
+                <Flex flex="1" align="center" justify="center" minH="12">
+                  <BackerLogo
+                    name={backer.name}
+                    logoSrc={backer.logoSrc}
+                    maxH={backer.maxH}
+                    maxW={backer.maxW}
+                  />
+                </Flex>
+                {/* TEMP: backer name labels hidden — restore when ready.
+                <Text
+                  textStyle="eyebrow"
+                  color="fgSubtle"
+                  w="full"
+                  textAlign="center"
+                >
+                  {backer.name}
+                </Text>
+                */}
+              </Reveal>
+            ))}
+          </Flex>
+        </Container>
+      </RevealGroup>
     </Box>
   )
 }
