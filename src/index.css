@@ -242,17 +242,17 @@ body > #about-bg-video {
   }
 }
 
-/* Staggered ~100ms behind the bg fade so the layers enter as separate beats */
-.feature-visual-overlay-enter {
-  animation: feature-visual-overlay-enter 500ms cubic-bezier(0.2, 0, 0, 1) 100ms both;
-  will-change: transform, opacity;
+.campaign-ui-enter {
+  animation: campaign-ui-enter 500ms cubic-bezier(0.22, 1, 0.36, 1)
+    var(--campaign-enter-delay, 0ms) both;
+  will-change: transform, opacity, filter;
 }
 
-@keyframes feature-visual-overlay-enter {
+@keyframes campaign-ui-enter {
   from {
     opacity: 0;
-    transform: translateY(56px);
-    filter: blur(4px);
+    transform: translateY(16px);
+    filter: blur(3px);
   }
 
   to {
@@ -262,8 +262,39 @@ body > #about-bg-video {
   }
 }
 
+.campaign-preview-enter {
+  animation: campaign-preview-enter 500ms cubic-bezier(0.2, 0, 0, 1) 100ms both;
+  will-change: transform, opacity;
+}
+
+@keyframes campaign-preview-enter {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .feature-visual-exit {
   animation: feature-visual-exit 150ms ease-in forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feature-progress-fill,
+  .feature-body-enter,
+  .feature-visual-exit,
+  .feature-visual-bg-enter,
+  .campaign-ui-enter,
+  .campaign-preview-enter {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
 }
 
 @keyframes used-by-globe-spin {

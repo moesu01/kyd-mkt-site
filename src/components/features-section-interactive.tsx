@@ -11,6 +11,10 @@ import { features } from "../content/site-content"
 import platformVisualBg from "../assets/images/platform-visual-temp.jpg"
 import unscalpableVisual from "../assets/images/feature-unscalpable.jpg"
 import dataOwnershipVisual from "../assets/images/feature-data-ownership.jpg"
+import {
+  EmailCampaignVisual,
+  emailCampaignVisualTitle,
+} from "./email-campaign-visual"
 import { Container } from "./ui/container"
 import { Reveal, RevealGroup } from "./ui/reveal"
 import { VenueAudiencesGrid } from "./venue-audiences-grid"
@@ -25,16 +29,8 @@ const featureVisuals: Record<string, string> = {
   "Data Ownership": dataOwnershipVisual,
 }
 
-const featureVisualOverlays: Record<string, string> = {
-  "Email Campaigns": "/images/feat/email_mkt.png",
-}
-
 function getFeatureVisualSrc(title: string) {
   return featureVisuals[title] ?? platformVisualBg
-}
-
-function getFeatureVisualOverlaySrc(title: string) {
-  return featureVisualOverlays[title] ?? null
 }
 
 const kydMarkSmPath =
@@ -79,8 +75,6 @@ function FeatureVisualBackground({
 
         if (!isActive && !isExiting) return null
 
-        const overlaySrc = getFeatureVisualOverlaySrc(feature.title)
-
         return (
           <Box
             key={isActive ? `${feature.title}-${contentKey}` : feature.title}
@@ -89,44 +83,27 @@ function FeatureVisualBackground({
             aria-hidden={!isActive}
             css={{ zIndex: isActive ? 2 : 1 }}
           >
-            <Image
-              position="absolute"
-              inset="0"
-              w="full"
-              h="full"
-              src={getFeatureVisualSrc(feature.title)}
-              alt=""
-              objectFit="cover"
-              objectPosition="center"
-              draggable={false}
-              className={
-                isActive && !motionless ? "feature-visual-bg-enter" : undefined
-              }
-              css={{
-                opacity: isExiting ? 1 : motionless ? 1 : undefined,
-              }}
-            />
-            {overlaySrc ? (
+            {feature.title === emailCampaignVisualTitle ? (
+              <EmailCampaignVisual shouldAnimate={isActive && !motionless} />
+            ) : (
               <Image
                 position="absolute"
                 inset="0"
                 w="full"
                 h="full"
-                src={overlaySrc}
+                src={getFeatureVisualSrc(feature.title)}
                 alt=""
                 objectFit="cover"
                 objectPosition="center"
                 draggable={false}
                 className={
-                  isActive && !motionless
-                    ? "feature-visual-overlay-enter"
-                    : undefined
+                  isActive && !motionless ? "feature-visual-bg-enter" : undefined
                 }
                 css={{
                   opacity: isExiting ? 1 : motionless ? 1 : undefined,
                 }}
               />
-            ) : null}
+            )}
           </Box>
         )
       })}
@@ -534,8 +511,6 @@ export function FeaturesSectionInteractive() {
   const cycleKeyRef = useRef(cycleKey)
   const animateProgress = !prefersReducedMotion
 
-  cycleKeyRef.current = cycleKey
-
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
 
@@ -556,7 +531,8 @@ export function FeaturesSectionInteractive() {
       setExitDirection(direction)
       setExitingIndex(activeIndex)
       setActiveIndex(index)
-      setCycleKey((key) => key + 1)
+      cycleKeyRef.current += 1
+      setCycleKey(cycleKeyRef.current)
 
       if (prefersReducedMotion) {
         setExitingIndex(null)
@@ -574,7 +550,8 @@ export function FeaturesSectionInteractive() {
       setExitDirection("down")
       return (current + 1) % featureCount
     })
-    setCycleKey((key) => key + 1)
+    cycleKeyRef.current += 1
+    setCycleKey(cycleKeyRef.current)
   }, [prefersReducedMotion])
 
   const handleProgressComplete = useCallback(
@@ -697,21 +674,25 @@ export function FeaturesSectionInteractive() {
               contentKey={cycleKey}
               prefersReducedMotion={prefersReducedMotion}
             />
-            {features.map((feature, index) => (
-              <FeatureVisualPlaceholder
-                key={feature.title}
-                index={index}
-                title={feature.title}
-                icon={feature.icon}
-                isActive={activeIndex === index}
-                isExiting={exitingIndex === index}
-                enterDirection={enterDirection}
-                exitDirection={exitDirection}
-                contentKey={cycleKey}
-                prefersReducedMotion={prefersReducedMotion}
-                onExitComplete={handleExitComplete}
-              />
-            ))}
+            {features.map((feature, index) => {
+              if (feature.title === emailCampaignVisualTitle) return null
+
+              return (
+                <FeatureVisualPlaceholder
+                  key={feature.title}
+                  index={index}
+                  title={feature.title}
+                  icon={feature.icon}
+                  isActive={activeIndex === index}
+                  isExiting={exitingIndex === index}
+                  enterDirection={enterDirection}
+                  exitDirection={exitDirection}
+                  contentKey={cycleKey}
+                  prefersReducedMotion={prefersReducedMotion}
+                  onExitComplete={handleExitComplete}
+                />
+              )
+            })}
           </Box>
           </Grid>
         </Box>
