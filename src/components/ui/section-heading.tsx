@@ -5,6 +5,8 @@ import { prominentEyebrowTextProps } from "./prominent-eyebrow-styles"
 type SectionHeadingLevel = "h2" | "h3"
 type EyebrowVariant = "default" | "prominent"
 
+const SECTION_HEADING_INK_BLEED_FILTER_ID = "section-heading-ink-bleed"
+
 interface SectionHeadingProps extends BoxProps {
   label: string
   headline: ReactNode
@@ -13,6 +15,7 @@ interface SectionHeadingProps extends BoxProps {
   headingTextStyle?: "displayHeading" | "cossetteDisplayHeading"
   headingTextTransform?: "none" | "uppercase"
   headingFontWeight?: "normal" | "bold"
+  withInkBleed?: boolean
 }
 
 function getHeadingTextStyle(level: SectionHeadingLevel) {
@@ -49,13 +52,32 @@ export function SectionHeading({
   headingTextStyle,
   headingTextTransform,
   headingFontWeight,
+  withInkBleed = false,
   ...props
 }: SectionHeadingProps) {
   const resolvedHeadingTextStyle =
     headingTextStyle ?? getHeadingTextStyle(headingAs)
 
   return (
-    <Box {...props}>
+    <Box position={withInkBleed ? "relative" : undefined} {...props}>
+      {withInkBleed ? (
+        <svg
+          width="0"
+          height="0"
+          aria-hidden
+          focusable="false"
+          style={{ position: "absolute" }}
+        >
+          <filter
+            id={SECTION_HEADING_INK_BLEED_FILTER_ID}
+            colorInterpolationFilters="sRGB"
+          >
+            <feComponentTransfer>
+              <feFuncA type="discrete" tableValues="0 1 1 1" />
+            </feComponentTransfer>
+          </filter>
+        </svg>
+      ) : null}
       <Text {...getEyebrowProps(eyebrowVariant)}>{label}</Text>
       <Heading
         as={headingAs}
@@ -65,6 +87,11 @@ export function SectionHeading({
         whiteSpace={
           typeof headline === "string" && headline.includes("\n")
             ? "pre-line"
+            : undefined
+        }
+        filter={
+          withInkBleed
+            ? `blur(0.7px) url(#${SECTION_HEADING_INK_BLEED_FILTER_ID})`
             : undefined
         }
       >

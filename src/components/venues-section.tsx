@@ -79,6 +79,7 @@ export function VenuesSection() {
                   headingTextStyle="cossetteDisplayHeading"
                   headingTextTransform="none"
                   headingFontWeight="bold"
+                  withInkBleed
                   label="For Venues & Artists"
                   headline={"Stop renting your audience.\nIt's already yours."}
                 />

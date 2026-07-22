@@ -4,6 +4,8 @@ import { Container } from "./ui/container"
 import { Reveal, RevealGroup } from "./ui/reveal"
 import { TestimonialCarousel } from "./testimonial-carousel"
 
+const SOCIAL_PROOF_INK_BLEED_FILTER_ID = "social-proof-headline-ink-bleed"
+
 export function SocialProofSection() {
   return (
     <Box
@@ -13,7 +15,25 @@ export function SocialProofSection() {
       pb={{ base: "20", lg901: "28" }}
       bg="transparent"
       backgroundImage={socialProofSectionGradient}
+      position="relative"
     >
+      <svg
+        width="0"
+        height="0"
+        aria-hidden
+        focusable="false"
+        style={{ position: "absolute" }}
+      >
+        <filter
+          id={SOCIAL_PROOF_INK_BLEED_FILTER_ID}
+          colorInterpolationFilters="sRGB"
+        >
+          <feComponentTransfer>
+            <feFuncA type="discrete" tableValues="0 1 1 1" />
+          </feComponentTransfer>
+        </filter>
+      </svg>
+
       <RevealGroup>
         <Container>
           <Flex
@@ -27,11 +47,15 @@ export function SocialProofSection() {
               <Heading
                 as="h2"
                 textStyle="cossetteDisplayHeading"
+                fontWeight="bold"
+                textTransform="none"
+                lineHeight="1.1"
                 color="warmDisplay"
                 textWrap="balance"
                 textAlign="center"
+                filter={`blur(0.7px) url(#${SOCIAL_PROOF_INK_BLEED_FILTER_ID})`}
               >
-                What our customers and the industry are saying
+                What Our Customers and the Industry Are Saying
               </Heading>
             </Reveal>
           </Flex>

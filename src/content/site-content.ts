@@ -200,26 +200,26 @@ export const testimonials = [
   },
   {
     quote:
-      "We switched our entire tour to KYD and finally stopped fighting our own box office. Fans get in faster, we see real data, and nobody is refreshing a broken checkout page at 10:01 a.m.",
-    attribution: "mock up",
-    role: "place holder",
-    logoSrc: assetUrl("/logos/testimonials/placeholder.svg"),
+      "LPR works with blockchain ticketer KYD Labs, which allows them to access more data on their fans, better target ads and track their sales in real time.",
+    attribution: "Billboard",
+    role: "Feature on (le) poisson rouge, NYC",
+    logoSrc: assetUrl("/logos/Billboard_logo.svg.png"),
     placeholder: false,
   },
   {
     quote:
-      "Most platforms treat venues like an afterthought. KYD built the tools we actually use night of show, from door lists and comps to last-minute holds, without making our team learn a new religion.",
-    attribution: "mock up",
-    role: "place holder",
-    logoSrc: assetUrl("/logos/testimonials/placeholder.svg"),
+      "KYD Labs, a blockchain-based platform built by former Ticketmaster veterans, is attempting to rethink how liquidity and ownership function underneath the ticketing economy.",
+    attribution: "Forbes",
+    role: "The Future of Digital Assets",
+    logoSrc: assetUrl("/logos/Forbes_logo.svg.png"),
     placeholder: false,
   },
   {
     quote:
-      "Our team needed ticketing that could keep up with how fast rooms sell out. KYD gave us cleaner reporting, fewer support tickets, and a checkout flow fans actually finish.",
-    attribution: "mock up",
-    role: "place holder",
-    logoSrc: assetUrl("/logos/testimonials/placeholder.svg"),
+      "Platforms like KYD are attempting to rebuild parts of that system in a way that gives more flexibility and economic ownership to venues, organizers, and community-driven curators themselves.",
+    attribution: "Forbes",
+    role: "The Future of Digital Assets",
+    logoSrc: assetUrl("/logos/Forbes_logo.svg.png"),
     placeholder: false,
   },
   {

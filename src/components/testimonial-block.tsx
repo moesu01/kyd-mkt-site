@@ -102,10 +102,10 @@ export function TestimonialBlock({
           fontWeight="bold"
           lineHeight="1.3"
           letterSpacing="-0.24px"
-          color={placeholder ? "#737373" : "#171717"}
+          color={placeholder ? "#737373" : "fgDim"}
           fontStyle={placeholder ? "italic" : undefined}
           wordBreak="break-word"
-          textWrap="pretty"
+          textWrap="balance"
           css={testimonialQuoteStyles}
         >
           &ldquo;{quote}&rdquo;
@@ -116,9 +116,9 @@ export function TestimonialBlock({
         <Text
           fontFamily="cossetteTexte"
           fontSize="18px"
-          fontWeight="medium"
+          fontWeight="bold"
           lineHeight="23.4px"
-          color={placeholder ? "#737373" : "#171717"}
+          color={placeholder ? "#737373" : "fgDim"}
           css={testimonialFontFeatures}
         >
           {attribution}
