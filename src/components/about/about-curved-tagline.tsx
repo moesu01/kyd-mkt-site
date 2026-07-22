@@ -227,6 +227,7 @@ export function AboutCurvedTagline({
             style={{
               width: "100%",
               height: "100%",
+              transformBox: "border-box",
               transformOrigin: "center center",
             }}
           >
