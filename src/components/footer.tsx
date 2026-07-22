@@ -1,6 +1,7 @@
 import { Box, Flex, Image, Link, Text } from "@chakra-ui/react"
 import { useLayoutEffect, useRef } from "react"
 import { footerLegalLinks, heroSection, links } from "../content/site-content"
+import { assetUrl } from "../lib/asset-url"
 import { Button, CtaArrow } from "./ui/button"
 
 const FOOTER_BG_SURFACE_ID = "footer-bg-surface"
@@ -192,7 +193,7 @@ export function Footer() {
           }}
         >
           <Image
-            src="/kyd-labs-logo.svg"
+            src={assetUrl("/kyd-labs-logo.svg")}
             alt="KYD Labs"
             w={{ base: "min(78vw, 360px)", md: "608px" }}
             h="auto"

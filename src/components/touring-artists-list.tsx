@@ -1,6 +1,7 @@
 import { Box, Flex, Grid, Image, Text, chakra } from "@chakra-ui/react"
 import { useState, type MouseEvent } from "react"
 import { touringArtists } from "../content/site-content"
+import { assetUrl } from "../lib/asset-url"
 
 const ChakraLink = chakra("a")
 
@@ -35,7 +36,7 @@ function ExternalLinkArrow({ isHovered }: { isHovered: boolean }) {
       aria-hidden
     >
       <Image
-        src="/icons/external-link-arrow.svg"
+        src={assetUrl("/icons/external-link-arrow.svg")}
         alt=""
         w={{ base: "13.828px", lg901: "11px", xl1048: "13.828px" }}
         h={{ base: "12px", lg901: "10px", xl1048: "12px" }}

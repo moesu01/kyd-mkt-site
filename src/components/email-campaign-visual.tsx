@@ -1,6 +1,7 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react"
 import type { ReactNode } from "react"
 import platformVisualBg from "../assets/images/platform-visual-temp.jpg"
+import { assetUrl } from "../lib/asset-url"
 
 export function EmailCampaignVisual({
   shouldAnimate,
@@ -118,7 +119,7 @@ function CampaignPreview({ shouldAnimate }: CampaignPreviewProps) {
           w="calc(100% - 12px)"
           h="calc(100% - 12px)"
           borderRadius="38px"
-          src="/images/feat/email_cmpgn2.png"
+          src={assetUrl("/images/feat/email_cmpgn2.png")}
           alt=""
           objectFit="cover"
           objectPosition="top"
@@ -202,7 +203,7 @@ function MetricCard({
       <Flex align="center" gap="1.4cqw" minW="0" h="1em">
         {metric.isAttributed ? (
           <Image
-            src="/images/feat/metric-dot.svg"
+            src={assetUrl("/images/feat/metric-dot.svg")}
             alt=""
             display="block"
             w="4cqw"
@@ -240,7 +241,7 @@ function MetricCard({
           position="absolute"
           top="2.8cqw"
           right="3.2cqw"
-          src="/images/feat/attributed-sales.svg"
+          src={assetUrl("/images/feat/attributed-sales.svg")}
           alt=""
           w="9.93cqw"
           h="9.93cqw"

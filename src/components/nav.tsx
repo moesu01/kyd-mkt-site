@@ -1,6 +1,7 @@
 import { Box, Flex, Image, Link, Text, chakra } from "@chakra-ui/react"
 import { useState } from "react"
 import { links, navMenuLinks } from "../content/site-content"
+import { assetUrl } from "../lib/asset-url"
 import { Button } from "./ui/button"
 
 const iconEase = "cubic-bezier(0.2, 0, 0, 1)"
@@ -357,7 +358,7 @@ export function Nav() {
           }}
         >
           <Image
-            src="/kyd-labs-logo.svg"
+            src={assetUrl("/kyd-labs-logo.svg")}
             alt="KYD Labs"
             h="36px"
             w="auto"

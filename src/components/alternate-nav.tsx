@@ -1,6 +1,7 @@
 import { Box, Flex, Image, Link, chakra } from "@chakra-ui/react"
 import { useEffect, useState, type TransitionEvent } from "react"
 import { navMenuLinks } from "../content/site-content"
+import { assetUrl } from "../lib/asset-url"
 
 const interactionEase = "cubic-bezier(0.2, 0, 0, 1)"
 const navShellRadius = 16
@@ -96,7 +97,7 @@ function LogoLink() {
       }}
     >
       <Image
-        src="/icons/kyd_horiz.svg"
+        src={assetUrl("/icons/kyd_horiz.svg")}
         alt="KYD Labs"
         h="20px"
         w="auto"
@@ -312,14 +313,14 @@ export function AlternateNav({
                 minH: "12",
                 px: "4",
                 py: "3",
-                // Link hover/active transform must not fight the enter motion.
-                transitionProperty:
-                  "opacity, transform, filter, background-color",
                 ...getMobileMenuItemMotion({
                   index,
                   isOpen: isMenuOpen,
                   totalItems: navMenuLinks.length,
                 }),
+                // Link hover/active transform must not fight the enter motion.
+                transitionProperty:
+                  "opacity, transform, filter, background-color",
               }}
               onClick={handleCloseMenu}
             >

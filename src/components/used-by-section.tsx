@@ -1,6 +1,7 @@
 import { Box, Flex, Heading, Image, Text, chakra } from "@chakra-ui/react"
 import { useEffect, useRef, useState, type MouseEvent } from "react"
 import { usedBy } from "../content/site-content"
+import { assetUrl } from "../lib/asset-url"
 import { PixelGlobe } from "./used-by/pixel-globe"
 
 const ChakraLink = chakra("a")
@@ -24,7 +25,7 @@ function ExternalLinkArrow({ isHovered }: { isHovered: boolean }) {
       transitionTimingFunction={usedByCardEase}
       aria-hidden
     >
-      <Image src="/icons/external-link-arrow.svg" alt="" w="13.828px" h="12px" />
+      <Image src={assetUrl("/icons/external-link-arrow.svg")} alt="" w="13.828px" h="12px" />
     </Box>
   )
 }

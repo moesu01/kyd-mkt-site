@@ -2,6 +2,8 @@
 
 React + Vite marketing one-pager for KYD Labs. Ported from the static HTML prototype with an OKLCH grayscale design system and Inter typography.
 
+**Live:** https://moesu01.github.io/kyd-mkt-site/
+
 ## Stack
 
 - React 19 + TypeScript
