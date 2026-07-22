@@ -22,10 +22,18 @@ const LOGO_LOOP_FRAMES = Array.from(
     `${FRAME_BASE_PATH}/${String(index + 1).padStart(2, "0")}.png`,
 )
 
-/** Hero intro — second half of the loop, ending on the second-to-last frame. */
+/** Hero intro — second half of the loop, ending on the second-to-last frame.
+ *  Drop the first 25% of that range so the enter cycle is shorter. */
+const HERO_INTRO_END = FRAME_COUNT - 1
+const HERO_INTRO_FULL_START = Math.floor(FRAME_COUNT / 2)
+const HERO_INTRO_LENGTH = Math.round(
+  (HERO_INTRO_END - HERO_INTRO_FULL_START) * 0.75,
+)
+const HERO_INTRO_START = HERO_INTRO_END - HERO_INTRO_LENGTH
+
 const HERO_INTRO_FRAMES = LOGO_LOOP_FRAMES.slice(
-  Math.floor(FRAME_COUNT / 2),
-  FRAME_COUNT - 1,
+  HERO_INTRO_START,
+  HERO_INTRO_END,
 )
 
 const FRAME_ROTATIONS = Array.from(
@@ -34,8 +42,8 @@ const FRAME_ROTATIONS = Array.from(
 )
 
 const HERO_INTRO_ROTATIONS = FRAME_ROTATIONS.slice(
-  Math.floor(FRAME_COUNT / 2),
-  FRAME_COUNT - 1,
+  HERO_INTRO_START,
+  HERO_INTRO_END,
 )
 
 const LAST_FRAME_INDEX = LOGO_LOOP_FRAMES.length - 1
