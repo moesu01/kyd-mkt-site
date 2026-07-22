@@ -8,20 +8,6 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Keep the HTML logo canvas centered inside its SVG foreignObject in Safari.
-   Layout sizing avoids Safari's inconsistent transform origin in this context. */
-[data-about-logo-loop] {
-  width: 100%;
-  height: 100%;
-}
-
-@media (max-height: 901px) {
-  [data-about-logo-loop] {
-    width: 82%;
-    height: 82%;
-  }
-}
-
 /* Let the static hero video (outside React) show through the first viewport.
    Body keeps pageBg as the page fallback; Chakra also paints #root pageBg. */
 #root {

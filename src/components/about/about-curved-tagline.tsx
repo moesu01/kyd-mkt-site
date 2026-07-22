@@ -122,6 +122,12 @@ export function AboutCurvedTagline({
     bottomPadding: markGap,
     fontSizeUserUnits,
   })
+  const logoLoopLeft = `${(logoLoopX / emblemViewBox.width) * 100}%`
+  const logoLoopTop = `${
+    ((logoLoopY - emblemViewBox.minY) / emblemViewBox.height) * 100
+  }%`
+  const logoLoopWidth = `${(logoLoopSize / emblemViewBox.width) * 100}%`
+  const logoLoopHeight = `${(logoLoopSize / emblemViewBox.height) * 100}%`
 
   const isCurvedTextVisible = curvedTextOpacity > 0.01
 
@@ -209,35 +215,25 @@ export function AboutCurvedTagline({
             {aboutSection.curvedTagline}
           </textPath>
         </text>
-        <foreignObject
-          x={logoLoopX}
-          y={logoLoopY}
-          width={logoLoopSize}
-          height={logoLoopSize}
-          style={{ overflow: "visible" }}
-        >
-          <div
-            {...{ xmlns: "http://www.w3.org/1999/xhtml" }}
-            style={{
-              width: "100%",
-              height: "100%",
-              display: "grid",
-              placeItems: "center",
-            }}
-          >
-            <div
-              data-about-logo-loop
-            >
-              <AboutLogoLoop
-                heroOpacity={heroAnimationOpacity}
-                aboutOpacity={aboutAnimationOpacity}
-                aboutProgress={aboutAnimationProgress}
-                onHeroSettled={onHeroSettled}
-              />
-            </div>
-          </div>
-        </foreignObject>
       </svg>
+      <div
+        data-about-logo-loop
+        style={{
+          position: "absolute",
+          left: logoLoopLeft,
+          top: logoLoopTop,
+          width: logoLoopWidth,
+          height: logoLoopHeight,
+          pointerEvents: "none",
+        }}
+      >
+        <AboutLogoLoop
+          heroOpacity={heroAnimationOpacity}
+          aboutOpacity={aboutAnimationOpacity}
+          aboutProgress={aboutAnimationProgress}
+          onHeroSettled={onHeroSettled}
+        />
+      </div>
     </Box>
   )
 }

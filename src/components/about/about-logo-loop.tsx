@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react"
 import { motion } from "motion/react"
-import { assetUrl } from "../../lib/asset-url"
 
 const FRAME_COUNT = 48
 const HERO_FRAME_DURATION_MS = 55
@@ -8,7 +7,7 @@ const HERO_FRAME_DURATION_MS = 55
 const ENDING_FRAME_OPTIONS = 8
 /** Progress must reach this before we treat the scroll as "settled on an ending". */
 const ENDING_SETTLE_PROGRESS = 0.999
-const FRAME_BASE_PATH = assetUrl("/anim/kyd%20logo%20loop")
+const FRAME_BASE_PATH = "./anim/kyd%20logo%20loop"
 
 const ROTATION_POOL = [
   1.7, -2.3, 0.6, -1.4, 2.5, -0.8, 1.9, -2.1, 0.4, -1.7, 2.2, -0.5, 1.3,
