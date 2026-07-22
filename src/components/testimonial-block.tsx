@@ -1,5 +1,6 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react"
-import { useState } from "react"
+import { useLayoutEffect, useRef, useState } from "react"
+import { assetUrl } from "../lib/asset-url"
 
 interface TestimonialBlockProps {
   quote: string
@@ -9,6 +10,10 @@ interface TestimonialBlockProps {
   placeholder?: boolean
   rotateDeg?: number
 }
+
+const PAPER_TEXTURE_URL = assetUrl("/images/paper_tx2.png")
+const QUOTE_FONT_MIN_PX = 18
+const QUOTE_FONT_MAX_PX = 24
 
 function TestimonialLogo({
   logoSrc,
@@ -62,6 +67,49 @@ const testimonialQuoteStyles = {
 
 const testimonialRotateEase = "cubic-bezier(0.2, 0, 0, 1)"
 
+function fitQuoteFontSize({
+  container,
+  quoteEl,
+}: {
+  container: HTMLElement
+  quoteEl: HTMLElement
+}): number {
+  const styles = getComputedStyle(container)
+  const availableHeight =
+    container.clientHeight -
+    Number.parseFloat(styles.paddingTop) -
+    Number.parseFloat(styles.paddingBottom)
+  const availableWidth =
+    container.clientWidth -
+    Number.parseFloat(styles.paddingLeft) -
+    Number.parseFloat(styles.paddingRight)
+
+  if (availableHeight <= 0 || availableWidth <= 0) return QUOTE_FONT_MIN_PX
+
+  let low = QUOTE_FONT_MIN_PX
+  let high = QUOTE_FONT_MAX_PX
+  let best = low
+
+  while (low <= high) {
+    const mid = Math.floor((low + high) / 2)
+    quoteEl.style.fontSize = `${mid}px`
+    const overflows =
+      quoteEl.scrollHeight > availableHeight + 1 ||
+      quoteEl.scrollWidth > availableWidth + 1
+
+    if (overflows) {
+      high = mid - 1
+      continue
+    }
+
+    best = mid
+    low = mid + 1
+  }
+
+  quoteEl.style.fontSize = `${best}px`
+  return best
+}
+
 export function TestimonialBlock({
   quote,
   attribution,
@@ -70,6 +118,25 @@ export function TestimonialBlock({
   placeholder = false,
   rotateDeg = 0,
 }: TestimonialBlockProps) {
+  const quoteContainerRef = useRef<HTMLDivElement>(null)
+  const quoteRef = useRef<HTMLParagraphElement>(null)
+  const [quoteFontSizePx, setQuoteFontSizePx] = useState(24)
+
+  useLayoutEffect(() => {
+    const container = quoteContainerRef.current
+    const quoteEl = quoteRef.current
+    if (!container || !quoteEl) return
+
+    const updateFontSize = () => {
+      setQuoteFontSizePx(fitQuoteFontSize({ container, quoteEl }))
+    }
+
+    updateFontSize()
+    const observer = new ResizeObserver(updateFontSize)
+    observer.observe(container)
+    return () => observer.disconnect()
+  }, [quote])
+
   return (
     <Flex
       as="article"
@@ -81,10 +148,16 @@ export function TestimonialBlock({
       maxW="testimonialCard"
       h={{ base: "480px", lg901: "550px" }}
       borderRadius="8px"
-      border={placeholder ? "1px dashed" : "1px solid"}
-      borderColor={placeholder ? "rgba(0, 0, 0, 0.2)" : "rgba(0, 0, 0, 0.1)"}
-      bg={placeholder ? "#ebebeb" : "#f5f5f5"}
-      p="12"
+      border="1px solid"
+      borderColor="rgba(0, 0, 0, 0.1)"
+      bg={placeholder ? "warmDisplay" : "white"}
+      backgroundImage={
+        placeholder ? undefined : `url(${PAPER_TEXTURE_URL})`
+      }
+      backgroundSize={placeholder ? undefined : "contain"}
+      backgroundPosition={placeholder ? undefined : "top left"}
+      backgroundRepeat={placeholder ? undefined : "no-repeat"}
+      p="8"
       overflow="hidden"
       transform={`rotate(${rotateDeg}deg)`}
       transitionProperty="transform"
@@ -92,33 +165,45 @@ export function TestimonialBlock({
       transitionTimingFunction={testimonialRotateEase}
       css={foldedPosterCss}
     >
-      <TestimonialLogo logoSrc={logoSrc} attribution={attribution} />
+      <Box position="relative" zIndex={1}>
+        <TestimonialLogo logoSrc={logoSrc} attribution={attribution} />
+      </Box>
 
-      <Flex flex="1" direction="column" justify="center" py={{ base: "8", lg901: "12" }}>
+      <Flex
+        ref={quoteContainerRef}
+        flex="1"
+        direction="column"
+        justify="center"
+        minH={0}
+        px="12px"
+        py={{ base: "8", lg901: "12" }}
+        position="relative"
+        zIndex={1}
+      >
         <Text
+          ref={quoteRef}
           as="p"
           fontFamily="cossetteTexte"
-          fontSize="24px"
+          fontSize={`${quoteFontSizePx}px`}
           fontWeight="bold"
           lineHeight="1.3"
-          letterSpacing="-0.24px"
-          color={placeholder ? "#737373" : "fgDim"}
-          fontStyle={placeholder ? "italic" : undefined}
+          letterSpacing="-0.01em"
+          color="fgDim"
           wordBreak="break-word"
-          textWrap="balance"
+          textWrap="pretty"
           css={testimonialQuoteStyles}
         >
           &ldquo;{quote}&rdquo;
         </Text>
       </Flex>
 
-      <Box>
+      <Box position="relative" zIndex={1}>
         <Text
           fontFamily="cossetteTexte"
           fontSize="18px"
           fontWeight="bold"
           lineHeight="23.4px"
-          color={placeholder ? "#737373" : "fgDim"}
+          color="fgDim"
           css={testimonialFontFeatures}
         >
           {attribution}
@@ -131,8 +216,8 @@ export function TestimonialBlock({
             fontWeight="medium"
             lineHeight="15.6px"
             letterSpacing="-0.26px"
-            color={placeholder ? "#737373" : "#404040"}
-            opacity={placeholder ? 1 : 0.85}
+            color="#404040"
+            opacity={0.85}
             css={testimonialFontFeatures}
           >
             {role}

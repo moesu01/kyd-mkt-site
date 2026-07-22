@@ -200,18 +200,34 @@ export const testimonials = [
   },
   {
     quote:
+      "The difference is ownership. We are not renting our audience from another platform and hoping the data is still there after the show ends.",
+    attribution: "mock up",
+    role: "place holder",
+    logoSrc: assetUrl("/logos/testimonials/placeholder.svg"),
+    placeholder: true,
+  },
+  {
+    quote:
       "LPR works with blockchain ticketer KYD Labs, which allows them to access more data on their fans, better target ads and track their sales in real time.",
     attribution: "Billboard",
     role: "Feature on (le) poisson rouge, NYC",
-    logoSrc: assetUrl("/logos/Billboard_logo.svg.png"),
+    logoSrc: assetUrl("/logos/Billboard_logo2.svg"),
     placeholder: false,
+  },
+  {
+    quote:
+      "We switched our entire tour to KYD and finally stopped fighting our own box office. Fans get in faster, we see real data, and nobody is refreshing a broken checkout page at 10:01 a.m.",
+    attribution: "mock up",
+    role: "place holder",
+    logoSrc: assetUrl("/logos/testimonials/placeholder.svg"),
+    placeholder: true,
   },
   {
     quote:
       "KYD Labs, a blockchain-based platform built by former Ticketmaster veterans, is attempting to rethink how liquidity and ownership function underneath the ticketing economy.",
     attribution: "Forbes",
     role: "The Future of Digital Assets",
-    logoSrc: assetUrl("/logos/Forbes_logo.svg.png"),
+    logoSrc: assetUrl("/logos/Forbes_logo2.svg"),
     placeholder: false,
   },
   {
@@ -219,15 +235,7 @@ export const testimonials = [
       "Platforms like KYD are attempting to rebuild parts of that system in a way that gives more flexibility and economic ownership to venues, organizers, and community-driven curators themselves.",
     attribution: "Forbes",
     role: "The Future of Digital Assets",
-    logoSrc: assetUrl("/logos/Forbes_logo.svg.png"),
-    placeholder: false,
-  },
-  {
-    quote:
-      "The difference is ownership. We are not renting our audience from another platform and hoping the data is still there after the show ends.",
-    attribution: "mock up",
-    role: "place holder",
-    logoSrc: assetUrl("/logos/testimonials/placeholder.svg"),
+    logoSrc: assetUrl("/logos/Forbes_logo2.svg"),
     placeholder: false,
   },
 ] as const
