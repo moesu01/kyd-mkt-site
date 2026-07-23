@@ -9,8 +9,9 @@ export const aboutHeroTransition = {
   bgVideoOpacityEnd: 0.24,
   /** Progress windows: [start, end] for each morph. */
   ranges: {
-    /** Hero copy/CTAs blur out while they scroll off. */
-    heroCopyExit: [0.02, 0.14] as const,
+    /** Hero copy/CTAs blur out while they scroll off.
+     *  Starts later so headline/body/CTAs stay sharp through early scroll. */
+    heroCopyExit: [0.14, 0.28] as const,
     /** Preserve a real scroll gesture before the About transition starts. */
     emblemScale: [0.17, 0.57] as const,
     bgVideoOpacity: [0.17, 0.57] as const,

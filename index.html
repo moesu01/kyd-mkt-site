@@ -45,7 +45,11 @@
       <source src="%BASE_URL%videos/ascii-animation-7.mp4" type="video/mp4" />
     </video>
     <!-- About-scene media outside React for Safari autoplay; AboutSection mounts on hydrate -->
-    <div id="about-bg-surface" aria-hidden="true"></div>
+    <div
+      id="about-bg-surface"
+      aria-hidden="true"
+      style="background-image: url('%BASE_URL%images/paper_drk_tx.png')"
+    ></div>
     <video
       id="about-bg-video"
       autoplay
@@ -56,7 +60,7 @@
       preload="auto"
       aria-hidden="true"
     >
-      <source src="%BASE_URL%videos/ascii-animation-7.mp4" type="video/mp4" />
+      <source src="%BASE_URL%videos/ascii-animation-7b.mp4" type="video/mp4" />
     </video>
     <script>
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
