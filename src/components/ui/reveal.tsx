@@ -8,6 +8,7 @@ import {
   type AnimationEvent,
   type CSSProperties,
   type ReactNode,
+  type RefObject,
 } from "react"
 
 /**
@@ -20,6 +21,10 @@ import {
 
 interface RevealGroupProps extends BoxProps {
   children: ReactNode
+  /** Override IntersectionObserver rootMargin. Default fires after content enters. */
+  rootMargin?: string
+  /** Observe a separate flow-positioned trigger for sticky section content. */
+  triggerRef?: RefObject<Element | null>
 }
 
 interface RevealProps extends BoxProps {
@@ -28,12 +33,17 @@ interface RevealProps extends BoxProps {
   children: ReactNode
 }
 
-export function RevealGroup({ children, ...props }: RevealGroupProps) {
+export function RevealGroup({
+  children,
+  rootMargin = revealRootMargin,
+  triggerRef,
+  ...props
+}: RevealGroupProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const [isRevealed, setIsRevealed] = useState(false)
 
   useEffect(() => {
-    const element = rootRef.current
+    const element = triggerRef?.current ?? rootRef.current
     if (!element) return
 
     if (typeof IntersectionObserver === "undefined") {
@@ -47,12 +57,12 @@ export function RevealGroup({ children, ...props }: RevealGroupProps) {
         setIsRevealed(true)
         observer.disconnect()
       },
-      { rootMargin: revealRootMargin, threshold: 0 },
+      { rootMargin, threshold: 0 },
     )
 
     observer.observe(element)
     return () => observer.disconnect()
-  }, [])
+  }, [rootMargin, triggerRef])
 
   return (
     <Box ref={rootRef} {...props}>
@@ -64,16 +74,39 @@ export function RevealGroup({ children, ...props }: RevealGroupProps) {
 }
 
 export function Reveal({ order = 0, children, style, ...props }: RevealProps) {
+  const { className, style: revealStyle, onAnimationEnd } = useSectionReveal({
+    order,
+    style,
+  })
+
+  return (
+    <Box
+      className={className}
+      style={revealStyle}
+      onAnimationEnd={onAnimationEnd}
+      {...props}
+    >
+      {children}
+    </Box>
+  )
+}
+
+/** Shared stagger state for custom hosts (e.g. SVG curved tagline). */
+export function useSectionReveal({
+  order = 0,
+  style,
+}: {
+  order?: number
+  style?: CSSProperties
+} = {}) {
   const isRevealed = useContext(RevealGroupContext)
   const [hasEntered, setHasEntered] = useState(false)
 
-  function handleAnimationEnd(event: AnimationEvent<HTMLDivElement>) {
+  function handleAnimationEnd(event: AnimationEvent<Element>) {
     if (event.animationName !== "section-reveal-enter") return
     setHasEntered(true)
   }
 
-  // Drop the animation class once done so no persistent transform/filter
-  // remains on the wrapper.
   const className = !isRevealed
     ? "section-reveal-hidden"
     : !hasEntered
@@ -88,16 +121,16 @@ export function Reveal({ order = 0, children, style, ...props }: RevealProps) {
         }
       : style
 
-  return (
-    <Box
-      className={className}
-      style={revealStyle}
-      onAnimationEnd={handleAnimationEnd}
-      {...props}
-    >
-      {children}
-    </Box>
-  )
+  return {
+    isRevealed,
+    className,
+    style: revealStyle,
+    onAnimationEnd: handleAnimationEnd,
+  }
+}
+
+export function useRevealGroup() {
+  return useContext(RevealGroupContext)
 }
 
 /** Shrinks the bottom of the observer viewport so reveals fire after content

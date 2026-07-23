@@ -11,9 +11,9 @@ import { FeaturesSectionInteractive } from "./components/features-section-intera
 // <FeaturesSection /> below, and src/components/features-section.tsx.
 // import { FeaturesSection } from "./components/features-section"
 import { Footer } from "./components/footer"
-// TEMP: Original hero hidden while evaluating the About-scene alternate hero.
-// Restore import and <HeroSplit /> below when ready.
-// import { HeroSplit } from "./components/hero-split"
+import { HeroAboutBackground } from "./components/hero-about-background"
+import { HeroSection } from "./components/hero-section"
+import type { HeroLayout } from "./components/hero-split"
 // TEMP: Press section hidden — restore import and <PressSection /> below when ready.
 // import { PressSection } from "./components/press-section"
 import { SocialProofSection } from "./components/social-proof-section"
@@ -22,9 +22,19 @@ import { VenuesSection } from "./components/venues-section"
 
 function App() {
   const [isHeroIntroVisible, setIsHeroIntroVisible] = useState(false)
+  // TEMP: layout A/B via "Find my tickets" — remove after choosing a hero.
+  const [heroLayout, setHeroLayout] = useState<HeroLayout>("centered")
 
   const handleHeroSettled = useCallback(() => {
     setIsHeroIntroVisible(true)
+  }, [])
+
+  const handleToggleHeroLayout = useCallback(() => {
+    // Keep nav/copy settled across swaps; don't replay the logo intro.
+    setIsHeroIntroVisible(true)
+    setHeroLayout((previous) =>
+      previous === "centered" ? "split" : "centered",
+    )
   }, [])
 
   return (
@@ -41,8 +51,18 @@ function App() {
         >
           <AlternateNav isIntroVisible={isHeroIntroVisible} />
         </Box>
-        {/* TEMP: Original hero hidden — <HeroSplit /> */}
-        <AboutSection onHeroSettled={handleHeroSettled} />
+        <Box position="relative">
+          <HeroAboutBackground isHeroIntroVisible={isHeroIntroVisible} />
+          <Box position="relative" zIndex={1}>
+            <HeroSection
+              layout={heroLayout}
+              onToggleLayout={handleToggleHeroLayout}
+              onHeroSettled={handleHeroSettled}
+              isIntroSettled={isHeroIntroVisible}
+            />
+            <AboutSection />
+          </Box>
+        </Box>
         <BackedBySection />
         <VenuesSection />
         <FeaturesSectionInteractive />

@@ -1,5 +1,5 @@
 import { Box, type BoxProps } from "@chakra-ui/react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
 import { aboutSection } from "../../content/site-content"
 import { colors } from "../../theme/tokens"
 import {
@@ -12,7 +12,8 @@ import {
   type CurvedTaglineMark,
   type CurvedTaglineTypography,
 } from "./about-curved-tagline-dial"
-import { AboutLogoLoop } from "./about-logo-loop"
+import { AboutLogoLoop, type AboutLogoLoopMode } from "./about-logo-loop"
+import { Reveal } from "../ui/reveal"
 
 const ARC_PATH_ID = "about-curved-tagline-arc"
 const ARC_INK_BLEED_FILTER_ID = "about-arc-ink-bleed"
@@ -30,11 +31,15 @@ interface AboutCurvedTaglineProps extends BoxProps {
   markGap: number
   markAlign: number
   logoLoopScale: number
-  curvedTextOpacity?: number
   emblemScale?: number
+  curvedTextOpacity?: number
+  /** When true, curved tagline uses section Reveal stagger (like Features). */
+  revealCurvedText?: boolean
   heroAnimationOpacity?: number
   aboutAnimationOpacity?: number
   aboutAnimationProgress?: number
+  mode?: AboutLogoLoopMode
+  skipIntro?: boolean
   onHeroSettled?: () => void
 }
 
@@ -46,10 +51,13 @@ export function AboutCurvedTagline({
   markAlign,
   logoLoopScale,
   curvedTextOpacity = 1,
+  revealCurvedText = false,
   emblemScale = 1,
   heroAnimationOpacity = 0,
   aboutAnimationOpacity = 1,
   aboutAnimationProgress = 1,
+  mode = "about",
+  skipIntro = false,
   onHeroSettled,
   ...props
 }: AboutCurvedTaglineProps) {
@@ -129,20 +137,76 @@ export function AboutCurvedTagline({
   const logoLoopWidth = `${(logoLoopSize / emblemViewBox.width) * 100}%`
   const logoLoopHeight = `${(logoLoopSize / emblemViewBox.height) * 100}%`
 
-  const isCurvedTextVisible = curvedTextOpacity > 0.01
+  const isCurvedTextVisible = revealCurvedText || curvedTextOpacity > 0.01
+  const curvedTextStyle = {
+    fontFamily: '"Cossette Titre", sans-serif',
+    fontWeight: typography.fontWeight,
+    textTransform: "none" as const,
+    letterSpacing: `${typography.letterSpacing}px`,
+    fontSize: fontSizeUserUnits,
+    lineHeight: 1.2,
+    filter: isCurvedTextVisible
+      ? `blur(0.7px) url(#${ARC_INK_BLEED_FILTER_ID})`
+      : undefined,
+    visibility: isCurvedTextVisible
+      ? ("visible" as const)
+      : ("hidden" as const),
+  }
+
+  const curvedSvg = (
+    <svg
+      viewBox={`0 ${emblemViewBox.minY} ${emblemViewBox.width} ${emblemViewBox.height}`}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      width="100%"
+      height="auto"
+      preserveAspectRatio="xMidYMid meet"
+      aria-hidden="true"
+      style={{ overflow: "visible", display: "block" }}
+    >
+      <defs>
+        <path
+          id={ARC_PATH_ID}
+          d={`M ${arcStartX} ${arcCenterY} A ${arcRadius} ${arcRadius} 0 0 1 ${arcEndX} ${arcCenterY}`}
+        />
+        <filter
+          id={ARC_INK_BLEED_FILTER_ID}
+          colorInterpolationFilters="sRGB"
+        >
+          <feComponentTransfer>
+            <feFuncA type="discrete" tableValues="0 1 1 1" />
+          </feComponentTransfer>
+        </filter>
+      </defs>
+      <text
+        fill={colors.warmDisplay.value}
+        textAnchor={textPathAlignment.textAnchor}
+        opacity={revealCurvedText ? 1 : curvedTextOpacity}
+        style={curvedTextStyle}
+      >
+        <textPath
+          href={`#${ARC_PATH_ID}`}
+          startOffset={
+            textPathAlignment.usePercentOffset
+              ? `${textPathAlignment.startOffset}%`
+              : textPathAlignment.startOffset
+          }
+          textAnchor={textPathAlignment.textAnchor}
+          {...(typography.useTextLength
+            ? {
+                textLength: arcLength * typography.textLengthScale,
+                lengthAdjust: textLengthAdjust,
+              }
+            : {})}
+        >
+          {aboutSection.curvedTagline}
+        </textPath>
+      </text>
+    </svg>
+  )
 
   return (
-    <Box
-      ref={containerRef}
-      position="relative"
-      color="fg"
-      css={{
-        transform: `scale(${emblemScale})`,
-        transformOrigin: "center center",
-        willChange: emblemScale === 1 ? "auto" : "transform",
-      }}
-      {...props}
-    >
+    <Box ref={containerRef} position="relative" color="fg" {...props}>
       <Box
         position="absolute"
         w="1px"
@@ -156,66 +220,10 @@ export function AboutCurvedTagline({
       >
         {aboutSection.curvedTagline}
       </Box>
-      <svg
-        viewBox={`0 ${emblemViewBox.minY} ${emblemViewBox.width} ${emblemViewBox.height}`}
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        width="100%"
-        height="auto"
-        preserveAspectRatio="xMidYMid meet"
-        aria-hidden="true"
-        style={{ overflow: "visible", display: "block" }}
-      >
-        <defs>
-          <path
-            id={ARC_PATH_ID}
-            d={`M ${arcStartX} ${arcCenterY} A ${arcRadius} ${arcRadius} 0 0 1 ${arcEndX} ${arcCenterY}`}
-          />
-          <filter
-            id={ARC_INK_BLEED_FILTER_ID}
-            colorInterpolationFilters="sRGB"
-          >
-            <feComponentTransfer>
-              <feFuncA type="discrete" tableValues="0 1 1 1" />
-            </feComponentTransfer>
-          </filter>
-        </defs>
-        <text
-          fill={colors.warmDisplay.value}
-          textAnchor={textPathAlignment.textAnchor}
-          opacity={curvedTextOpacity}
-          style={{
-            fontFamily: '"Cossette Titre", sans-serif',
-            fontWeight: typography.fontWeight,
-            textTransform: "none",
-            letterSpacing: `${typography.letterSpacing}px`,
-            fontSize: fontSizeUserUnits,
-            lineHeight: 1.2,
-            filter: isCurvedTextVisible
-              ? `blur(0.7px) url(#${ARC_INK_BLEED_FILTER_ID})`
-              : undefined,
-            visibility: isCurvedTextVisible ? "visible" : "hidden",
-          }}
-        >
-          <textPath
-            href={`#${ARC_PATH_ID}`}
-            startOffset={
-              textPathAlignment.usePercentOffset
-                ? `${textPathAlignment.startOffset}%`
-                : textPathAlignment.startOffset
-            }
-            textAnchor={textPathAlignment.textAnchor}
-            {...(typography.useTextLength
-              ? {
-                  textLength: arcLength * typography.textLengthScale,
-                  lengthAdjust: textLengthAdjust,
-                }
-              : {})}
-          >
-            {aboutSection.curvedTagline}
-          </textPath>
-        </text>
-      </svg>
+
+      <CurvedTextHost reveal={revealCurvedText}>{curvedSvg}</CurvedTextHost>
+
+      {/* Scale only the mark — copy reveals separately like other sections. */}
       <div
         data-about-logo-loop
         style={{
@@ -225,15 +233,37 @@ export function AboutCurvedTagline({
           width: logoLoopWidth,
           height: logoLoopHeight,
           pointerEvents: "none",
+          transform: `scale(${emblemScale})`,
+          transformOrigin: "center center",
+          willChange: emblemScale === 1 ? "auto" : "transform",
         }}
       >
         <AboutLogoLoop
           heroOpacity={heroAnimationOpacity}
           aboutOpacity={aboutAnimationOpacity}
           aboutProgress={aboutAnimationProgress}
+          mode={mode}
+          skipIntro={skipIntro}
           onHeroSettled={onHeroSettled}
         />
       </div>
     </Box>
   )
+}
+
+function CurvedTextHost({
+  reveal,
+  children,
+}: {
+  reveal: boolean
+  children: ReactNode
+}) {
+  if (reveal)
+    return (
+      <Reveal order={0} w="full">
+        {children}
+      </Reveal>
+    )
+
+  return <Box w="full">{children}</Box>
 }

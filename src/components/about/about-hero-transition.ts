@@ -1,26 +1,20 @@
-/** Tunable values for the alternate hero → About scroll scene. */
+/** Tunable values for the About scroll scene (entered after the standalone hero). */
 export const aboutHeroTransition = {
   /** Sticky scrubber length as a viewport-height multiple. */
-  scrollHeightVh: 220,
-  /** Emblem scale at progress 0 (hero). Progress 1 = About scale 1. */
+  scrollHeightVh: 200,
+  /** Emblem scale at progress 0 (matches standalone hero). Progress 1 = About scale 1. */
   emblemScaleStart: 0.64,
-  /** Ascii bg video opacity at hero start / About end (matches footer). */
+  /** Ascii bg video opacity at About entry / About end (matches footer). */
   bgVideoOpacityStart: 1,
   bgVideoOpacityEnd: 0.24,
   /** Progress windows: [start, end] for each morph. */
   ranges: {
-    /** Hero copy/CTAs blur out while they scroll off.
-     *  Starts later so headline/body/CTAs stay sharp through early scroll. */
-    heroCopyExit: [0.14, 0.28] as const,
-    /** Preserve a real scroll gesture before the About transition starts. */
-    emblemScale: [0.17, 0.57] as const,
-    bgVideoOpacity: [0.17, 0.57] as const,
-    animationCrossfade: [0.17, 0.27] as const,
-    aboutAnimation: [0.17, 0.85] as const,
-    /** Reveal About content in three short, sequential scroll windows. */
-    curvedText: [0.5, 0.55] as const,
-    aboutHeadline: [0.55, 0.6] as const,
-    aboutBody: [0.58, 0.63] as const,
+    /** Morph begins as soon as About pins. */
+    emblemScale: [0, 0.5] as const,
+    bgVideoOpacity: [0, 0.5] as const,
+    /** Logo hero → about crossfade — leave on scroll scrub. */
+    animationCrossfade: [0, 0.2] as const,
+    aboutAnimation: [0, 0.82] as const,
   },
 } as const
 
@@ -53,14 +47,9 @@ export function getAboutHeroPresentation({
   if (prefersReducedMotion) {
     return {
       emblemScale: 1,
-      curvedTextOpacity: 1,
       heroAnimationOpacity: 0,
       aboutAnimationOpacity: 1,
       aboutAnimationProgress: 1,
-      aboutHeadlineOpacity: 1,
-      aboutBodyOpacity: 1,
-      heroCopyOpacity: 0,
-      heroCopyBlurPx: 4,
       bgVideoOpacity: aboutHeroTransition.bgVideoOpacityEnd,
     }
   }
@@ -74,32 +63,21 @@ export function getAboutHeroPresentation({
   } = aboutHeroTransition
   const emblemT = progressInRange(p, ranges.emblemScale)
   const animationCrossfade = progressInRange(p, ranges.animationCrossfade)
-  const heroCopyExit = progressInRange(p, ranges.heroCopyExit)
   const bgVideoT = progressInRange(p, ranges.bgVideoOpacity)
 
   return {
     emblemScale: lerp(emblemScaleStart, 1, emblemT),
-    curvedTextOpacity: progressInRange(p, ranges.curvedText),
     heroAnimationOpacity: 1 - animationCrossfade,
     aboutAnimationOpacity: animationCrossfade,
     aboutAnimationProgress: progressInRange(p, ranges.aboutAnimation),
-    aboutHeadlineOpacity: progressInRange(p, ranges.aboutHeadline),
-    aboutBodyOpacity: progressInRange(p, ranges.aboutBody),
-    heroCopyOpacity: 1 - heroCopyExit,
-    heroCopyBlurPx: lerp(0, 4, heroCopyExit),
     bgVideoOpacity: lerp(bgVideoOpacityStart, bgVideoOpacityEnd, bgVideoT),
   }
 }
 
 export interface AboutHeroPresentation {
   emblemScale: number
-  curvedTextOpacity: number
   heroAnimationOpacity: number
   aboutAnimationOpacity: number
   aboutAnimationProgress: number
-  aboutHeadlineOpacity: number
-  aboutBodyOpacity: number
-  heroCopyOpacity: number
-  heroCopyBlurPx: number
   bgVideoOpacity: number
 }

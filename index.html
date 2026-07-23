@@ -15,7 +15,7 @@
     />
   </head>
   <body>
-    <!-- Surface plate under the hero video so the bottom mask fades into section color -->
+    <!-- Shared Hero/About media; mounted once so layout swaps cannot remove it -->
     <div id="hero-bg-surface" aria-hidden="true"></div>
     <!-- Outside React so Safari can honor autoplay during HTML parse -->
     <video
@@ -28,7 +28,7 @@
       preload="auto"
       aria-hidden="true"
     >
-      <source src="%BASE_URL%videos/ascii-animation-7.mp4" type="video/mp4" />
+      <source src="%BASE_URL%videos/ascii-animation-7b.mp4" type="video/mp4" />
     </video>
     <!-- Footer media outside React for Safari autoplay; Footer mounts on hydrate -->
     <div id="footer-bg-surface" aria-hidden="true"></div>
@@ -44,32 +44,12 @@
     >
       <source src="%BASE_URL%videos/ascii-animation-7.mp4" type="video/mp4" />
     </video>
-    <!-- About-scene media outside React for Safari autoplay; AboutSection mounts on hydrate -->
-    <div
-      id="about-bg-surface"
-      aria-hidden="true"
-      style="background-image: url('%BASE_URL%images/paper_drk_tx.png')"
-    ></div>
-    <video
-      id="about-bg-video"
-      autoplay
-      muted
-      loop
-      playsinline
-      webkit-playsinline
-      preload="auto"
-      aria-hidden="true"
-    >
-      <source src="%BASE_URL%videos/ascii-animation-7b.mp4" type="video/mp4" />
-    </video>
     <script>
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         var heroBgVideo = document.getElementById("hero-bg-video")
         if (heroBgVideo) heroBgVideo.style.display = "none"
         var footerBgVideo = document.getElementById("footer-bg-video")
         if (footerBgVideo) footerBgVideo.style.display = "none"
-        var aboutBgVideo = document.getElementById("about-bg-video")
-        if (aboutBgVideo) aboutBgVideo.style.display = "none"
       }
     </script>
     <div id="root"></div>

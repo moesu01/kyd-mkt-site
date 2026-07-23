@@ -105,11 +105,17 @@ function isSettledAtEnding(progress: number) {
   return Math.min(1, Math.max(0, progress)) >= ENDING_SETTLE_PROGRESS
 }
 
+export type AboutLogoLoopMode = "hero" | "about"
+
 interface AboutLogoLoopProps {
   className?: string
   heroOpacity: number
   aboutOpacity: number
   aboutProgress: number
+  /** "hero" plays the intro; "about" starts settled and only scrubs on scroll. */
+  mode?: AboutLogoLoopMode
+  /** When true in hero mode, skip the intro (e.g. after a layout toggle). */
+  skipIntro?: boolean
   onHeroSettled?: () => void
 }
 
@@ -118,17 +124,28 @@ export function AboutLogoLoop({
   heroOpacity,
   aboutOpacity,
   aboutProgress,
+  mode = "about",
+  skipIntro = false,
   onHeroSettled,
 }: AboutLogoLoopProps) {
+  const isHeroMode = mode === "hero"
+  const shouldSkipIntro = !isHeroMode || skipIntro
   const containerRef = useRef<HTMLDivElement>(null)
   const hasNotifiedSettledRef = useRef(false)
-  const lockedEndingFrameRef = useRef<number | null>(null)
   const endingFrameBagRef = useRef<number[]>([])
   const lastDrawnEndingFrameRef = useRef<number | null>(null)
-  const [heroFrameIndex, setHeroFrameIndex] = useState(0)
-  const [hasHeroAnimationStarted, setHasHeroAnimationStarted] = useState(false)
-  const [isHeroSettled, setIsHeroSettled] = useState(false)
+  const lastIntroFrameIndex = Math.max(HERO_INTRO_FRAMES.length - 1, 0)
+  const [heroFrameIndex, setHeroFrameIndex] = useState(
+    shouldSkipIntro ? lastIntroFrameIndex : 0,
+  )
+  const [hasHeroAnimationStarted, setHasHeroAnimationStarted] = useState(
+    shouldSkipIntro,
+  )
+  const [isHeroSettled, setIsHeroSettled] = useState(shouldSkipIntro)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  const [lockedEndingFrame, setLockedEndingFrame] = useState<number | null>(
+    null,
+  )
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -150,6 +167,8 @@ export function AboutLogoLoop({
   }, [])
 
   useEffect(() => {
+    if (shouldSkipIntro) return
+
     const element = containerRef.current
     if (!element) return
 
@@ -164,9 +183,10 @@ export function AboutLogoLoop({
     observer.observe(element)
 
     return () => observer.disconnect()
-  }, [])
+  }, [shouldSkipIntro])
 
   useEffect(() => {
+    if (shouldSkipIntro) return
     if (!hasHeroAnimationStarted) return
     if (prefersReducedMotion) return
 
@@ -186,41 +206,56 @@ export function AboutLogoLoop({
     return () => {
       window.clearInterval(intervalId)
     }
-  }, [hasHeroAnimationStarted, prefersReducedMotion])
+  }, [hasHeroAnimationStarted, prefersReducedMotion, shouldSkipIntro])
 
-  const hasSettled = prefersReducedMotion || isHeroSettled
+  const hasSettled = prefersReducedMotion || isHeroSettled || shouldSkipIntro
+  const hasSettledAtEnding =
+    !prefersReducedMotion && isSettledAtEnding(aboutProgress)
 
   useEffect(() => {
+    if (!isHeroMode) return
     if (!hasSettled || hasNotifiedSettledRef.current) return
     hasNotifiedSettledRef.current = true
     onHeroSettled?.()
-  }, [hasSettled, onHeroSettled])
+  }, [hasSettled, isHeroMode, onHeroSettled])
+
+  useEffect(() => {
+    let cancelled = false
+
+    queueMicrotask(() => {
+      if (cancelled) return
+
+      if (!hasSettledAtEnding) {
+        setLockedEndingFrame(null)
+        return
+      }
+
+      setLockedEndingFrame((previous) => {
+        if (previous !== null) return previous
+        return drawEndingFrameIndex({
+          bagRef: endingFrameBagRef,
+          lastDrawnRef: lastDrawnEndingFrameRef,
+        })
+      })
+    })
+
+    return () => {
+      cancelled = true
+    }
+  }, [hasSettledAtEnding])
 
   const heroCycleSrc =
     HERO_INTRO_FRAMES[heroFrameIndex] ?? HERO_INTRO_FRAMES[0]
   const heroCycleRotation = HERO_INTRO_ROTATIONS[heroFrameIndex] ?? 0
-
   const scrubbedFrameIndex = getScrubbedFrameIndex(aboutProgress)
-  const hasSettledAtEnding =
-    !prefersReducedMotion && isSettledAtEnding(aboutProgress)
-
-  if (hasSettledAtEnding) {
-    if (lockedEndingFrameRef.current === null) {
-      lockedEndingFrameRef.current = drawEndingFrameIndex({
-        bagRef: endingFrameBagRef,
-        lastDrawnRef: lastDrawnEndingFrameRef,
-      })
-    }
-  } else {
-    lockedEndingFrameRef.current = null
-  }
-
   const aboutFrameIndex = prefersReducedMotion
     ? LAST_FRAME_INDEX
-    : (lockedEndingFrameRef.current ?? scrubbedFrameIndex)
+    : (lockedEndingFrame ?? scrubbedFrameIndex)
   const aboutSrc =
     LOGO_LOOP_FRAMES[aboutFrameIndex] ?? LOGO_LOOP_FRAMES[0]
   const aboutRotation = FRAME_ROTATIONS[aboutFrameIndex] ?? 0
+  const shouldPlayHeroSettleFade =
+    isHeroMode && hasSettled && !prefersReducedMotion && !shouldSkipIntro
 
   return (
     <div
@@ -244,7 +279,7 @@ export function AboutLogoLoop({
       >
         {!hasSettled ? (
           <LogoFrame src={heroCycleSrc} rotation={heroCycleRotation} />
-        ) : prefersReducedMotion ? null : (
+        ) : shouldPlayHeroSettleFade ? (
           <motion.img
             key="hero-fade-out"
             src={heroCycleSrc}
@@ -272,7 +307,7 @@ export function AboutLogoLoop({
               transform: `rotate(${heroCycleRotation}deg)`,
             }}
           />
-        )}
+        ) : null}
       </div>
       <div
         style={{
