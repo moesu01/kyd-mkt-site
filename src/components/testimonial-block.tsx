@@ -13,7 +13,7 @@ interface TestimonialBlockProps {
 
 const PAPER_TEXTURE_URL = assetUrl("/images/paper_tx2.png")
 const QUOTE_FONT_MIN_PX = 18
-const QUOTE_FONT_MAX_PX = 24
+const QUOTE_FONT_MAX_PX = 26
 
 function TestimonialLogo({
   logoSrc,
@@ -61,8 +61,14 @@ const testimonialQuoteFeatures = {
 
 const testimonialQuoteStyles = {
   ...testimonialQuoteFeatures,
+  /* Chrome ignores hanging-punctuation; Safari supports it. Using both
+     (negative indent + hang) double-applies in Safari and pushes the first
+     line the wrong way — gate indent behind a no-support fallback. */
   textIndent: "calc(-0.45 * 1em)",
-  hangingPunctuation: "first last",
+  "@supports (hanging-punctuation: first)": {
+    textIndent: 0,
+    hangingPunctuation: "first last",
+  },
 } as const
 
 const testimonialRotateEase = "cubic-bezier(0.2, 0, 0, 1)"
@@ -79,12 +85,8 @@ function fitQuoteFontSize({
     container.clientHeight -
     Number.parseFloat(styles.paddingTop) -
     Number.parseFloat(styles.paddingBottom)
-  const availableWidth =
-    container.clientWidth -
-    Number.parseFloat(styles.paddingLeft) -
-    Number.parseFloat(styles.paddingRight)
 
-  if (availableHeight <= 0 || availableWidth <= 0) return QUOTE_FONT_MIN_PX
+  if (availableHeight <= 0) return QUOTE_FONT_MIN_PX
 
   let low = QUOTE_FONT_MIN_PX
   let high = QUOTE_FONT_MAX_PX
@@ -93,9 +95,9 @@ function fitQuoteFontSize({
   while (low <= high) {
     const mid = Math.floor((low + high) / 2)
     quoteEl.style.fontSize = `${mid}px`
-    const overflows =
-      quoteEl.scrollHeight > availableHeight + 1 ||
-      quoteEl.scrollWidth > availableWidth + 1
+    // Height-only: Safari hanging-punctuation can inflate scrollWidth and
+    // falsely mark every size as overflowing.
+    const overflows = quoteEl.scrollHeight > availableHeight + 1
 
     if (overflows) {
       high = mid - 1
@@ -106,7 +108,7 @@ function fitQuoteFontSize({
     low = mid + 1
   }
 
-  quoteEl.style.fontSize = `${best}px`
+  quoteEl.style.fontSize = ""
   return best
 }
 
@@ -120,21 +122,32 @@ export function TestimonialBlock({
 }: TestimonialBlockProps) {
   const quoteContainerRef = useRef<HTMLDivElement>(null)
   const quoteRef = useRef<HTMLParagraphElement>(null)
-  const [quoteFontSizePx, setQuoteFontSizePx] = useState(24)
+  const [quoteFontSizePx, setQuoteFontSizePx] = useState(26)
 
   useLayoutEffect(() => {
     const container = quoteContainerRef.current
     const quoteEl = quoteRef.current
     if (!container || !quoteEl) return
 
+    let isCancelled = false
+
     const updateFontSize = () => {
+      if (isCancelled) return
       setQuoteFontSizePx(fitQuoteFontSize({ container, quoteEl }))
     }
 
     updateFontSize()
+
+    const fontsReady =
+      "fonts" in document ? document.fonts.ready : Promise.resolve()
+    void fontsReady.then(updateFontSize)
+
     const observer = new ResizeObserver(updateFontSize)
     observer.observe(container)
-    return () => observer.disconnect()
+    return () => {
+      isCancelled = true
+      observer.disconnect()
+    }
   }, [quote])
 
   return (
@@ -183,7 +196,7 @@ export function TestimonialBlock({
         <Text
           ref={quoteRef}
           as="p"
-          fontFamily="cossetteTexte"
+          fontFamily="cossetteTitre"
           fontSize={`${quoteFontSizePx}px`}
           fontWeight="bold"
           lineHeight="1.3"
@@ -197,12 +210,12 @@ export function TestimonialBlock({
         </Text>
       </Flex>
 
-      <Box position="relative" zIndex={1}>
+      <Box position="relative" zIndex={1} flexShrink={0}>
         <Text
           fontFamily="cossetteTexte"
           fontSize="18px"
           fontWeight="bold"
-          lineHeight="23.4px"
+          lineHeight="1.3"
           color="fgDim"
           css={testimonialFontFeatures}
         >
@@ -212,9 +225,9 @@ export function TestimonialBlock({
           <Text
             fontFamily="cossetteTexte"
             mt="1"
-            fontSize="13px"
+            fontSize="14px"
             fontWeight="medium"
-            lineHeight="15.6px"
+            lineHeight="1.2"
             letterSpacing="-0.26px"
             color="#404040"
             opacity={0.85}
