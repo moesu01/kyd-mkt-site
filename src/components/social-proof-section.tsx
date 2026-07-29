@@ -1,5 +1,4 @@
 import { Box, Flex, Heading } from "@chakra-ui/react"
-import { colors } from "../theme/tokens"
 import { Container } from "./ui/container"
 import { Reveal, RevealGroup } from "./ui/reveal"
 import { TestimonialCarousel } from "./testimonial-carousel"
@@ -13,8 +12,7 @@ export function SocialProofSection() {
       px={{ base: "6", lg901: "12" }}
       pt="0"
       pb={{ base: "20", lg901: "28" }}
-      bg="transparent"
-      backgroundImage={socialProofSectionGradient}
+      bg="pageBg"
       position="relative"
     >
       <svg
@@ -68,6 +66,3 @@ export function SocialProofSection() {
     </Box>
   )
 }
-
-/** Solid pageBg until the last 56px, then a tight fade so the footer reveal peeks through. */
-const socialProofSectionGradient = `linear-gradient(to bottom, ${colors.pageBg.value} 0%, ${colors.pageBg.value} calc(100% - 56px), transparent 100%)`

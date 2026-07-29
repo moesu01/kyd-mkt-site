@@ -6,6 +6,7 @@ import {
   type RefObject,
 } from "react"
 import { aboutSection } from "../content/site-content"
+import { colors } from "../theme/tokens"
 import { AboutEmblem } from "./about/about-emblem"
 import {
   aboutHeroTransition,
@@ -19,13 +20,11 @@ const ABOUT_INK_BLEED_FILTER_ID = "about-headline-ink-bleed"
 /** About end-state: body copy only shrinks at extreme short heights. */
 const ABOUT_EXTREME_VIEWPORT = "(max-height: 640px)"
 /**
- * Nav occupies ~84px (top offset + bar). Reserve that plus breathing room so
- * the curved tagline never sits under the sticky nav.
+ * Match the equal vertical rhythm of the preceding content sections
+ * (Social Proof bottom / Used By / Venues: py 20 / 28).
  */
-const ABOUT_END_STAGE_PT = "108px"
-const ABOUT_END_STAGE_PB = "clamp(1.5rem, 2dvh, 2rem)"
-/** Below this height, pin the About stack to the bottom so nothing clips.
- *  901px covers a typical 14" MacBook browser viewport at full height. */
+const ABOUT_STAGE_PY = { base: "20", lg901: "28" } as const
+/** Below this height, tighten copy width so the stack stays readable. */
 const ABOUT_SHORT_VIEWPORT = "(max-height: 901px)"
 /**
  * Preserve enough arc width for the curved type to retain its intended
@@ -71,11 +70,12 @@ export function AboutSection() {
       position="relative"
       h={`${aboutHeroTransition.scrollHeightVh}vh`}
       bg="transparent"
+      backgroundImage={aboutSectionGradient}
     >
       <Box
         ref={revealTriggerRef}
         position="absolute"
-        top="100dvh"
+        top="25dvh"
         w="1px"
         h="1px"
         aria-hidden
@@ -91,16 +91,8 @@ export function AboutSection() {
         alignItems="center"
         overflow="hidden"
         px={{ base: "6", lg901: "12" }}
-        pt={ABOUT_END_STAGE_PT}
-        pb={ABOUT_END_STAGE_PB}
+        py={ABOUT_STAGE_PY}
         bg="transparent"
-        css={{
-          // Tall screens: center in the nav-safe stage.
-          // Short screens: pin to the bottom so the arc/body stay in frame.
-          [`@media ${ABOUT_SHORT_VIEWPORT}`]: {
-            justifyContent: "flex-end",
-          },
-        }}
       >
         <svg
           width="0"
@@ -127,7 +119,7 @@ export function AboutSection() {
               w="full"
               css={{ gap: ABOUT_END_STACK_GAP }}
             >
-              {/* Emblem mark keeps scroll morph; curved tagline staggers via Reveal. */}
+              {/* Logo + curved tagline share one-time Reveal stagger; scroll only scrubs frames. */}
               <Box
                 w="full"
                 maxW={ABOUT_END_EMBLEM_MAX_W}
@@ -179,13 +171,18 @@ function useAboutSceneProgress(sectionRef: RefObject<HTMLDivElement | null>) {
     let frameId = 0
 
     const updateProgress = () => {
-      const scrollable = section.offsetHeight - window.innerHeight
+      const rect = section.getBoundingClientRect()
+      const viewportHeight = window.innerHeight
+      const scrollable = section.offsetHeight - viewportHeight
       if (scrollable <= 0) {
         setProgress(1)
         return
       }
 
-      const next = clamp01(-section.getBoundingClientRect().top / scrollable)
+      // Start scrubbing as soon as About enters the viewport (not only after
+      // it pins), so early frames play during the approach.
+      const range = viewportHeight + scrollable
+      const next = clamp01((viewportHeight - rect.top) / range)
       setProgress((previous) =>
         Math.abs(previous - next) < 0.0005 ? previous : next,
       )
@@ -278,3 +275,6 @@ function AboutCopyLayer({
     </Flex>
   )
 }
+
+/** Solid pageBg until the last 56px, then a tight fade so the footer reveal peeks through. */
+const aboutSectionGradient = `linear-gradient(to bottom, ${colors.pageBg.value} 0%, ${colors.pageBg.value} calc(100% - 56px), transparent 100%)`

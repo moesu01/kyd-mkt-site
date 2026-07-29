@@ -223,30 +223,32 @@ export function AboutCurvedTagline({
 
       <CurvedTextHost reveal={revealCurvedText}>{curvedSvg}</CurvedTextHost>
 
-      {/* Scale only the mark — copy reveals separately like other sections. */}
-      <div
-        data-about-logo-loop
-        style={{
-          position: "absolute",
-          left: logoLoopLeft,
-          top: logoLoopTop,
-          width: logoLoopWidth,
-          height: logoLoopHeight,
-          pointerEvents: "none",
-          transform: `scale(${emblemScale})`,
-          transformOrigin: "center center",
-          willChange: emblemScale === 1 ? "auto" : "transform",
-        }}
-      >
-        <AboutLogoLoop
-          heroOpacity={heroAnimationOpacity}
-          aboutOpacity={aboutAnimationOpacity}
-          aboutProgress={aboutAnimationProgress}
-          mode={mode}
-          skipIntro={skipIntro}
-          onHeroSettled={onHeroSettled}
-        />
-      </div>
+      {/* Scale only the mark — enter via the same one-time Reveal as the arc. */}
+      <LogoLoopHost reveal={revealCurvedText}>
+        <div
+          data-about-logo-loop
+          style={{
+            position: "absolute",
+            left: logoLoopLeft,
+            top: logoLoopTop,
+            width: logoLoopWidth,
+            height: logoLoopHeight,
+            pointerEvents: "none",
+            transform: `scale(${emblemScale})`,
+            transformOrigin: "center center",
+            willChange: emblemScale === 1 ? "auto" : "transform",
+          }}
+        >
+          <AboutLogoLoop
+            heroOpacity={heroAnimationOpacity}
+            aboutOpacity={aboutAnimationOpacity}
+            aboutProgress={aboutAnimationProgress}
+            mode={mode}
+            skipIntro={skipIntro}
+            onHeroSettled={onHeroSettled}
+          />
+        </div>
+      </LogoLoopHost>
     </Box>
   )
 }
@@ -266,4 +268,28 @@ function CurvedTextHost({
     )
 
   return <Box w="full">{children}</Box>
+}
+
+function LogoLoopHost({
+  reveal,
+  children,
+}: {
+  reveal: boolean
+  children: ReactNode
+}) {
+  if (reveal)
+    return (
+      <Reveal
+        order={0}
+        position="absolute"
+        inset="0"
+        pointerEvents="none"
+        w="full"
+        h="full"
+      >
+        {children}
+      </Reveal>
+    )
+
+  return <>{children}</>
 }

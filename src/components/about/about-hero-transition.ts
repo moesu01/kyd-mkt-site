@@ -1,19 +1,18 @@
-/** Tunable values for the About scroll scene (entered after the standalone hero). */
+/** Tunable values for the About scroll scene. */
 export const aboutHeroTransition = {
   /** Sticky scrubber length as a viewport-height multiple. */
   scrollHeightVh: 200,
-  /** Emblem scale at progress 0 (matches standalone hero). Progress 1 = About scale 1. */
+  /** Emblem scale used by the standalone hero (About stays at 1). */
   emblemScaleStart: 0.64,
   /** Ascii bg video opacity at About entry / About end (matches footer). */
   bgVideoOpacityStart: 1,
   bgVideoOpacityEnd: 0.24,
   /** Progress windows: [start, end] for each morph. */
   ranges: {
-    /** Morph begins as soon as About pins. */
-    emblemScale: [0, 0.5] as const,
-    bgVideoOpacity: [0, 0.5] as const,
-    /** Logo hero → about crossfade — leave on scroll scrub. */
-    animationCrossfade: [0, 0.2] as const,
+    /**
+     * Logo frame scrub. Starts immediately so early frames are visible
+     * once the one-time Reveal enters (opacity is not scroll-driven).
+     */
     aboutAnimation: [0, 0.82] as const,
   },
 } as const
@@ -55,22 +54,17 @@ export function getAboutHeroPresentation({
   }
 
   const p = clamp01(progress)
-  const {
-    ranges,
-    emblemScaleStart,
-    bgVideoOpacityStart,
-    bgVideoOpacityEnd,
-  } = aboutHeroTransition
-  const emblemT = progressInRange(p, ranges.emblemScale)
-  const animationCrossfade = progressInRange(p, ranges.animationCrossfade)
-  const bgVideoT = progressInRange(p, ranges.bgVideoOpacity)
 
   return {
-    emblemScale: lerp(emblemScaleStart, 1, emblemT),
-    heroAnimationOpacity: 1 - animationCrossfade,
-    aboutAnimationOpacity: animationCrossfade,
-    aboutAnimationProgress: progressInRange(p, ranges.aboutAnimation),
-    bgVideoOpacity: lerp(bgVideoOpacityStart, bgVideoOpacityEnd, bgVideoT),
+    /** About no longer morphs scale on scroll — only the logo frame scrubs. */
+    emblemScale: 1,
+    heroAnimationOpacity: 0,
+    aboutAnimationOpacity: 1,
+    aboutAnimationProgress: progressInRange(
+      p,
+      aboutHeroTransition.ranges.aboutAnimation,
+    ),
+    bgVideoOpacity: aboutHeroTransition.bgVideoOpacityEnd,
   }
 }
 

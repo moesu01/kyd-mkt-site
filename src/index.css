@@ -57,7 +57,7 @@ body > #footer-bg-video {
 
 #hero-bg-video {
   object-fit: contain;
-  /* Fades in after hero settle, then dims through the About scrubber. */
+  /* Fades in after hero settle. */
   opacity: 0;
   mix-blend-mode: normal;
 }

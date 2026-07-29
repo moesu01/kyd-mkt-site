@@ -60,7 +60,6 @@ function App() {
               onHeroSettled={handleHeroSettled}
               isIntroSettled={isHeroIntroVisible}
             />
-            <AboutSection />
           </Box>
         </Box>
         <BackedBySection />
@@ -71,6 +70,7 @@ function App() {
         {/* <FeaturesSection /> */}
         <UsedByPageSection />
         <SocialProofSection />
+        <AboutSection />
         {/* TEMP: Press section hidden — <PressSection /> */}
         {/* TEMP: Fan section hidden — <FanSection /> */}
       </Box>
