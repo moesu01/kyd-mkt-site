@@ -1,7 +1,7 @@
 import type { MouseEvent } from "react"
 import { Box, Flex, Heading, Text } from "@chakra-ui/react"
 import { heroSection, links } from "../content/site-content"
-import { getHeroRevealStyle } from "./hero-reveal"
+import { getHeroRevealStyle, heroCoolAccent } from "./hero-reveal"
 import { Button, CtaArrow } from "./ui/button"
 
 export type HeroLayout = "centered" | "split"
@@ -83,7 +83,7 @@ export function HeroSplit({
               lineHeight="1.1"
               color="warmDisplay"
               maxW="54.625rem"
-              filter={`blur(0.7px) url(#${HERO_INK_BLEED_FILTER_ID})`}
+              filter={`url(#${HERO_INK_BLEED_FILTER_ID})`}
               style={getHeroRevealStyle({
                 isVisible: isIntroVisible,
                 prefersReducedMotion,
@@ -120,6 +120,7 @@ export function HeroSplit({
                 href={links.getInTouch}
                 size="hero"
                 tabIndex={isIntroVisible ? 0 : -1}
+                css={heroCoolAccent.buttonCss}
               >
                 <span>
                   {heroSection.primaryCta}

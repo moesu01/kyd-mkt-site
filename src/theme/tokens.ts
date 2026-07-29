@@ -37,6 +37,10 @@ export const colors = {
   warmDisplay: { value: oklchWarm(0.90) },
   warmSoft: { value: oklchWarm(0.88) },
   warmMuted: { value: oklchWarm(0.71) },
+  /** Cool near-white for headlines and buttons. */
+  coolDisplay: { value: "oklch(0.977 0.012486 236.6)" },
+  /** Soft cool glow paired with coolDisplay. */
+  coolGlow: { value: "oklch(0.857 0.078315 238.5)" },
 }
 
 export const fonts = {
@@ -72,4 +76,8 @@ export const breakpoints = {
 /** Dark-mode ring shadow — use with boxShadow, not colors. */
 export const shadows = {
   frame: { value: "0 0 2px 1px rgba(255, 255, 255, 0.05)" },
+  /** Subtle cool halo for hero headline text / primary CTA. */
+  coolGlow: {
+    value: `0 0 6px color-mix(in oklab, ${colors.coolGlow.value} 55%, transparent), 0 0 12px color-mix(in oklab, ${colors.coolGlow.value} 28%, transparent)`,
+  },
 }

@@ -10,6 +10,7 @@ import { AboutEmblem } from "./about/about-emblem"
 import { heroSection, links } from "../content/site-content"
 import {
   getHeroRevealStyle,
+  heroCoolAccent,
 } from "./hero-reveal"
 import { HeroSplit, type HeroLayout } from "./hero-split"
 import { Button, CtaArrow } from "./ui/button"
@@ -209,13 +210,13 @@ export function HeroSection({
           <Flex
             direction="column"
             align="center"
-            gap={{ base: "6", lg901: "6" }}
+            gap="8"
             w="full"
             maxW="75rem"
             flexShrink={0}
             css={{
               [`@media ${HERO_SHORT_VIEWPORT_TIGHT}`]: {
-                gap: "1rem",
+                gap: "1.25rem",
               },
             }}
           >
@@ -241,6 +242,7 @@ export function HeroSection({
                 href={links.getInTouch}
                 size="hero"
                 tabIndex={isIntroVisible ? 0 : -1}
+                css={heroCoolAccent.buttonCss}
               >
                 <span>
                   {heroSection.primaryCta}
@@ -296,7 +298,7 @@ function HeroCenteredCopy({
         lineHeight="1.1"
         color="warmDisplay"
         maxW="54.625rem"
-        filter={`blur(0.7px) url(#${HERO_INK_BLEED_FILTER_ID})`}
+        filter={`url(#${HERO_INK_BLEED_FILTER_ID})`}
         style={getHeroRevealStyle({
           isVisible: isIntroVisible,
           prefersReducedMotion,
