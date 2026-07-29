@@ -64,12 +64,12 @@ function App() {
         </Box>
         <BackedBySection />
         <VenuesSection />
+        <UsedByPageSection />
+        <SocialProofSection />
         <FeaturesSectionInteractive />
         {/* TODO: Hidden pending decision on interactive vs. original Platform
             section. Remove FeaturesSection entirely if unused. */}
         {/* <FeaturesSection /> */}
-        <UsedByPageSection />
-        <SocialProofSection />
         <AboutSection />
         {/* TEMP: Press section hidden — <PressSection /> */}
         {/* TEMP: Fan section hidden — <FanSection /> */}

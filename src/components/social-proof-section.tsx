@@ -38,7 +38,7 @@ export function SocialProofSection() {
             mb="16"
             pt={{ base: "6", lg901: "8" }}
             flexDirection="column"
-            align="center"
+            align="flex-start"
             gap="6"
           >
             <Reveal order={0}>
@@ -50,10 +50,10 @@ export function SocialProofSection() {
                 lineHeight="1.1"
                 color="warmDisplay"
                 textWrap="balance"
-                textAlign="center"
+                textAlign="left"
                 filter={`blur(0.7px) url(#${SOCIAL_PROOF_INK_BLEED_FILTER_ID})`}
               >
-                What Our Customers and the Industry Are Saying
+                Press
               </Heading>
             </Reveal>
           </Flex>

@@ -9,6 +9,7 @@ interface TestimonialBlockProps {
   logoSrc?: string
   placeholder?: boolean
   rotateDeg?: number
+  willChangeTransform?: boolean
 }
 
 const PAPER_TEXTURE_URL = assetUrl("/images/paper_tx2.png")
@@ -119,6 +120,7 @@ export function TestimonialBlock({
   logoSrc,
   placeholder = false,
   rotateDeg = 0,
+  willChangeTransform = false,
 }: TestimonialBlockProps) {
   const quoteContainerRef = useRef<HTMLDivElement>(null)
   const quoteRef = useRef<HTMLParagraphElement>(null)
@@ -176,6 +178,7 @@ export function TestimonialBlock({
       transitionProperty="transform"
       transitionDuration="300ms"
       transitionTimingFunction={testimonialRotateEase}
+      willChange={willChangeTransform ? "transform" : "auto"}
       css={foldedPosterCss}
     >
       <Box position="relative" zIndex={1}>

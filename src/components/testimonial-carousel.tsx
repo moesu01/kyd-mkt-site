@@ -4,12 +4,28 @@ import { testimonials } from "../content/site-content"
 import { TestimonialBlock } from "./testimonial-block"
 
 const AUTO_SCROLL_MS = 5000
+const TESTIMONIAL_LIFT_MOBILE_PX = 120
+const TESTIMONIAL_LIFT_DESKTOP_PX = 144
 
 /** Resting tilts in [-2, 1.5] — shuffled so neighbors don't look progressive */
 const TESTIMONIAL_ROTATIONS = [-1.8, 1.2, -0.6, 0.9, -2, 1.5, -1.1, 0.4] as const
 
 function getTestimonialRotationDeg(index: number): number {
   return TESTIMONIAL_ROTATIONS[index % TESTIMONIAL_ROTATIONS.length] ?? 0
+}
+
+function getTestimonialLiftMultiplier({
+  index,
+  activeIndex,
+}: {
+  index: number
+  activeIndex: number
+}): number {
+  const visiblePosition = index - activeIndex
+
+  if (visiblePosition === 1) return 0.5
+  if (visiblePosition >= 2) return 1
+  return 0
 }
 
 export function TestimonialCarousel() {
@@ -98,7 +114,14 @@ export function TestimonialCarousel() {
         gap="8"
         overflowX="auto"
         px={{ base: "6", lg901: "12" }}
-        pt="3"
+        pt={{
+          base: `${TESTIMONIAL_LIFT_MOBILE_PX + 12}px`,
+          lg901: `${TESTIMONIAL_LIFT_DESKTOP_PX + 12}px`,
+        }}
+        mt={{
+          base: `-${TESTIMONIAL_LIFT_MOBILE_PX}px`,
+          lg901: `-${TESTIMONIAL_LIFT_DESKTOP_PX}px`,
+        }}
         pb="5"
         aria-label="Testimonials"
         css={{
@@ -113,28 +136,46 @@ export function TestimonialCarousel() {
           },
         }}
       >
-        {testimonials.map((testimonial, index) => (
-          <Box
-            as="li"
-            key={`testimonial-${index}`}
-            flex="0 0 auto"
-            flexShrink={0}
-            w="testimonialCard"
-            css={{ scrollSnapAlign: "start" }}
-            aria-hidden={activeIndex !== index}
-          >
-            <TestimonialBlock
-              quote={testimonial.quote}
-              attribution={testimonial.attribution}
-              role={testimonial.role}
-              logoSrc={testimonial.logoSrc}
-              placeholder={testimonial.placeholder}
-              rotateDeg={
-                activeIndex === index ? 0 : getTestimonialRotationDeg(index)
-              }
-            />
-          </Box>
-        ))}
+        {testimonials.map((testimonial, index) => {
+          const liftMultiplier = getTestimonialLiftMultiplier({
+            index,
+            activeIndex,
+          })
+          const isVisibleOrTransitioning =
+            index >= activeIndex - 1 && index <= activeIndex + 2
+
+          return (
+            <Box
+              as="li"
+              key={`testimonial-${index}`}
+              flex="0 0 auto"
+              flexShrink={0}
+              w="testimonialCard"
+              transform={{
+                base: `translateY(-${TESTIMONIAL_LIFT_MOBILE_PX * liftMultiplier}px)`,
+                lg901: `translateY(-${TESTIMONIAL_LIFT_DESKTOP_PX * liftMultiplier}px)`,
+              }}
+              transitionProperty="transform"
+              transitionDuration="300ms"
+              transitionTimingFunction="cubic-bezier(0.2, 0, 0, 1)"
+              willChange={isVisibleOrTransitioning ? "transform" : "auto"}
+              css={{ scrollSnapAlign: "start" }}
+              aria-hidden={activeIndex !== index}
+            >
+              <TestimonialBlock
+                quote={testimonial.quote}
+                attribution={testimonial.attribution}
+                role={testimonial.role}
+                logoSrc={testimonial.logoSrc}
+                placeholder={testimonial.placeholder}
+                rotateDeg={
+                  activeIndex === index ? 0 : getTestimonialRotationDeg(index)
+                }
+                willChangeTransform={isVisibleOrTransitioning}
+              />
+            </Box>
+          )
+        })}
       </Flex>
     </Box>
   )
