@@ -43,10 +43,8 @@ export const navMenuLinks = [
 ] as const
 
 export const stats = [
-  { value: "10X", label: "Return on ad spend" },
+  { value: "30%", label: "Increase in ticket sales" },
   { value: "15X", label: "Fan reach" },
-  { value: "100%", label: "Audience ownership" },
-  { value: "0", label: "Middlemen" },
 ] as const
 
 export const venueAudiences = [

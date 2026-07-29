@@ -31,6 +31,7 @@ export const colors = {
   fgFeature: { value: "#a1a1aa" },
   accent: { value: "oklch(0.98 0 0)" },
   accentFg: { value: "oklch(0.05 0 0)" },
+  success: { value: "oklch(0.78 0.18 145)" },
   border: { value: oklchWarm(0.3) },
   borderStrong: { value: "oklch(0.4 0 0)" },
   frameBg: { value: oklchWarm(0.15) },
