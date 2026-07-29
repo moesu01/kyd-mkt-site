@@ -592,10 +592,17 @@ export function FeaturesSectionInteractive() {
       id="platform-interactive"
       bg="pageBg"
       px={{ base: "6", lg901: "12" }}
-      py={{ base: "20", lg901: "28" }}
+      py={{ base: "10", lg901: "14" }}
     >
       <Flex direction="column" gap="12" w="full">
-        <RevealGroup display="flex" flexDirection="column" gap="12" w="full">
+        <RevealGroup
+          display="flex"
+          flexDirection="column"
+          gap="12"
+          w="full"
+          borderTop="3px solid"
+          borderColor="rgba(255, 255, 255, 0.1)"
+        >
           <Box w="full">
             <Container pt={{ base: "3", lg901: "16px" }}>
               <Reveal order={0}>
