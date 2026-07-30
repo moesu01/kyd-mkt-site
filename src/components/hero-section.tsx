@@ -10,10 +10,13 @@ import { AboutEmblem } from "./about/about-emblem"
 import { heroSection, links } from "../content/site-content"
 import {
   getHeroRevealStyle,
-  heroCoolAccent,
 } from "./hero-reveal"
 import { HeroSplit, type HeroLayout } from "./hero-split"
-import { Button, CtaArrow } from "./ui/button"
+import {
+  BookCallCtaContent,
+  bookCallButtonCss,
+  Button,
+} from "./ui/button"
 import { Container } from "./ui/container"
 
 const HERO_BG_VIDEO_ID = "hero-bg-video"
@@ -242,12 +245,9 @@ export function HeroSection({
                 href={links.getInTouch}
                 size="hero"
                 tabIndex={isIntroVisible ? 0 : -1}
-                css={heroCoolAccent.buttonCss}
+                css={bookCallButtonCss}
               >
-                <span>
-                  {heroSection.primaryCta}
-                  <CtaArrow />
-                </span>
+                <BookCallCtaContent />
               </Button>
               <Button
                 type="button"

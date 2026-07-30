@@ -154,7 +154,7 @@ export const buttonRecipe = defineRecipe({
     size: {
       section: {
         minH: "10",
-        borderRadius: "full",
+        borderRadius: "8px",
         px: "27px",
         py: "11px",
         fontSize: "14px",
@@ -163,7 +163,7 @@ export const buttonRecipe = defineRecipe({
       compact: {
         minH: "auto",
         h: "auto",
-        borderRadius: "4px",
+        borderRadius: "8px",
         px: "6",
         py: "3",
         fontSize: "13px",
@@ -172,7 +172,7 @@ export const buttonRecipe = defineRecipe({
       hero: {
         minH: "auto",
         h: "auto",
-        borderRadius: "4px",
+        borderRadius: "8px",
         px: "6",
         py: "3.5",
         fontSize: "14px",

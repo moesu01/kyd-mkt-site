@@ -1,7 +1,8 @@
 import { Box, Flex, Image, Link, chakra } from "@chakra-ui/react"
 import { useEffect, useState, type TransitionEvent } from "react"
-import { navMenuLinks } from "../content/site-content"
+import { links, navMenuLinks } from "../content/site-content"
 import { assetUrl } from "../lib/asset-url"
+import { Button } from "./ui/button"
 
 const interactionEase = "cubic-bezier(0.2, 0, 0, 1)"
 const navShellRadius = 16
@@ -40,6 +41,18 @@ const navLinkStyles = {
     outline: "2px solid",
     outlineColor: "rgba(255, 255, 255, 0.45)",
     outlineOffset: "2px",
+  },
+} as const
+
+const ticketsButtonStyles = {
+  bg: "frameBg",
+  boxShadow: "0 0 2px 1px rgba(255, 255, 255, 0.15)",
+  _hover: {
+    bg: "surfaceRaised",
+    boxShadow: "0 0 2px 1px rgba(255, 255, 255, 0.15)",
+  },
+  _active: {
+    boxShadow: "0 0 2px 1px rgba(255, 255, 255, 0.15)",
   },
 } as const
 
@@ -213,7 +226,7 @@ export function AlternateNav({
       <Box
         bg="#000"
         pl={{ base: "4", lg901: "5" }}
-        pr="3"
+        pr="1.5"
         py="1.5"
         borderRadius={`${navShellRadius}px`}
         boxShadow={navShellShadow}
@@ -233,6 +246,14 @@ export function AlternateNav({
                 {item.label}
               </Link>
             ))}
+            <Button
+              href={links.tickets}
+              variant="dark"
+              size="compact"
+              css={ticketsButtonStyles}
+            >
+              My Tickets
+            </Button>
           </Flex>
 
           <chakra.button
@@ -316,7 +337,7 @@ export function AlternateNav({
                 ...getMobileMenuItemMotion({
                   index,
                   isOpen: isMenuOpen,
-                  totalItems: navMenuLinks.length,
+                  totalItems: navMenuLinks.length + 1,
                 }),
                 // Link hover/active transform must not fight the enter motion.
                 transitionProperty:
@@ -327,6 +348,29 @@ export function AlternateNav({
               {item.label}
             </Link>
           ))}
+          <Button
+            href={links.tickets}
+            variant="dark"
+            size="compact"
+            tabIndex={isMenuOpen ? 0 : -1}
+            css={{
+              ...ticketsButtonStyles,
+              w: "full",
+              minH: "12",
+              justifyContent: "flex-start",
+              px: "4",
+              py: "3",
+              fontSize: "18px",
+              ...getMobileMenuItemMotion({
+                index: navMenuLinks.length,
+                isOpen: isMenuOpen,
+                totalItems: navMenuLinks.length + 1,
+              }),
+            }}
+            onClick={handleCloseMenu}
+          >
+            My Tickets
+          </Button>
         </Flex>
       </Box>
     </Box>

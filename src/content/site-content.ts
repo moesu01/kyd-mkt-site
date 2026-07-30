@@ -36,8 +36,7 @@ export const aboutSection = {
 } as const
 
 export const navMenuLinks = [
-  { label: "About", href: "#about" },
-  { label: "For venues & artists", href: "#venues" },
+  { label: "For venues", href: "#venues" },
   { label: "Platform", href: "#platform" },
   { label: "Press", href: "#press" },
 ] as const

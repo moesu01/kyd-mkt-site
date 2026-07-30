@@ -1,6 +1,7 @@
 import { chakra, useRecipe, type SystemStyleObject } from "@chakra-ui/react"
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react"
 import { buttonRecipe } from "../../theme"
+import { heroCoolAccent } from "../hero-reveal"
 
 type ButtonVariant =
   | "primary"
@@ -37,6 +38,18 @@ export function CtaArrow() {
   return (
     <ChakraSpan className="cta-arrow" aria-hidden ms="0.2em">
       →
+    </ChakraSpan>
+  )
+}
+
+export function BookCallCtaContent() {
+  return (
+    <ChakraSpan display="inline-flex" alignItems="center" gap="24px">
+      <ChakraSpan display="inline-flex" alignItems="center" gap="4px">
+        <BookCallCalendarIcon />
+        Book a call
+      </ChakraSpan>
+      <CtaArrow />
     </ChakraSpan>
   )
 }
@@ -79,3 +92,33 @@ export function Button({
     </ChakraButton>
   )
 }
+
+function BookCallCalendarIcon() {
+  return (
+    <chakra.svg
+      aria-hidden
+      viewBox="0 0 24 24"
+      w="16px"
+      h="16px"
+      display="inline-block"
+      flexShrink={0}
+      opacity="0.6"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M8 2v4M16 2v4M3 9h18" />
+      <rect x="3" y="4" width="18" height="17" rx="2" />
+    </chakra.svg>
+  )
+}
+
+export const bookCallButtonCss = {
+  ...heroCoolAccent.buttonCss,
+  fontWeight: "bold",
+  paddingInline: "16px",
+  borderRadius: "8px",
+  "& .cta-arrow": { marginInlineStart: "0" },
+} satisfies SystemStyleObject

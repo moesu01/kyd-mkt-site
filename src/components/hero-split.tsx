@@ -1,8 +1,12 @@
 import type { MouseEvent } from "react"
 import { Box, Flex, Heading, Text } from "@chakra-ui/react"
 import { heroSection, links } from "../content/site-content"
-import { getHeroRevealStyle, heroCoolAccent } from "./hero-reveal"
-import { Button, CtaArrow } from "./ui/button"
+import { getHeroRevealStyle } from "./hero-reveal"
+import {
+  BookCallCtaContent,
+  bookCallButtonCss,
+  Button,
+} from "./ui/button"
 
 export type HeroLayout = "centered" | "split"
 
@@ -120,12 +124,9 @@ export function HeroSplit({
                 href={links.getInTouch}
                 size="hero"
                 tabIndex={isIntroVisible ? 0 : -1}
-                css={heroCoolAccent.buttonCss}
+                css={bookCallButtonCss}
               >
-                <span>
-                  {heroSection.primaryCta}
-                  <CtaArrow />
-                </span>
+                <BookCallCtaContent />
               </Button>
               <Button
                 type="button"

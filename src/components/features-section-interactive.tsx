@@ -595,25 +595,6 @@ export function FeaturesSectionInteractive() {
       py={{ base: "10", lg901: "14" }}
     >
       <Flex direction="column" gap="12" w="full">
-        <RevealGroup
-          display="flex"
-          flexDirection="column"
-          gap="12"
-          w="full"
-          borderTop="3px solid"
-          borderColor="rgba(255, 255, 255, 0.1)"
-        >
-          <Box w="full">
-            <Container pt={{ base: "3", lg901: "16px" }}>
-              <Reveal order={0}>
-                <PlatformSectionLabel label="The KYD Platform" />
-              </Reveal>
-            </Container>
-          </Box>
-          <Container>
-            <VenueAudiencesGrid />
-          </Container>
-        </RevealGroup>
         <RevealGroup w="full">
         <Container maxW="containerFramed">
         <Reveal order={0}>
@@ -705,6 +686,17 @@ export function FeaturesSectionInteractive() {
         </Box>
         </Reveal>
       </Container>
+        </RevealGroup>
+        <RevealGroup
+          display="flex"
+          flexDirection="column"
+          gap="12"
+          w="full"
+          px="25px"
+        >
+          <Container>
+            <VenueAudiencesGrid />
+          </Container>
         </RevealGroup>
       </Flex>
     </Box>

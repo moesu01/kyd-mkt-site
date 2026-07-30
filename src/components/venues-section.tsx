@@ -2,9 +2,12 @@ import { Box, Flex, Grid, Text, chakra } from "@chakra-ui/react"
 import { useEffect, useRef, useState } from "react"
 import { SlotText } from "slot-text/react"
 import "slot-text/style.css"
-import platformVisualBg from "../assets/images/platform-visual-temp.jpg"
 import { links, stats } from "../content/site-content"
-import { Button, CtaArrow } from "./ui/button"
+import {
+  BookCallCtaContent,
+  bookCallButtonCss,
+  Button,
+} from "./ui/button"
 import { Container } from "./ui/container"
 import { Reveal, RevealGroup } from "./ui/reveal"
 import { SectionHeading } from "./ui/section-heading"
@@ -83,26 +86,12 @@ function TicketRevenueCalculator() {
       px="25px"
       pt="25px"
       pb="25px"
-      borderRadius="32px"
+      borderRadius="16px"
       bg="frameBg"
       boxShadow="frame"
       position="relative"
       overflow="hidden"
     >
-      <chakra.img
-        src={platformVisualBg}
-        alt=""
-        aria-hidden
-        draggable={false}
-        position="absolute"
-        inset="0"
-        w="full"
-        h="full"
-        objectFit="cover"
-        opacity="0.1"
-        pointerEvents="none"
-      />
-
       <Box position="relative" zIndex="1">
         <Flex align="center" justify="space-between" mb="2">
           <Text
@@ -390,12 +379,9 @@ export function VenuesSection() {
                 <Button
                   href={links.getInTouch}
                   size="hero"
-                  css={{ fontWeight: "bold" }}
+                  css={bookCallButtonCss}
                 >
-                  <span>
-                    Get in touch
-                    <CtaArrow />
-                  </span>
+                  <BookCallCtaContent />
                 </Button>
               </Reveal>
             </Flex>

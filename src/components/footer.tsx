@@ -2,7 +2,11 @@ import { Box, Flex, Image, Link, Text } from "@chakra-ui/react"
 import { useLayoutEffect, useRef } from "react"
 import { footerLegalLinks, heroSection, links } from "../content/site-content"
 import { assetUrl } from "../lib/asset-url"
-import { Button, CtaArrow } from "./ui/button"
+import {
+  BookCallCtaContent,
+  bookCallButtonCss,
+  Button,
+} from "./ui/button"
 
 const FOOTER_BG_SURFACE_ID = "footer-bg-surface"
 const FOOTER_BG_VIDEO_ID = "footer-bg-video"
@@ -223,12 +227,12 @@ export function Footer() {
           <Button
             href={links.getInTouch}
             size="hero"
-            css={{ width: { base: "full", sm: "auto" } }}
+            css={{
+              ...bookCallButtonCss,
+              width: { base: "full", sm: "auto" },
+            }}
           >
-            <span>
-              Get in touch
-              <CtaArrow />
-            </span>
+            <BookCallCtaContent />
           </Button>
           <Button
             href={links.tickets}
