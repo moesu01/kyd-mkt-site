@@ -1,27 +1,43 @@
 import { Box, Flex, Grid, Text } from "@chakra-ui/react"
 import { links } from "../content/site-content"
+import { assetUrl } from "../lib/asset-url"
+import { Ticket } from "./ticket"
 import { Button, CtaArrow } from "./ui/button"
 import { Container } from "./ui/container"
 import { SectionHeading } from "./ui/section-heading"
 
 export function FanSection() {
+  const handleClaim = () => {
+    window.open(links.tickets, "_blank", "noopener,noreferrer")
+  }
+
   return (
     <Box
       as="section"
       id="fans"
       bg="pageBg"
-      px={{ base: "6", lg901: "12" }}
-      py={{ base: "20", lg901: "28" }}
+      px={{ base: "4", md: "8" }}
+      pt={{ base: "20", lg901: "28" }}
+      pb={{ base: "10", lg901: "14" }}
     >
-      <Container>
+      <Container
+        maxW="containerFramed"
+        borderRadius="32px"
+        bg="pageBg"
+        boxShadow="frame"
+        overflow="hidden"
+      >
         <Grid
           templateColumns={{ base: "1fr", lg901: "1fr 1fr" }}
-          gap={{ base: "10", lg901: "16" }}
-          borderTop="3px solid"
-          borderColor="rgba(255, 255, 255, 0.1)"
-          pt={{ base: "8", lg901: "10" }}
+          minH={{ base: "680px", lg901: "380px" }}
         >
-          <Box minW="0">
+          <Flex
+            minW="0"
+            direction="column"
+            justify="center"
+            px={{ base: "8", md: "12", lg901: "16" }}
+            py={{ base: "12", lg901: "16" }}
+          >
             <SectionHeading
               eyebrowVariant="prominent"
               headingTextStyle="cossetteDisplayHeading"
@@ -42,7 +58,7 @@ export function FanSection() {
               letterSpacing="-0.36px"
               color="warmMuted"
             >
-              Locate your tickets. You&apos;re in the right place.
+              Looking for your tickets? You&apos;re in the right place.
             </Text>
 
             <Flex mt="8" align="center">
@@ -53,9 +69,37 @@ export function FanSection() {
                 </span>
               </Button>
             </Flex>
-          </Box>
+          </Flex>
 
-          <Box display={{ base: "none", lg901: "block" }} aria-hidden />
+          <Box
+            position="relative"
+            minW="0"
+            h={{ base: "360px", lg901: "380px" }}
+            maxH={{ base: "360px", lg901: "380px" }}
+            overflow="hidden"
+          >
+            <Box
+              position="absolute"
+              top={{ base: "40px", lg901: "56px" }}
+              left="50%"
+              w={{ base: "260px", md: "300px", lg901: "330px" }}
+              transform="translateX(-50%)"
+            >
+              <Ticket
+                posterUrl={assetUrl("/images/used-by/action-bronson.jpg")}
+                subtitle="+ Human Growth Hormone"
+                title="Action Bronson"
+                ticketType="General Admission"
+                quantity={2}
+                date="Saturday • Aug 15 2026"
+                time="9:00PM"
+                venue="Le Poisson Rouge"
+                city="New York City, NY"
+                ctaLabel="Find My Tickets"
+                onClaim={handleClaim}
+              />
+            </Box>
+          </Box>
         </Grid>
       </Container>
     </Box>
