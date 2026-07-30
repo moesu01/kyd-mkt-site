@@ -3,8 +3,7 @@ import { useCallback, useState } from "react"
 import { AboutSection } from "./components/about-section"
 import { AlternateNav } from "./components/alternate-nav"
 import { BackedBySection } from "./components/backed-by-section"
-// TEMP: Fan section hidden — restore import and <FanSection /> below when ready.
-// import { FanSection } from "./components/fan-section"
+import { FanSection } from "./components/fan-section"
 import { FeaturesSectionInteractive } from "./components/features-section-interactive"
 // TODO: Original FeaturesSection is hidden while evaluating the interactive
 // version above. If we commit to the interactive view, delete this import,
@@ -70,9 +69,9 @@ function App() {
         {/* TODO: Hidden pending decision on interactive vs. original Platform
             section. Remove FeaturesSection entirely if unused. */}
         {/* <FeaturesSection /> */}
+        <FanSection />
         <AboutSection />
         {/* TEMP: Press section hidden — <PressSection /> */}
-        {/* TEMP: Fan section hidden — <FanSection /> */}
       </Box>
       <Footer />
     </>

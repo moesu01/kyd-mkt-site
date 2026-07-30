@@ -9,6 +9,7 @@ export function SocialProofSection() {
   return (
     <Box
       as="section"
+      id="press"
       px={{ base: "6", lg901: "12" }}
       pt="0"
       pb={{ base: "20", lg901: "28" }}

@@ -163,7 +163,7 @@ function PlatformInteractiveHeader() {
       minW="0"
       w="full"
     >
-      <PlatformSectionLabel label="Features" headingAs="p" />
+      <PlatformSectionLabel label="KYD Labs Platform" headingAs="p" />
       <Flex flex="1" align="center" minH="0" minW="0" w="full">
         <Heading
           as="h2"
@@ -589,7 +589,7 @@ export function FeaturesSectionInteractive() {
   return (
     <Box
       as="section"
-      id="platform-interactive"
+      id="platform"
       bg="pageBg"
       px={{ base: "6", lg901: "12" }}
       py={{ base: "10", lg901: "14" }}
