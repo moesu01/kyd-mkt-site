@@ -33,7 +33,7 @@ function StatRow({
       pb={hasBottomBorder ? { base: "5", lg901: "8" } : "0"}
       borderTop={isFirst ? "3px solid" : undefined}
       borderBottom={hasBottomBorder ? "3px solid" : undefined}
-      borderColor="border"
+      borderColor="rgba(255, 255, 255, 0.1)"
       w="full"
     >
       <Text
