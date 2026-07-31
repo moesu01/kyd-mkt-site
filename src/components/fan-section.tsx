@@ -16,36 +16,34 @@ export function FanSection() {
       as="section"
       id="fans"
       bg="pageBg"
-      px={{ base: "4", md: "8" }}
+      px={{ base: "6", lg901: "12" }}
       pt={{ base: "20", lg901: "28" }}
       pb={{ base: "10", lg901: "14" }}
     >
       <Container
         maxW="containerFramed"
-        borderRadius="32px"
         bg="pageBg"
-        boxShadow="frame"
-        overflow="hidden"
       >
         <Grid
-          templateColumns={{ base: "1fr", lg901: "1fr 1fr" }}
+          templateColumns={{ base: "1fr", lg901: "2fr 1.5fr" }}
           minH={{ base: "680px", lg901: "380px" }}
         >
           <Flex
             minW="0"
             direction="column"
             justify="center"
-            px={{ base: "8", md: "12", lg901: "16" }}
+            px="25px"
             py={{ base: "12", lg901: "16" }}
           >
             <SectionHeading
               eyebrowVariant="prominent"
               headingTextStyle="cossetteDisplayHeading"
-              headingTextTransform="uppercase"
+              headingTextTransform="none"
               headingFontWeight="normal"
               headingAs="h2"
               label="For Fans"
-              headline="Need Ticket Help?"
+              headline="Need ticket help?"
+              css={{ "& > h2": { fontSize: "64px" } }}
             />
             <Text
               mt="6"
@@ -60,12 +58,15 @@ export function FanSection() {
               Looking for your tickets? You&apos;re in the right place.
             </Text>
 
-            <Flex mt="8" align="center">
+            <Flex mt="8" align="center" gap="3">
               <Button href={links.tickets} variant="outline">
                 <span>
                   Find My Tickets
                   <CtaArrow />
                 </span>
+              </Button>
+              <Button href={links.contact} variant="outline-dark">
+                Get Help
               </Button>
             </Flex>
           </Flex>
@@ -75,6 +76,9 @@ export function FanSection() {
             minW="0"
             h={{ base: "360px", lg901: "380px" }}
             maxH={{ base: "360px", lg901: "380px" }}
+            borderRadius="32px"
+            bg="frameBg"
+            boxShadow="frame"
             overflow="hidden"
           >
             <Box

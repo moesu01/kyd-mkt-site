@@ -145,8 +145,6 @@ export function UsedBySection() {
       align="center"
       justify="space-between"
       gap="8"
-      borderTop="3px solid"
-      borderColor="rgba(255, 255, 255, 0.1)"
     >
       <Box minW="0">
         <Heading

@@ -166,7 +166,7 @@ function PlatformInteractiveHeader() {
       <PlatformSectionLabel label="KYD Labs Platform" headingAs="p" />
       <Flex flex="1" align="center" minH="0" minW="0" w="full">
         <Heading
-          as="h2"
+          as="h3"
           py="3"
           w="full"
           maxW="100%"
@@ -595,6 +595,26 @@ export function FeaturesSectionInteractive() {
       py={{ base: "10", lg901: "14" }}
     >
       <Flex direction="column" gap="12" w="full">
+        <RevealGroup w="full" px="25px">
+          <Container>
+            <Reveal order={0}>
+              <Heading
+                as="h2"
+                textStyle="cossetteDisplayHeading"
+                fontWeight="normal"
+                textTransform="uppercase"
+                color="warmDisplay"
+                textWrap="balance"
+              >
+                Our Platform
+              </Heading>
+            </Reveal>
+            <Box mt="12">
+              <VenueAudiencesGrid />
+            </Box>
+          </Container>
+        </RevealGroup>
+
         <RevealGroup w="full">
         <Container maxW="containerFramed">
         <Reveal order={0}>
@@ -686,17 +706,6 @@ export function FeaturesSectionInteractive() {
         </Box>
         </Reveal>
       </Container>
-        </RevealGroup>
-        <RevealGroup
-          display="flex"
-          flexDirection="column"
-          gap="12"
-          w="full"
-          px="25px"
-        >
-          <Container>
-            <VenueAudiencesGrid />
-          </Container>
         </RevealGroup>
       </Flex>
     </Box>
