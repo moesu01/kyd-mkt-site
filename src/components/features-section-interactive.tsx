@@ -33,25 +33,6 @@ function getFeatureVisualSrc(title: string) {
   return featureVisuals[title] ?? platformVisualBg
 }
 
-const kydMarkSmPath =
-  "M19 11V8.3675H12.6155L17.1212 3.7706L15.3192 1.88453L10.8135 6.48143V0H8.18652L8.2016 6.43536L3.72748 1.88453L1.87882 3.7706L6.39954 8.3675H0V11H19Z"
-
-function KydMarkSm({ color }: { color: string }) {
-  return (
-    <Box
-      as="span"
-      aria-hidden
-      display="inline-flex"
-      flexShrink={0}
-      color={color}
-    >
-      <chakra.svg width="19px" height="11px" viewBox="0 0 19 11" fill="none">
-        <path d={kydMarkSmPath} fill="currentColor" />
-      </chakra.svg>
-    </Box>
-  )
-}
-
 interface FeatureVisualBackgroundProps {
   activeIndex: number
   exitingIndex: number | null
@@ -125,35 +106,6 @@ function getExitOffset(direction: NavDirection) {
   return "-8px"
 }
 
-function PlatformSectionLabel({
-  label,
-  headingAs = "h5",
-}: {
-  label: string
-  headingAs?: "h5" | "p"
-}) {
-  return (
-    <Heading
-      as={headingAs}
-      display="flex"
-      alignItems="center"
-      gap="1.5"
-      w={headingAs === "h5" ? "full" : undefined}
-      flexShrink={0}
-      fontFamily="cossetteTexte"
-      fontSize="14px"
-      fontWeight="bold"
-      lineHeight="1.2"
-      letterSpacing="0"
-      color="warmMuted"
-      textAlign="left"
-    >
-      <KydMarkSm color="inherit" />
-      {label}
-    </Heading>
-  )
-}
-
 function PlatformInteractiveHeader() {
   return (
     <Flex
@@ -163,11 +115,17 @@ function PlatformInteractiveHeader() {
       minW="0"
       w="full"
     >
-      <PlatformSectionLabel label="KYD Labs Platform" headingAs="p" />
-      <Flex flex="1" align="center" minH="0" minW="0" w="full">
+      <Flex
+        flex="1"
+        direction="column"
+        align="flex-start"
+        justify="center"
+        minH="0"
+        minW="0"
+        w="full"
+      >
         <Heading
           as="h3"
-          py="3"
           w="full"
           maxW="100%"
           color="warmDisplay"
@@ -641,9 +599,13 @@ export function FeaturesSectionInteractive() {
               as="ul"
               role="tablist"
               aria-label="Platform features"
+              display="flex"
+              flexDirection="column"
+              justifyContent="flex-end"
               m="0"
               p="0"
               mt={{ base: "10", lg901: 0 }}
+              minH={{ base: "auto", lg901: "440px" }}
               flexShrink={0}
             >
               {features.map((feature, index) => (

@@ -41,8 +41,8 @@ export const aboutSection = {
 
 export const navMenuLinks = [
   { label: "For venues", href: "#venues" },
-  { label: "Platform", href: "#platform" },
   { label: "Press", href: "#press" },
+  { label: "Platform", href: "#platform" },
 ] as const
 
 export const venuesSection = {
