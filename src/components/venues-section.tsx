@@ -1,8 +1,8 @@
 import { Box, Flex, Grid, Text, chakra } from "@chakra-ui/react"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { SlotText } from "slot-text/react"
 import "slot-text/style.css"
-import { links, stats } from "../content/site-content"
+import { links, stats, venuesSection } from "../content/site-content"
 import {
   BookCallCtaContent,
   bookCallButtonCss,
@@ -12,48 +12,66 @@ import { Container } from "./ui/container"
 import { Reveal, RevealGroup } from "./ui/reveal"
 import { SectionHeading } from "./ui/section-heading"
 
-function StatRow({
+function StatCard({
   value,
   label,
-  isFirst,
-  hasBottomBorder = true,
+  iconSrc,
 }: {
   value: string
   label: string
-  isFirst: boolean
-  hasBottomBorder?: boolean
+  iconSrc: string
 }) {
   return (
     <Flex
+      direction="column"
       align="center"
-      gap={{ base: "4", lg901: "6" }}
-      minH={{ base: "102px", lg901: "122px" }}
-      px="25px"
-      pt={{ base: "5", lg901: "8" }}
-      pb={hasBottomBorder ? { base: "5", lg901: "8" } : "0"}
-      borderTop={isFirst ? "3px solid" : undefined}
-      borderBottom={hasBottomBorder ? "3px solid" : undefined}
-      borderColor="rgba(255, 255, 255, 0.1)"
-      w="full"
+      justify="center"
+      gap={{ base: "2", xl1100: "4" }}
+      flex="1"
+      minW="0"
+      minH={{ base: "auto", xl1100: "290px" }}
+      px={{ base: "3", sm: "4", xl1100: "6" }}
+      py={{ base: "5", xl1100: "6" }}
+      borderRadius="16px"
+      bg="pageBg"
+      boxShadow="0 0 2px 1px rgba(255, 255, 255, 0.15)"
+      overflow="hidden"
     >
-      <Text
+      <Box
+        w={{ base: "28px", xl1100: "36px" }}
+        h={{ base: "28px", xl1100: "36px" }}
         flexShrink={0}
+        overflow="clip"
+        aria-hidden
+      >
+        <chakra.img
+          src={iconSrc}
+          alt=""
+          w="100%"
+          h="100%"
+          display="block"
+        />
+      </Box>
+      <Text
+        pt={{ base: "0", xl1100: "6" }}
         fontFamily="cossetteTitre"
-        fontSize={{ base: "3rem", lg901: "72px" }}
+        fontSize={{ base: "2.5rem", sm: "3rem", xl1100: "91px" }}
         fontWeight="100"
-        lineHeight="1"
+        lineHeight={{ base: "1", xl1100: "72px" }}
         letterSpacing="0"
         color="warmSoft"
+        whiteSpace="nowrap"
         css={{ fontFeatureSettings: '"cv01" 1' }}
       >
         {value}
       </Text>
       <Text
-        flex="1"
-        minW="0"
-        textStyle="touringCategory"
-        textAlign="right"
-        color="warmSoft"
+        fontFamily="cossetteTexte"
+        fontSize={{ base: "16px", xl1100: "20px" }}
+        fontWeight="normal"
+        lineHeight="1.35"
+        color="warmMuted"
+        whiteSpace="nowrap"
       >
         {label}
       </Text>
@@ -63,59 +81,91 @@ function StatRow({
 
 function TicketRevenueCalculator() {
   const [monthlyTicketRevenue, setMonthlyTicketRevenue] = useState(50000)
+  const [revenueDirection, setRevenueDirection] =
+    useState<RevenueDirection>("up")
   const projectedRevenue = monthlyTicketRevenue * REVENUE_GROWTH_MULTIPLIER
   const additionalRevenue = projectedRevenue - monthlyTicketRevenue
   const sliderProgress =
     ((monthlyTicketRevenue - MINIMUM_MONTHLY_REVENUE) /
       (MAXIMUM_MONTHLY_REVENUE - MINIMUM_MONTHLY_REVENUE)) *
     100
-  const previousProjectedRevenueRef = useRef(projectedRevenue)
-  const revenueDirection =
-    projectedRevenue >= previousProjectedRevenueRef.current ? "up" : "down"
   const projectedRevenueDisplay = formatAnimatedCurrency(projectedRevenue)
   const additionalRevenueDisplay = formatAnimatedCurrency(additionalRevenue)
 
-  useEffect(() => {
-    previousProjectedRevenueRef.current = projectedRevenue
-  }, [projectedRevenue])
+  const handleMonthlyTicketRevenueChange = (nextRevenue: number) => {
+    const nextProjectedRevenue = nextRevenue * REVENUE_GROWTH_MULTIPLIER
+    setRevenueDirection(
+      nextProjectedRevenue >= projectedRevenue ? "up" : "down",
+    )
+    setMonthlyTicketRevenue(nextRevenue)
+  }
 
   return (
     <Flex
       direction="column"
-      gap="0"
-      px="25px"
-      pt="25px"
-      pb="25px"
+      w="full"
+      minH={{ base: "auto", xl1100: "290px" }}
+      p="6"
       borderRadius="16px"
       bg="frameBg"
       boxShadow="frame"
       position="relative"
       overflow="hidden"
     >
-      <Box position="relative" zIndex="1">
-        <Flex align="center" justify="space-between" mb="2">
+      <Flex
+        align="center"
+        justify={{ base: "center", md700: "flex-start" }}
+        pb="6"
+        position="relative"
+        zIndex="1"
+      >
+        <Text
+          fontFamily="cossetteTexte"
+          fontSize="14px"
+          fontWeight="bold"
+          lineHeight="14px"
+          letterSpacing="0.1em"
+          textTransform="uppercase"
+          color="warmMuted"
+          whiteSpace="nowrap"
+        >
+          Ticket revenue simulator
+        </Text>
+      </Flex>
+
+      <Flex
+        direction="column"
+        gap="1.5"
+        py="4"
+        position="relative"
+        zIndex="1"
+        w="full"
+      >
+        <Flex align="center" justify="space-between" w="full" gap="4">
           <Text
-            fontFamily="sans"
-            fontSize="12px"
-            fontWeight="600"
-            lineHeight="1"
-            letterSpacing="0.1em"
-            textTransform="uppercase"
-            color="warmSoft"
+            fontFamily="cossetteTexte"
+            fontSize={{ base: "16px", xl1100: "20px" }}
+            fontWeight="normal"
+            lineHeight="1.35"
+            color="warmMuted"
           >
-            Current monthly ticket revenue
+            Current monthly
+            <br />
+            ticket revenue
           </Text>
           <Text
-            fontFamily="mono"
-            fontSize={{ base: "16px", lg901: "18px" }}
-            fontWeight="600"
+            fontFamily="cossetteTexte"
+            fontSize={{ base: "28px", xl1100: "36px" }}
+            fontWeight="normal"
             lineHeight="1.2"
             color="warmSoft"
+            whiteSpace="nowrap"
             css={{ fontVariantNumeric: "tabular-nums" }}
           >
             {formatCurrency(monthlyTicketRevenue)}
           </Text>
         </Flex>
+
         <chakra.input
           type="range"
           min={MINIMUM_MONTHLY_REVENUE}
@@ -123,7 +173,7 @@ function TicketRevenueCalculator() {
           step={1000}
           value={monthlyTicketRevenue}
           onChange={(event) =>
-            setMonthlyTicketRevenue(Number(event.currentTarget.value))
+            handleMonthlyTicketRevenueChange(Number(event.currentTarget.value))
           }
           aria-label="Current monthly ticket revenue"
           w="full"
@@ -179,116 +229,53 @@ function TicketRevenueCalculator() {
             },
           }}
         />
-      </Box>
+      </Flex>
 
       <Flex
         position="relative"
         zIndex="1"
-        align="stretch"
+        align="center"
         justify="space-between"
-        gap="4"
+        gap="3"
         borderTop="1px solid"
         borderColor="border"
-        pt="5"
+        pt="4"
+        w="full"
       >
-        <Box>
-          <Text
-            fontFamily="sans"
-            fontSize="12px"
-            fontWeight="600"
-            lineHeight="1"
-            letterSpacing="0.1em"
-            textTransform="uppercase"
-            color="warmMuted"
-          >
-            Ticket revenue simulator
-          </Text>
-          <Flex align="flex-end" gap="6px" mt="4">
-            <Text
-              fontFamily="cossetteTitre"
-              fontSize={{ base: "34px", lg901: "42px" }}
-              fontWeight="100"
-              lineHeight="1"
-              w="3.25em"
-              flexShrink={0}
-              color="warmSoft"
-              css={{ fontVariantNumeric: "tabular-nums lining-nums" }}
-            >
-              <SlotText
-                text={projectedRevenueDisplay.amount}
-                aria-label={formatCurrency(projectedRevenue)}
-                options={{
-                  direction: revenueDirection,
-                  duration: 140,
-                  stagger: 10,
-                  exitOffset: 10,
-                  bounce: 0,
-                  skipUnchanged: true,
-                  interrupt: false,
-                }}
-              />
-              <SlotText
-                text={projectedRevenueDisplay.suffix}
-                aria-hidden="true"
-                options={{
-                  direction: revenueDirection,
-                  duration: 140,
-                  stagger: 10,
-                  exitOffset: 10,
-                  bounce: 0,
-                  skipUnchanged: true,
-                  interrupt: false,
-                }}
-              />
-            </Text>
-            <Text
-              alignSelf="flex-end"
-              transform="translateY(-7px)"
-              fontSize="12px"
-              lineHeight="1.25"
-              color="warmMuted"
-              whiteSpace="nowrap"
-            >
-              Projected
-              <br />
-              monthly rev
-            </Text>
-          </Flex>
-        </Box>
+        <Text
+          flex="1"
+          minW="0"
+          fontFamily="cossetteTexte"
+          fontSize={{ base: "16px", xl1100: "20px" }}
+          fontWeight="normal"
+          lineHeight="1.35"
+          color="warmMuted"
+        >
+          Ticket Revenue
+          <br />
+          with KYD Labs
+        </Text>
 
-        <Flex direction="column" textAlign="right" flexShrink={0}>
-          <Flex align="center" justify="flex-end" gap="2">
-            <Text
-              fontFamily="sans"
-              fontSize="12px"
-              fontWeight="600"
-              lineHeight="1"
-              letterSpacing="0.1em"
-              textTransform="uppercase"
-              color="warmMuted"
-            >
-              30% Uplift
-            </Text>
-            <Box
-              w="10px"
-              h="10px"
-              flexShrink={0}
-              borderRadius="full"
-              bg="success"
-              boxShadow="0 0 8px color-mix(in oklab, var(--chakra-colors-success) 45%, transparent)"
-              aria-hidden
-            />
-          </Flex>
-          <Text
-            flex="1"
-            display="flex"
-            alignItems="flex-end"
-            justifyContent="flex-end"
-            fontFamily="cossetteTitre"
-            fontSize={{ base: "28px", lg901: "32px" }}
+        <Flex
+          direction={{ base: "column-reverse", md700: "row" }}
+          align={{ base: "flex-end", md700: "center" }}
+          justify="flex-end"
+          gap={{ base: "2", md700: "3" }}
+          flexShrink={0}
+        >
+          <Flex
+            align="center"
+            h={{ base: "28px", xl1100: "33px" }}
+            pl="6px"
+            pr="10px"
+            borderRadius="21px"
+            bg="success"
+            color="pageBg"
+            fontFamily={{ base: "sans", xl1100: "cossetteTitre" }}
+            fontSize={{ base: "14px", xl1100: "24px" }}
+            fontWeight={{ base: "semibold", xl1100: "normal" }}
             lineHeight="1"
-            minW="3.8em"
-            color="success"
+            whiteSpace="nowrap"
             css={{ fontVariantNumeric: "tabular-nums lining-nums" }}
           >
             <SlotText
@@ -306,6 +293,43 @@ function TicketRevenueCalculator() {
             />
             <SlotText
               text={additionalRevenueDisplay.suffix}
+              aria-hidden="true"
+              options={{
+                direction: revenueDirection,
+                duration: 140,
+                stagger: 10,
+                exitOffset: 10,
+                bounce: 0,
+                skipUnchanged: true,
+                interrupt: false,
+              }}
+            />
+          </Flex>
+
+          <Text
+            fontFamily="cossetteTitre"
+            fontSize={{ base: "34px", xl1100: "42px" }}
+            fontWeight="100"
+            lineHeight="1"
+            color="success"
+            whiteSpace="nowrap"
+            css={{ fontVariantNumeric: "tabular-nums lining-nums" }}
+          >
+            <SlotText
+              text={projectedRevenueDisplay.amount}
+              aria-label={formatCurrency(projectedRevenue)}
+              options={{
+                direction: revenueDirection,
+                duration: 140,
+                stagger: 10,
+                exitOffset: 10,
+                bounce: 0,
+                skipUnchanged: true,
+                interrupt: false,
+              }}
+            />
+            <SlotText
+              text={projectedRevenueDisplay.suffix}
               aria-hidden="true"
               options={{
                 direction: revenueDirection,
@@ -336,73 +360,122 @@ export function VenuesSection() {
     >
       <RevealGroup>
         <Container>
-          <Grid
-            templateColumns={{ base: "1fr", lg901: "1fr 1fr" }}
-            alignItems={{ base: "start", lg901: "stretch" }}
-            gap={{ base: "14", lg901: "24" }}
-          >
-            <Flex
-              direction="column"
-              justify={{ base: "flex-start", lg901: "space-between" }}
-              h={{ base: "auto", lg901: "full" }}
-              gap={{ base: "10", lg901: 0 }}
-            >
-              <Reveal order={0}>
-                <SectionHeading
-                  eyebrowVariant="prominent"
-                  headingTextStyle="cossetteDisplayHeading"
-                  headingTextTransform="none"
-                  headingFontWeight="bold"
-                  label="For Venues & Artists"
-                  headline={"Stop renting your audience.\nIt's already yours."}
-                />
-              </Reveal>
-              <Reveal order={1}>
-                <Text
-                  maxW="bodyCopy"
-                  fontFamily="sans"
-                  fontWeight="normal"
-                  fontSize="18px"
-                  lineHeight="27px"
-                  letterSpacing="-0.36px"
-                  color="warmMuted"
-                >
-                  A next-gen, whitelabel ticketing and marketing platform for
-                  independent artists, touring acts, and venues. Own your
-                  ticketing. Keep your fan data. Automate your marketing.
-                  Drive 30% more ticket sales &mdash; and never rent your
-                  audience again.
-                </Text>
-              </Reveal>
-              <Reveal order={2} alignSelf="flex-start">
-                <Button
-                  href={links.getInTouch}
-                  size="hero"
-                  css={bookCallButtonCss}
-                >
-                  <BookCallCtaContent />
-                </Button>
-              </Reveal>
-            </Flex>
+          <Flex direction="column" gap="9" align="stretch" w="full">
+            <Reveal order={0}>
+              <SectionHeading
+                eyebrowVariant="prominent"
+                headingTextStyle="cossetteDisplayHeading"
+                headingTextTransform="uppercase"
+                headingFontWeight="normal"
+                label={venuesSection.label}
+                headline={
+                  <>
+                    {venuesSection.headlineLine1}
+                    <br />
+                    <Text as="span" color="warmMuted">
+                      {venuesSection.headlineLine2}
+                    </Text>
+                  </>
+                }
+                textAlign="center"
+                mx="auto"
+                w="full"
+                maxW="722px"
+                css={{
+                  "& > p": { mb: "3", mx: "auto" },
+                  "& > h2": {
+                    fontSize: { base: "2.25rem", md700: "59px" },
+                    lineHeight: "1.2",
+                    letterSpacing: "0.01em",
+                    color: "warmDisplay",
+                  },
+                }}
+              />
+            </Reveal>
 
-            <Box w="full">
-              <Reveal order={1}>
-                <TicketRevenueCalculator />
-              </Reveal>
-              <Reveal order={2}>
-                <StatRow
-                  value={stats[0].value}
-                  label={stats[0].label}
-                  isFirst={false}
-                />
-              </Reveal>
-              {stats.slice(1).map((stat, index) => (
-                <Reveal key={stat.label} order={index + 3}>
-                  <StatRow value={stat.value} label={stat.label} isFirst={false} />
-                </Reveal>
-              ))}
-            </Box>
-          </Grid>
+            <Reveal order={1}>
+              <Flex
+                direction="column"
+                gap="3"
+                p="3"
+                w="full"
+                borderRadius="27px"
+                border="3px solid"
+                borderColor="rgba(255, 255, 255, 0.1)"
+              >
+                <Flex
+                  direction={{ base: "column", md700: "row" }}
+                  align="center"
+                  justify="space-between"
+                  gap={{ base: "5", md700: "6" }}
+                  p="6"
+                >
+                  <Text
+                    maxW={{ base: "full", md700: "610px" }}
+                    fontFamily="cossetteTexte"
+                    fontSize={{ base: "18px", xl1100: "24px" }}
+                    fontWeight="normal"
+                    lineHeight="1.4"
+                    color="warmMuted"
+                    textAlign={{ base: "center", md700: "left" }}
+                  >
+                    {venuesSection.groupIntro}
+                  </Text>
+                  <Box flexShrink={0}>
+                    <Button
+                      href={links.getInTouch}
+                      size="hero"
+                      css={bookCallButtonCss}
+                    >
+                      <BookCallCtaContent />
+                    </Button>
+                  </Box>
+                </Flex>
+
+                <Grid
+                  templateColumns={{
+                    base: "1fr",
+                    md700: "minmax(0, 1.09fr) minmax(0, 1fr)",
+                  }}
+                  gap="3"
+                  alignItems="stretch"
+                >
+                  <TicketRevenueCalculator />
+                  <Flex
+                    direction="row"
+                    gap="3"
+                    minW="0"
+                    h={{ base: "auto", md700: "full" }}
+                  >
+                    {stats.map((stat) => (
+                      <StatCard
+                        key={stat.label}
+                        value={stat.value}
+                        label={stat.label}
+                        iconSrc={stat.iconSrc}
+                      />
+                    ))}
+                  </Flex>
+                </Grid>
+              </Flex>
+            </Reveal>
+
+            <Reveal order={2}>
+              <Text
+                mx="auto"
+                maxW="bodyCopy"
+                fontFamily="sans"
+                fontWeight="normal"
+                fontSize="18px"
+                lineHeight="27px"
+                letterSpacing="-0.36px"
+                color="warmMuted"
+                textAlign="center"
+              >
+                {venuesSection.body}
+              </Text>
+            </Reveal>
+          </Flex>
         </Container>
       </RevealGroup>
     </Box>
@@ -445,3 +518,5 @@ interface AnimatedCurrency {
   amount: string
   suffix: string
 }
+
+type RevenueDirection = "up" | "down"

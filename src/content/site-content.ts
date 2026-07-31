@@ -45,9 +45,26 @@ export const navMenuLinks = [
   { label: "Press", href: "#press" },
 ] as const
 
+export const venuesSection = {
+  label: "For Venues & Artists",
+  headlineLine1: "Stop renting your audience.",
+  headlineLine2: "It's already yours.",
+  groupIntro:
+    "KYD venues & artists see a 30% increase in ticket revenue on average, compared to previous year.",
+  body: "A next-gen, white label ticketing and marketing platform for independent artists, touring acts, and venues. Own your ticketing. Keep your fan data. Automate your marketing.",
+} as const
+
 export const stats = [
-  { value: "30%", label: "Increase in ticket sales" },
-  { value: "15X", label: "Fan reach" },
+  {
+    value: "+30%",
+    label: "Ticket sales",
+    iconSrc: assetUrl("/images/venues/trend-up.svg"),
+  },
+  {
+    value: "15X",
+    label: "Fan reach",
+    iconSrc: assetUrl("/images/venues/users-three.svg"),
+  },
 ] as const
 
 export const venueAudiences = [
