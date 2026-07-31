@@ -287,7 +287,7 @@ const config = defineConfig({
       },
       touringShowsLink: {
         value: {
-          fontFamily: "sans",
+          fontFamily: "cossetteTexte",
           fontSize: { base: "16px", lg901: "16px", xl1048: "20px" },
           fontWeight: "medium",
           lineHeight: "1",

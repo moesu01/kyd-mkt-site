@@ -2,7 +2,12 @@ import { Box, Flex, Grid, Text, chakra } from "@chakra-ui/react"
 import { useState } from "react"
 import { SlotText } from "slot-text/react"
 import "slot-text/style.css"
-import { links, stats, venuesSection } from "../content/site-content"
+import {
+  links,
+  stats,
+  testimonials,
+  venuesSection,
+} from "../content/site-content"
 import {
   BookCallCtaContent,
   bookCallButtonCss,
@@ -11,6 +16,7 @@ import {
 import { Container } from "./ui/container"
 import { Reveal, RevealGroup } from "./ui/reveal"
 import { SectionHeading } from "./ui/section-heading"
+import { TestimonialBlock } from "./testimonial-block"
 
 function StatCard({
   value,
@@ -348,6 +354,49 @@ function TicketRevenueCalculator() {
   )
 }
 
+function VenuesPressCards() {
+  return (
+    <Grid
+      templateColumns={{ base: "1fr", lg901: "repeat(2, minmax(0, 440px))" }}
+      justifyContent="center"
+      alignItems="start"
+      gap={{ base: "10", lg901: "clamp(32px, 10vw, 147px)" }}
+      w="full"
+      maxW="1027px"
+      mx="auto"
+      pt={{ base: "12", lg901: "180px" }}
+      pb={{ base: "12", lg901: "20px" }}
+    >
+      {venuesPressTestimonials.map((testimonial) => {
+        const isForbes = testimonial.attribution === "Forbes"
+
+        return (
+          <Box
+            key={`${testimonial.attribution}-${testimonial.quote}`}
+            w="full"
+            maxW="testimonialCard"
+            mx="auto"
+            transform={{
+              base: isForbes ? "rotate(1.5deg)" : "none",
+              lg901: isForbes
+                ? "translateY(-80px) rotate(1.5deg)"
+                : "none",
+            }}
+          >
+            <TestimonialBlock
+              quote={testimonial.quote}
+              attribution={testimonial.attribution}
+              role={testimonial.role}
+              logoSrc={testimonial.logoSrc}
+              placeholder={testimonial.placeholder}
+            />
+          </Box>
+        )
+      })}
+    </Grid>
+  )
+}
+
 export function VenuesSection() {
   return (
     <Box
@@ -475,6 +524,10 @@ export function VenuesSection() {
                 {venuesSection.body}
               </Text>
             </Reveal>
+
+            <Reveal order={3}>
+              <VenuesPressCards />
+            </Reveal>
           </Flex>
         </Container>
       </RevealGroup>
@@ -500,6 +553,11 @@ function formatAnimatedCurrency(value: number): AnimatedCurrency {
 const REVENUE_GROWTH_MULTIPLIER = 1.3
 const MINIMUM_MONTHLY_REVENUE = 30000
 const MAXIMUM_MONTHLY_REVENUE = 999000
+const venuesPressTestimonials = testimonials.filter(
+  (testimonial) =>
+    testimonial.attribution === "Billboard" ||
+    testimonial.quote.startsWith("Platforms like KYD"),
+)
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",

@@ -152,13 +152,13 @@ export function UsedBySection() {
         <Heading
           as="h2"
           textStyle="cossetteDisplayHeading"
-          fontWeight="bold"
-          textTransform="none"
+          fontWeight="normal"
+          textTransform="uppercase"
           lineHeight="1.1"
           color="warmDisplay"
           textWrap="balance"
         >
-          Used by Venues and Artists
+          Used by Venues &amp; Artists
           <br />
           <Text as="span" color="warmMuted">
             Across the Country
@@ -171,7 +171,7 @@ export function UsedBySection() {
   )
 }
 
-const USED_BY_SCROLL_SPEED_PX_PER_FRAME = 0.75
+const USED_BY_SCROLL_SPEED_PX_PER_FRAME = 1
 
 export function UsedByCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null)

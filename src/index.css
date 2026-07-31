@@ -269,7 +269,7 @@ body > #footer-bg-video {
 .used-by-globe-spin {
   --globe-dot-fill: #888;
   --globe-dot-ping-fill: #fff;
-  animation: used-by-globe-spin 24s linear infinite;
+  animation: used-by-globe-spin 18s linear infinite;
 }
 
 @keyframes globe-dot-ping {

@@ -41,8 +41,8 @@ export function FanSection() {
             <SectionHeading
               eyebrowVariant="prominent"
               headingTextStyle="cossetteDisplayHeading"
-              headingTextTransform="none"
-              headingFontWeight="bold"
+              headingTextTransform="uppercase"
+              headingFontWeight="normal"
               headingAs="h2"
               label="For Fans"
               headline="Need Ticket Help?"

@@ -27,8 +27,8 @@ export function SocialProofSection() {
               <Heading
                 as="h2"
                 textStyle="cossetteDisplayHeading"
-                fontWeight="bold"
-                textTransform="none"
+                fontWeight="normal"
+                textTransform="uppercase"
                 lineHeight="1.1"
                 color="warmDisplay"
                 textWrap="balance"

@@ -26,7 +26,7 @@ export function UsedByPageSection() {
       </RevealGroup>
 
       <RevealGroup>
-        <Container mt="4">
+        <Container mt="36px">
           <Reveal order={0}>
             <TouringArtistsList />
           </Reveal>

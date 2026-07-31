@@ -2,6 +2,11 @@ import { Box, Flex, Grid, Image, Text, chakra } from "@chakra-ui/react"
 import { useState, type MouseEvent } from "react"
 import { touringArtists } from "../content/site-content"
 import { assetUrl } from "../lib/asset-url"
+import {
+  BookCallCtaContent,
+  bookCallButtonCss,
+  Button,
+} from "./ui/button"
 
 const ChakraLink = chakra("a")
 
@@ -64,6 +69,7 @@ function TouringArtistRow({
 }: TouringArtistRowProps) {
   const [isHovered, setIsHovered] = useState(false)
   const isPlaceholderLink = showsHref === "#"
+  const isBookCallCta = linkLabel === "Get In Touch"
   const compactLogoMaxH = logoMaxH ? scalePxSize(logoMaxH, 0.8) : undefined
   const compactLogoMaxW = logoMaxW ? scalePxSize(logoMaxW, 0.8) : undefined
 
@@ -198,32 +204,46 @@ function TouringArtistRow({
 
         <Flex
           align="center"
-          justify={{ base: "flex-start", lg901: "flex-end" }}
+          justify={{
+            base: isBookCallCta ? "flex-end" : "flex-start",
+            lg901: "flex-end",
+          }}
           gap="2.5"
           minW="0"
         >
-          <ChakraLink
-            href={showsHref}
-            display="inline-flex"
-            alignItems="center"
-            gap="2.5"
-            textDecoration="none"
-            textStyle="touringShowsLink"
-            color={isHovered ? "accent" : "warmMuted"}
-            transitionProperty="color"
-            transitionDuration="200ms"
-            transitionTimingFunction={rowEase}
-            onClick={handleClick}
-            aria-label={
-              isPlaceholderLink
-                ? `${name} ${linkLabel.toLowerCase()} (link coming soon)`
-                : `${name} ${linkLabel.toLowerCase()}`
-            }
-            _focusVisible={rowFocusVisible}
-          >
-            <Text as="span">{linkLabel}</Text>
-            <ExternalLinkArrow isHovered={isHovered} />
-          </ChakraLink>
+          {isBookCallCta ? (
+            <Button
+              href={showsHref}
+              size="hero"
+              css={bookCallButtonCss}
+              aria-label="Book a call with KYD"
+            >
+              <BookCallCtaContent />
+            </Button>
+          ) : (
+            <ChakraLink
+              href={showsHref}
+              display="inline-flex"
+              alignItems="center"
+              gap="2.5"
+              textDecoration="none"
+              textStyle="touringShowsLink"
+              color={isHovered ? "accent" : "warmMuted"}
+              transitionProperty="color"
+              transitionDuration="200ms"
+              transitionTimingFunction={rowEase}
+              onClick={handleClick}
+              aria-label={
+                isPlaceholderLink
+                  ? `${name} ${linkLabel.toLowerCase()} (link coming soon)`
+                  : `${name} ${linkLabel.toLowerCase()}`
+              }
+              _focusVisible={rowFocusVisible}
+            >
+              <Text as="span">{linkLabel}</Text>
+              <ExternalLinkArrow isHovered={isHovered} />
+            </ChakraLink>
+          )}
         </Flex>
       </Grid>
     </Box>

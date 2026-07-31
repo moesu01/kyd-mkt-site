@@ -115,10 +115,29 @@ export const features = [
 
 export const usedBy = [
   {
+    name: "The Ideal Theater & Bar",
+    subtitle: "Cedar Rapids, IA",
+    href: "#",
+    imageSrc: assetUrl("/images/used-by/ideal-theater-bar.jpg"),
+  },
+  {
+    name: "ANGINE DE POITRINE",
+    subtitle: "NYC Debut @ LPR",
+    href: "#",
+    imageSrc: assetUrl("/images/used-by/angine-de-poitrine.webp"),
+  },
+  {
     name: "Le Poisson Rouge",
     subtitle: "New York City, NY",
     href: "#",
     imageSrc: assetUrl("/images/used-by/le-poisson-rouge.jpg"),
+  },
+  {
+    name: "Action Bronson",
+    subtitle: "Touring Artist",
+    href: "#",
+    imageSrc: assetUrl("/images/used-by/action-bronson.jpg"),
+    objectPosition: "center top",
   },
   {
     name: "The Brooklyn Monarch",
@@ -127,29 +146,28 @@ export const usedBy = [
     imageSrc: assetUrl("/images/used-by/brooklyn-monarch.jpg"),
   },
   {
-    name: "SOB's",
-    subtitle: "New York City, NY",
-    href: "#",
-    imageSrc: assetUrl("/images/used-by/sobs.jpg"),
-  },
-  {
-    name: "The Ideal Theater & Bar",
-    subtitle: "Cedar Rapids, IA",
-    href: "#",
-    imageSrc: assetUrl("/images/used-by/ideal-theater-bar.jpg"),
-  },
-  {
     name: "Pangea Sound",
     subtitle: "Los Angeles, CA",
     href: "#",
     imageSrc: assetUrl("/images/used-by/pangea-sound.png"),
   },
   {
-    name: "Action Bronson",
-    subtitle: "Touring Artist",
+    name: "SOB's",
+    subtitle: "New York City, NY",
     href: "#",
-    imageSrc: assetUrl("/images/used-by/action-bronson.jpg"),
-    objectPosition: "center top",
+    imageSrc: assetUrl("/images/used-by/sobs.jpg"),
+  },
+  {
+    name: "Robert Plant",
+    subtitle: "With Saving Grace & Suzi Dian",
+    href: "#",
+    imageSrc: assetUrl("/images/used-by/robert_plant.png"),
+  },
+  {
+    name: "Adéla",
+    subtitle: "NYC Debut @ LPR",
+    href: "#",
+    imageSrc: assetUrl("/images/used-by/adela.webp"),
   },
 ] as const
 
