@@ -12,7 +12,7 @@ import {
   type CurvedTaglineMark,
   type CurvedTaglineTypography,
 } from "./about-curved-tagline-dial"
-import { AboutLogoLoop, type AboutLogoLoopMode } from "./about-logo-loop"
+import { AboutLogoLoop } from "./about-logo-loop"
 import { Reveal } from "../ui/reveal"
 
 const ARC_PATH_ID = "about-curved-tagline-arc"
@@ -34,12 +34,8 @@ interface AboutCurvedTaglineProps extends BoxProps {
   curvedTextOpacity?: number
   /** When true, curved tagline uses section Reveal stagger (like Features). */
   revealCurvedText?: boolean
-  heroAnimationOpacity?: number
   aboutAnimationOpacity?: number
   aboutAnimationProgress?: number
-  mode?: AboutLogoLoopMode
-  skipIntro?: boolean
-  onHeroSettled?: () => void
 }
 
 export function AboutCurvedTagline({
@@ -52,12 +48,8 @@ export function AboutCurvedTagline({
   curvedTextOpacity = 1,
   revealCurvedText = false,
   emblemScale = 1,
-  heroAnimationOpacity = 0,
   aboutAnimationOpacity = 1,
   aboutAnimationProgress = 1,
-  mode = "about",
-  skipIntro = false,
-  onHeroSettled,
   ...props
 }: AboutCurvedTaglineProps) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -228,12 +220,8 @@ export function AboutCurvedTagline({
           }}
         >
           <AboutLogoLoop
-            heroOpacity={heroAnimationOpacity}
             aboutOpacity={aboutAnimationOpacity}
             aboutProgress={aboutAnimationProgress}
-            mode={mode}
-            skipIntro={skipIntro}
-            onHeroSettled={onHeroSettled}
           />
         </div>
       </LogoLoopHost>

@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react"
-import { motion } from "motion/react"
 
 const FRAME_COUNT = 48
-const HERO_FRAME_DURATION_MS = 55
 /** How many trailing frames are eligible as the scroll-end landing spot. */
 const ENDING_FRAME_OPTIONS = 8
 /** Progress must reach this before we treat the scroll as "settled on an ending". */
@@ -22,28 +20,9 @@ const LOGO_LOOP_FRAMES = Array.from(
     `${FRAME_BASE_PATH}/${String(index + 1).padStart(2, "0")}.png`,
 )
 
-/** Hero intro — second half of the loop, ending on the second-to-last frame.
- *  Drop the first 25% of that range so the enter cycle is shorter. */
-const HERO_INTRO_END = FRAME_COUNT - 1
-const HERO_INTRO_FULL_START = Math.floor(FRAME_COUNT / 2)
-const HERO_INTRO_LENGTH = Math.round(
-  (HERO_INTRO_END - HERO_INTRO_FULL_START) * 0.75,
-)
-const HERO_INTRO_START = HERO_INTRO_END - HERO_INTRO_LENGTH
-
-const HERO_INTRO_FRAMES = LOGO_LOOP_FRAMES.slice(
-  HERO_INTRO_START,
-  HERO_INTRO_END,
-)
-
 const FRAME_ROTATIONS = Array.from(
   { length: LOGO_LOOP_FRAMES.length },
   (_, index) => ROTATION_POOL[index % ROTATION_POOL.length] ?? 0,
-)
-
-const HERO_INTRO_ROTATIONS = FRAME_ROTATIONS.slice(
-  HERO_INTRO_START,
-  HERO_INTRO_END,
 )
 
 const LAST_FRAME_INDEX = LOGO_LOOP_FRAMES.length - 1
@@ -105,43 +84,19 @@ function isSettledAtEnding(progress: number) {
   return Math.min(1, Math.max(0, progress)) >= ENDING_SETTLE_PROGRESS
 }
 
-export type AboutLogoLoopMode = "hero" | "about"
-
 interface AboutLogoLoopProps {
   className?: string
-  heroOpacity: number
   aboutOpacity: number
   aboutProgress: number
-  /** "hero" plays the intro; "about" starts settled and only scrubs on scroll. */
-  mode?: AboutLogoLoopMode
-  /** When true in hero mode, skip the intro (e.g. after a layout toggle). */
-  skipIntro?: boolean
-  onHeroSettled?: () => void
 }
 
 export function AboutLogoLoop({
   className,
-  heroOpacity,
   aboutOpacity,
   aboutProgress,
-  mode = "about",
-  skipIntro = false,
-  onHeroSettled,
 }: AboutLogoLoopProps) {
-  const isHeroMode = mode === "hero"
-  const shouldSkipIntro = !isHeroMode || skipIntro
-  const containerRef = useRef<HTMLDivElement>(null)
-  const hasNotifiedSettledRef = useRef(false)
   const endingFrameBagRef = useRef<number[]>([])
   const lastDrawnEndingFrameRef = useRef<number | null>(null)
-  const lastIntroFrameIndex = Math.max(HERO_INTRO_FRAMES.length - 1, 0)
-  const [heroFrameIndex, setHeroFrameIndex] = useState(
-    shouldSkipIntro ? lastIntroFrameIndex : 0,
-  )
-  const [hasHeroAnimationStarted, setHasHeroAnimationStarted] = useState(
-    shouldSkipIntro,
-  )
-  const [isHeroSettled, setIsHeroSettled] = useState(shouldSkipIntro)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [lockedEndingFrame, setLockedEndingFrame] = useState<number | null>(
     null,
@@ -166,58 +121,8 @@ export function AboutLogoLoop({
     })
   }, [])
 
-  useEffect(() => {
-    if (shouldSkipIntro) return
-
-    const element = containerRef.current
-    if (!element) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry?.isIntersecting) return
-        setHasHeroAnimationStarted(true)
-        observer.disconnect()
-      },
-      { threshold: 0.25 },
-    )
-    observer.observe(element)
-
-    return () => observer.disconnect()
-  }, [shouldSkipIntro])
-
-  useEffect(() => {
-    if (shouldSkipIntro) return
-    if (!hasHeroAnimationStarted) return
-    if (prefersReducedMotion) return
-
-    let nextFrameIndex = 0
-    const intervalId = window.setInterval(() => {
-      nextFrameIndex += 1
-
-      if (nextFrameIndex >= HERO_INTRO_FRAMES.length) {
-        window.clearInterval(intervalId)
-        setIsHeroSettled(true)
-        return
-      }
-
-      setHeroFrameIndex(nextFrameIndex)
-    }, HERO_FRAME_DURATION_MS)
-
-    return () => {
-      window.clearInterval(intervalId)
-    }
-  }, [hasHeroAnimationStarted, prefersReducedMotion, shouldSkipIntro])
-
-  const hasSettled = prefersReducedMotion || isHeroSettled || shouldSkipIntro
   const hasSettledAtEnding =
     !prefersReducedMotion && isSettledAtEnding(aboutProgress)
-
-  useEffect(() => {
-    if (!isHeroMode) return
-    if (!hasSettled || hasNotifiedSettledRef.current) return
-    hasNotifiedSettledRef.current = true
-    onHeroSettled?.()
-  }, [hasSettled, isHeroMode, onHeroSettled])
 
   useEffect(() => {
     let cancelled = false
@@ -244,9 +149,6 @@ export function AboutLogoLoop({
     }
   }, [hasSettledAtEnding])
 
-  const heroCycleSrc =
-    HERO_INTRO_FRAMES[heroFrameIndex] ?? HERO_INTRO_FRAMES[0]
-  const heroCycleRotation = HERO_INTRO_ROTATIONS[heroFrameIndex] ?? 0
   const scrubbedFrameIndex = getScrubbedFrameIndex(aboutProgress)
   const aboutFrameIndex = prefersReducedMotion
     ? LAST_FRAME_INDEX
@@ -254,12 +156,9 @@ export function AboutLogoLoop({
   const aboutSrc =
     LOGO_LOOP_FRAMES[aboutFrameIndex] ?? LOGO_LOOP_FRAMES[0]
   const aboutRotation = FRAME_ROTATIONS[aboutFrameIndex] ?? 0
-  const shouldPlayHeroSettleFade =
-    isHeroMode && hasSettled && !prefersReducedMotion && !shouldSkipIntro
 
   return (
     <div
-      ref={containerRef}
       className={className}
       style={{
         position: "relative",
@@ -268,47 +167,6 @@ export function AboutLogoLoop({
         overflow: "hidden",
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          opacity: heroOpacity,
-          visibility: heroOpacity > 0.001 ? "visible" : "hidden",
-          willChange: heroOpacity > 0 && heroOpacity < 1 ? "opacity" : undefined,
-        }}
-      >
-        {!hasSettled ? (
-          <LogoFrame src={heroCycleSrc} rotation={heroCycleRotation} />
-        ) : shouldPlayHeroSettleFade ? (
-          <motion.img
-            key="hero-fade-out"
-            src={heroCycleSrc}
-            alt=""
-            draggable={false}
-            initial={{
-              opacity: 1,
-              filter: "blur(0px)",
-            }}
-            animate={{
-              opacity: 0,
-              filter: "blur(4px)",
-            }}
-            transition={{
-              type: "spring",
-              duration: 0.5,
-              bounce: 0,
-            }}
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              transform: `rotate(${heroCycleRotation}deg)`,
-            }}
-          />
-        ) : null}
-      </div>
       <div
         style={{
           position: "absolute",

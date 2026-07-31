@@ -110,12 +110,9 @@ export function AboutSection() {
                 minH={0}
               >
                 <AboutEmblem
-                  mode="about"
-                  skipIntro
                   revealCurvedText
                   presentation={{
                     emblemScale: presentation.emblemScale,
-                    heroAnimationOpacity: presentation.heroAnimationOpacity,
                     aboutAnimationOpacity: presentation.aboutAnimationOpacity,
                     aboutAnimationProgress: presentation.aboutAnimationProgress,
                   }}

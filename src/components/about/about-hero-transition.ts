@@ -46,7 +46,6 @@ export function getAboutHeroPresentation({
   if (prefersReducedMotion) {
     return {
       emblemScale: 1,
-      heroAnimationOpacity: 0,
       aboutAnimationOpacity: 1,
       aboutAnimationProgress: 1,
       bgVideoOpacity: aboutHeroTransition.bgVideoOpacityEnd,
@@ -58,7 +57,6 @@ export function getAboutHeroPresentation({
   return {
     /** About no longer morphs scale on scroll — only the logo frame scrubs. */
     emblemScale: 1,
-    heroAnimationOpacity: 0,
     aboutAnimationOpacity: 1,
     aboutAnimationProgress: progressInRange(
       p,
@@ -70,7 +68,6 @@ export function getAboutHeroPresentation({
 
 export interface AboutHeroPresentation {
   emblemScale: number
-  heroAnimationOpacity: number
   aboutAnimationOpacity: number
   aboutAnimationProgress: number
   bgVideoOpacity: number
