@@ -356,44 +356,53 @@ function TicketRevenueCalculator() {
 
 function VenuesPressCards() {
   return (
-    <Grid
-      templateColumns={{ base: "1fr", lg901: "repeat(2, minmax(0, 440px))" }}
-      justifyContent="center"
-      alignItems="start"
-      gap={{ base: "10", lg901: "clamp(32px, 10vw, 147px)" }}
-      w="full"
-      maxW="1027px"
-      mx="auto"
-      pt={{ base: "12", lg901: "180px" }}
-      pb={{ base: "12", lg901: "20px" }}
-    >
-      {venuesPressTestimonials.map((testimonial) => {
-        const isForbes = testimonial.attribution === "Forbes"
+    <Box pt={{ base: "12", lg901: "180px" }} pb={{ base: "12", lg901: "20px" }}>
+      <RevealGroup>
+        <Grid
+          templateColumns={{
+            base: "1fr",
+            lg901: "repeat(2, minmax(0, 440px))",
+          }}
+          justifyContent="center"
+          alignItems="start"
+          gap={{ base: "10", lg901: "clamp(32px, 10vw, 147px)" }}
+          w="full"
+          maxW="1027px"
+          mx="auto"
+        >
+          {venuesPressTestimonials.map((testimonial, index) => {
+            const isForbes = testimonial.attribution === "Forbes"
 
-        return (
-          <Box
-            key={`${testimonial.attribution}-${testimonial.quote}`}
-            w="full"
-            maxW="testimonialCard"
-            mx="auto"
-            transform={{
-              base: isForbes ? "rotate(1.5deg)" : "none",
-              lg901: isForbes
-                ? "translateY(-80px) rotate(1.5deg)"
-                : "none",
-            }}
-          >
-            <TestimonialBlock
-              quote={testimonial.quote}
-              attribution={testimonial.attribution}
-              role={testimonial.role}
-              logoSrc={testimonial.logoSrc}
-              placeholder={testimonial.placeholder}
-            />
-          </Box>
-        )
-      })}
-    </Grid>
+            return (
+              <Reveal
+                key={`${testimonial.attribution}-${testimonial.quote}`}
+                order={index}
+                w="full"
+                maxW="testimonialCard"
+                mx="auto"
+              >
+                <Box
+                  transform={{
+                    base: isForbes ? "rotate(1.5deg)" : "none",
+                    lg901: isForbes
+                      ? "translateY(-80px) rotate(1.5deg)"
+                      : "none",
+                  }}
+                >
+                  <TestimonialBlock
+                    quote={testimonial.quote}
+                    attribution={testimonial.attribution}
+                    role={testimonial.role}
+                    logoSrc={testimonial.logoSrc}
+                    placeholder={testimonial.placeholder}
+                  />
+                </Box>
+              </Reveal>
+            )
+          })}
+        </Grid>
+      </RevealGroup>
+    </Box>
   )
 }
 
@@ -525,9 +534,7 @@ export function VenuesSection() {
               </Text>
             </Reveal>
 
-            <Reveal order={3}>
-              <VenuesPressCards />
-            </Reveal>
+            <VenuesPressCards />
           </Flex>
         </Container>
       </RevealGroup>
