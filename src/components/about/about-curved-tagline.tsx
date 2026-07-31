@@ -16,7 +16,6 @@ import { AboutLogoLoop, type AboutLogoLoopMode } from "./about-logo-loop"
 import { Reveal } from "../ui/reveal"
 
 const ARC_PATH_ID = "about-curved-tagline-arc"
-const ARC_INK_BLEED_FILTER_ID = "about-arc-ink-bleed"
 
 interface AboutCurvedTaglinePath {
   arcRadius: number
@@ -145,9 +144,6 @@ export function AboutCurvedTagline({
     letterSpacing: `${typography.letterSpacing}px`,
     fontSize: fontSizeUserUnits,
     lineHeight: 1.2,
-    filter: isCurvedTextVisible
-      ? `blur(0.7px) url(#${ARC_INK_BLEED_FILTER_ID})`
-      : undefined,
     visibility: isCurvedTextVisible
       ? ("visible" as const)
       : ("hidden" as const),
@@ -169,14 +165,6 @@ export function AboutCurvedTagline({
           id={ARC_PATH_ID}
           d={`M ${arcStartX} ${arcCenterY} A ${arcRadius} ${arcRadius} 0 0 1 ${arcEndX} ${arcCenterY}`}
         />
-        <filter
-          id={ARC_INK_BLEED_FILTER_ID}
-          colorInterpolationFilters="sRGB"
-        >
-          <feComponentTransfer>
-            <feFuncA type="discrete" tableValues="0 1 1 1" />
-          </feComponentTransfer>
-        </filter>
       </defs>
       <text
         fill={colors.warmDisplay.value}

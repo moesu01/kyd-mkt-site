@@ -46,7 +46,6 @@ export function FanSection() {
               headingAs="h2"
               label="For Fans"
               headline="Need Ticket Help?"
-              withInkBleed
             />
             <Text
               mt="6"

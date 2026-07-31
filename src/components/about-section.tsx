@@ -16,7 +16,6 @@ import {
 import { Container } from "./ui/container"
 import { Reveal, RevealGroup } from "./ui/reveal"
 
-const ABOUT_INK_BLEED_FILTER_ID = "about-headline-ink-bleed"
 /** About end-state: body copy only shrinks at extreme short heights. */
 const ABOUT_EXTREME_VIEWPORT = "(max-height: 640px)"
 /**
@@ -94,23 +93,6 @@ export function AboutSection() {
         py={ABOUT_STAGE_PY}
         bg="transparent"
       >
-        <svg
-          width="0"
-          height="0"
-          aria-hidden
-          focusable="false"
-          style={{ position: "absolute" }}
-        >
-          <filter
-            id={ABOUT_INK_BLEED_FILTER_ID}
-            colorInterpolationFilters="sRGB"
-          >
-            <feComponentTransfer>
-              <feFuncA type="discrete" tableValues="0 1 1 1" />
-            </feComponentTransfer>
-          </filter>
-        </svg>
-
         <Container position="relative" zIndex={1} w="full">
           <RevealGroup triggerRef={revealTriggerRef} rootMargin="0px">
             <Flex
@@ -239,7 +221,6 @@ function AboutCopyLayer({
           color="warmDisplay"
           maxW="54.625rem"
           mx="auto"
-          filter={`blur(0.7px) url(#${ABOUT_INK_BLEED_FILTER_ID})`}
           css={{
             textWrap: "balance",
             [`@media ${ABOUT_SHORT_VIEWPORT}`]: {

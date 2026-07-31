@@ -1,5 +1,9 @@
 import { Box, Flex, Image, Link, chakra } from "@chakra-ui/react"
-import { useEffect, useState, type TransitionEvent } from "react"
+import {
+  useEffect,
+  useState,
+  type TransitionEvent,
+} from "react"
 import { links, navMenuLinks } from "../content/site-content"
 import { assetUrl } from "../lib/asset-url"
 import { Button } from "./ui/button"
@@ -14,6 +18,9 @@ const navShellShadow =
 const navIntroDurationMs = 360
 const navIntroEase = "cubic-bezier(0.2, 0, 0, 1)"
 const navIntroOffsetPx = 12
+const navStateDurationMs = 280
+
+export type AlternateNavVariant = "hero" | "compact"
 
 const navLinkStyles = {
   display: "inline-flex",
@@ -161,12 +168,29 @@ function getMobileMenuItemMotion({
 
 export function AlternateNav({
   isIntroVisible = true,
+  variant = "compact",
 }: {
   isIntroVisible?: boolean
+  variant?: AlternateNavVariant
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [menuVariant, setMenuVariant] = useState(variant)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [hasIntroSettled, setHasIntroSettled] = useState(false)
+  const [trackedIntroVisible, setTrackedIntroVisible] = useState(isIntroVisible)
+  const isHero = variant === "hero"
+
+  // Close mobile menu when crossing hero → compact (layout width changes).
+  if (menuVariant !== variant) {
+    setMenuVariant(variant)
+    if (isMenuOpen) setIsMenuOpen(false)
+  }
+
+  // Reset intro settle when the intro is hidden again (e.g. future loader).
+  if (trackedIntroVisible !== isIntroVisible) {
+    setTrackedIntroVisible(isIntroVisible)
+    if (!isIntroVisible && hasIntroSettled) setHasIntroSettled(false)
+  }
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -179,15 +203,6 @@ export function AlternateNav({
     mediaQuery.addEventListener("change", handleChange)
     return () => mediaQuery.removeEventListener("change", handleChange)
   }, [])
-
-  useEffect(() => {
-    if (!isIntroVisible) {
-      setHasIntroSettled(false)
-      return
-    }
-
-    if (prefersReducedMotion) setHasIntroSettled(true)
-  }, [isIntroVisible, prefersReducedMotion])
 
   function handleToggleMenu() {
     setIsMenuOpen((isOpen) => !isOpen)
@@ -205,14 +220,23 @@ export function AlternateNav({
   }
 
   const isVisible = prefersReducedMotion || isIntroVisible
+  const introSettled = hasIntroSettled || prefersReducedMotion
+  const stateTransition = prefersReducedMotion
+    ? undefined
+    : {
+        transitionProperty:
+          "max-width, background-color, box-shadow, border-radius, padding",
+        transitionDuration: `${navStateDurationMs}ms`,
+        transitionTimingFunction: interactionEase,
+      }
 
   return (
     <Box
       position="relative"
       w="full"
-      maxW="720px"
+      maxW={isHero ? "1222px" : "720px"}
       style={
-        hasIntroSettled
+        introSettled
           ? undefined
           : getNavIntroStyle({
               isVisible,
@@ -222,14 +246,16 @@ export function AlternateNav({
       pointerEvents={isVisible ? "auto" : "none"}
       aria-hidden={!isVisible}
       onTransitionEnd={handleIntroTransitionEnd}
+      css={stateTransition}
     >
       <Box
-        bg="#000"
-        pl={{ base: "4", lg901: "5" }}
-        pr="1.5"
-        py="1.5"
-        borderRadius={`${navShellRadius}px`}
-        boxShadow={navShellShadow}
+        bg={isHero ? "transparent" : "#000"}
+        pl={isHero ? { base: "0", lg901: "5" } : { base: "4", lg901: "5" }}
+        pr={isHero ? { base: "0", lg901: "1.5" } : "1.5"}
+        py={isHero ? "1.5" : "1.5"}
+        borderRadius={isHero ? "0" : `${navShellRadius}px`}
+        boxShadow={isHero ? "none" : navShellShadow}
+        css={stateTransition}
       >
         <Flex align="center" justify="space-between" w="full">
           <LogoLink />
@@ -266,7 +292,11 @@ export function AlternateNav({
             p="0"
             border="none"
             borderRadius={`${navMenuButtonRadius}px`}
-            bg="oklch(0.178 0.01 63.9 / 0.25)"
+            bg={
+              isHero
+                ? "oklch(0.178 0.01 63.9 / 0.4)"
+                : "oklch(0.178 0.01 63.9 / 0.25)"
+            }
             color="fg"
             cursor="pointer"
             boxShadow="0 0 0 1px rgba(255, 255, 255, 0.1)"

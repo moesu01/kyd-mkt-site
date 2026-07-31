@@ -7,13 +7,7 @@ const HERO_BG_VIDEO_ID = "hero-bg-video"
 const HERO_REVEAL_DURATION_MS = 360
 const HERO_REVEAL_EASE = "cubic-bezier(0.2, 0, 0, 1)"
 
-interface HeroAboutBackgroundProps {
-  isHeroIntroVisible: boolean
-}
-
-export function HeroAboutBackground({
-  isHeroIntroVisible,
-}: HeroAboutBackgroundProps) {
+export function HeroAboutBackground() {
   const stageRef = useRef<HTMLDivElement>(null)
   const hasFadedInRef = useRef(false)
 
@@ -36,30 +30,15 @@ export function HeroAboutBackground({
         // Autoplay can still fail until a trusted gesture; muted + playsinline usually works.
       })
     }
-  }, [])
-
-  useLayoutEffect(() => {
-    const video = document.getElementById(HERO_BG_VIDEO_ID)
-    if (!(video instanceof HTMLVideoElement)) return
-    const backgroundVideo = video
-
-    if (!isHeroIntroVisible) {
-      hasFadedInRef.current = false
-      backgroundVideo.style.transition = "none"
-      backgroundVideo.style.opacity = "0"
-      return
-    }
 
     if (hasFadedInRef.current) {
-      backgroundVideo.style.transition = "none"
-      backgroundVideo.style.opacity = "1"
+      backgroundVideoShow(video, false)
       return
     }
 
     hasFadedInRef.current = true
-    backgroundVideo.style.transition = `opacity ${HERO_REVEAL_DURATION_MS}ms ${HERO_REVEAL_EASE}`
-    backgroundVideo.style.opacity = "1"
-  }, [isHeroIntroVisible])
+    backgroundVideoShow(video, true)
+  }, [])
 
   return (
     <Box
@@ -86,4 +65,15 @@ export function HeroAboutBackground({
       </Box>
     </Box>
   )
+}
+
+function backgroundVideoShow(video: HTMLVideoElement, animate: boolean) {
+  if (!animate) {
+    video.style.transition = "none"
+    video.style.opacity = "1"
+    return
+  }
+
+  video.style.transition = `opacity ${HERO_REVEAL_DURATION_MS}ms ${HERO_REVEAL_EASE}`
+  video.style.opacity = "1"
 }

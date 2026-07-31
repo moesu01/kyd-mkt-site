@@ -5,7 +5,6 @@ import { assetUrl } from "../lib/asset-url"
 import { PixelGlobe } from "./used-by/pixel-globe"
 
 const ChakraLink = chakra("a")
-const USED_BY_INK_BLEED_FILTER_ID = "used-by-headline-ink-bleed"
 
 interface UsedByCardProps {
   name: string
@@ -149,23 +148,6 @@ export function UsedBySection() {
       borderTop="3px solid"
       borderColor="rgba(255, 255, 255, 0.1)"
     >
-      <svg
-        width="0"
-        height="0"
-        aria-hidden
-        focusable="false"
-        style={{ position: "absolute" }}
-      >
-        <filter
-          id={USED_BY_INK_BLEED_FILTER_ID}
-          colorInterpolationFilters="sRGB"
-        >
-          <feComponentTransfer>
-            <feFuncA type="discrete" tableValues="0 1 1 1" />
-          </feComponentTransfer>
-        </filter>
-      </svg>
-
       <Box minW="0">
         <Heading
           as="h2"
@@ -175,7 +157,6 @@ export function UsedBySection() {
           lineHeight="1.1"
           color="warmDisplay"
           textWrap="balance"
-          filter={`blur(0.7px) url(#${USED_BY_INK_BLEED_FILTER_ID})`}
         >
           Used by Venues and Artists
           <br />

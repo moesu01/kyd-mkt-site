@@ -21,9 +21,13 @@ export const heroFooterLinks = [
 ] as const
 
 export const heroSection = {
-  headlineLine1: "Modern Ticketing",
+  headlineLine1: "Modern Ticketing,",
   headlineLine2: "Built for Venues",
-  body: "Own your data. Capture resale. Reach fans with built-in marketing. The infrastructure venues use to run smarter shows.",
+  /** Shortened hero sub-copy (two lines in Figma). */
+  bodyLine1: "Own your data. Capture resale.",
+  bodyLine2: "Reach fans with built-in marketing.",
+  /** Single-line form for footer / other surfaces. */
+  body: "Own your data. Capture resale. Reach fans with built-in marketing.",
   primaryCta: "Get in touch",
   secondaryCta: "Find my tickets",
 } as const

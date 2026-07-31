@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react"
-import { useCallback, useState } from "react"
+import { useEffect, useState } from "react"
 import { AboutSection } from "./components/about-section"
 import { AlternateNav } from "./components/alternate-nav"
 import { BackedBySection } from "./components/backed-by-section"
@@ -12,7 +12,6 @@ import { FeaturesSectionInteractive } from "./components/features-section-intera
 import { Footer } from "./components/footer"
 import { HeroAboutBackground } from "./components/hero-about-background"
 import { HeroSection } from "./components/hero-section"
-import type { HeroLayout } from "./components/hero-split"
 // TEMP: Press section hidden — restore import and <PressSection /> below when ready.
 // import { PressSection } from "./components/press-section"
 import { SocialProofSection } from "./components/social-proof-section"
@@ -20,45 +19,52 @@ import { UsedByPageSection } from "./components/used-by-page-section"
 import { VenuesSection } from "./components/venues-section"
 
 function App() {
-  const [isHeroIntroVisible, setIsHeroIntroVisible] = useState(false)
-  // TEMP: layout A/B via "Find my tickets" — remove after choosing a hero.
-  const [heroLayout, setHeroLayout] = useState<HeroLayout>("centered")
+  const [isHeroNav, setIsHeroNav] = useState(true)
 
-  const handleHeroSettled = useCallback(() => {
-    setIsHeroIntroVisible(true)
-  }, [])
+  useEffect(() => {
+    const hero = document.getElementById("hero")
+    if (!hero) return
 
-  const handleToggleHeroLayout = useCallback(() => {
-    // Keep nav/copy settled across swaps; don't replay the logo intro.
-    setIsHeroIntroVisible(true)
-    setHeroLayout((previous) =>
-      previous === "centered" ? "split" : "centered",
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // The default nav has scrolled away by this point; bring in the
+        // compact fixed nav once half of the hero remains visible.
+        setIsHeroNav(entry.intersectionRatio > 0.5)
+      },
+      {
+        threshold: 0.5,
+      },
     )
+
+    observer.observe(hero)
+    return () => observer.disconnect()
   }, [])
 
   return (
     <>
       <Box position="relative" zIndex={1}>
         <Box
-          position="sticky"
-          top="5"
+          position={isHeroNav ? "absolute" : "fixed"}
+          top={isHeroNav ? "34px" : "5"}
+          left="0"
+          right="0"
           zIndex="100"
-          px={{ base: "6", lg901: "10" }}
+          px={{
+            base: "6",
+            lg901: isHeroNav ? "37px" : "10",
+          }}
           display="flex"
           justifyContent="center"
-          mb="-70px"
+          transitionProperty="top, padding"
+          transitionDuration="280ms"
+          transitionTimingFunction="cubic-bezier(0.2, 0, 0, 1)"
         >
-          <AlternateNav isIntroVisible={isHeroIntroVisible} />
+          <AlternateNav variant={isHeroNav ? "hero" : "compact"} />
         </Box>
         <Box position="relative">
-          <HeroAboutBackground isHeroIntroVisible={isHeroIntroVisible} />
+          <HeroAboutBackground />
           <Box position="relative" zIndex={1}>
-            <HeroSection
-              layout={heroLayout}
-              onToggleLayout={handleToggleHeroLayout}
-              onHeroSettled={handleHeroSettled}
-              isIntroSettled={isHeroIntroVisible}
-            />
+            <HeroSection />
           </Box>
         </Box>
         <BackedBySection />

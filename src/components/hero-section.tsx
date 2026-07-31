@@ -1,40 +1,51 @@
 import type { MouseEvent } from "react"
 import { Box, Flex, Heading, Text } from "@chakra-ui/react"
-import {
-  useCallback,
-  useEffect,
-  useState,
-} from "react"
-import { aboutHeroTransition } from "./about/about-hero-transition"
-import { AboutEmblem } from "./about/about-emblem"
 import { heroSection, links } from "../content/site-content"
-import {
-  getHeroRevealStyle,
-} from "./hero-reveal"
-import { HeroSplit, type HeroLayout } from "./hero-split"
 import {
   BookCallCtaContent,
   bookCallButtonCss,
   Button,
 } from "./ui/button"
 import { Container } from "./ui/container"
+import { Reveal, RevealGroup } from "./ui/reveal"
 
 const HERO_BG_VIDEO_ID = "hero-bg-video"
-const HERO_INK_BLEED_FILTER_ID = "hero-headline-ink-bleed"
-const HERO_REVEAL_STAGGER_MS = 200
-/** Pin/compress hero copy when the viewport is too short to center emblem + copy. */
+/** Pin/compress hero copy when the viewport is too short to center copy. */
 const HERO_SHORT_VIEWPORT = "(max-height: 900px)"
 const HERO_SHORT_VIEWPORT_TIGHT = "(max-height: 720px)"
 /**
+ * Figma uses 84.5px type across a 1200px content bar. Container query units
+ * preserve that ratio at every intermediate viewport without wrapping.
+ */
+const HERO_HEADLINE_SIZE = "min(84.5px, 7.0417cqw)"
+/**
  * Nav occupies ~84px (top offset + bar). Reserve that plus breathing room so
- * the emblem never sits under the sticky nav.
+ * content never sits under the sticky nav.
  */
 const HERO_STAGE_PT = "108px"
-const HERO_STAGE_PB = "clamp(1.5rem, 2dvh, 2rem)"
-const HERO_SHORT_VIEWPORT_STACK = "(max-height: 901px)"
-const HERO_EMBLEM_MAX_W =
-  "clamp(20rem, calc(77.8dvh - 100px), 48.25rem)"
-const HERO_STACK_GAP = "clamp(2rem, 1rem + 3dvh, 3.5rem)"
+const HERO_STAGE_PB = "48px"
+
+/** Figma: transparent "Find my tickets" with light border. */
+const findTicketsButtonCss = {
+  bg: "transparent",
+  borderColor: "rgba(248, 248, 248, 0.44)",
+  color: "fg",
+  fontWeight: "medium",
+  px: "24px",
+  py: "14px",
+  backdropFilter: "none",
+  WebkitBackdropFilter: "none",
+  boxShadow: "none",
+  _hover: {
+    bg: "rgba(255, 255, 255, 0.08)",
+    borderColor: "rgba(248, 248, 248, 0.64)",
+    boxShadow: "none",
+  },
+  _active: {
+    bg: "rgba(255, 255, 255, 0.12)",
+    boxShadow: "none",
+  },
+} as const
 
 function toggleHeroBgVideo() {
   const video = document.getElementById(HERO_BG_VIDEO_ID)
@@ -62,49 +73,7 @@ function shouldIgnoreHeroVideoToggle(target: EventTarget | null) {
   return false
 }
 
-interface HeroSectionProps {
-  layout: HeroLayout
-  /** TEMP: Find my tickets swaps layouts for comparison. */
-  onToggleLayout: () => void
-  onHeroSettled?: () => void
-  /** When true, skip replaying the logo intro (layout toggle / remount). */
-  isIntroSettled?: boolean
-}
-
-export function HeroSection({
-  layout,
-  onToggleLayout,
-  onHeroSettled,
-  isIntroSettled = false,
-}: HeroSectionProps) {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
-  const [isLocallySettled, setIsLocallySettled] = useState(isIntroSettled)
-
-  const handleHeroSettled = useCallback(() => {
-    setIsLocallySettled(true)
-    onHeroSettled?.()
-  }, [onHeroSettled])
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
-
-    const handleChange = () => {
-      const matches = mediaQuery.matches
-      setPrefersReducedMotion(matches)
-      if (matches) {
-        setIsLocallySettled(true)
-        onHeroSettled?.()
-      }
-    }
-
-    handleChange()
-    mediaQuery.addEventListener("change", handleChange)
-    return () => mediaQuery.removeEventListener("change", handleChange)
-  }, [onHeroSettled])
-
-  const isIntroVisible =
-    prefersReducedMotion || isLocallySettled || isIntroSettled
-
+export function HeroSection() {
   const handleBackgroundClick = (event: MouseEvent<HTMLElement>) => {
     if (shouldIgnoreHeroVideoToggle(event.target)) return
 
@@ -112,26 +81,6 @@ export function HeroSection({
     if (selection && !selection.isCollapsed) return
 
     toggleHeroBgVideo()
-  }
-
-  if (layout === "split") {
-    return (
-      <Box
-        id="hero"
-        position="relative"
-        minH="heroMinHeight"
-        h="100vh"
-        bg="transparent"
-        overflow="hidden"
-      >
-        <HeroSplit
-          isIntroVisible={isIntroVisible}
-          prefersReducedMotion={prefersReducedMotion}
-          onToggleLayout={onToggleLayout}
-          onBackgroundClick={handleBackgroundClick}
-        />
-      </Box>
-    )
   }
 
   return (
@@ -143,7 +92,7 @@ export function HeroSection({
       h="100vh"
       display="flex"
       flexDirection="column"
-      justifyContent="center"
+      justifyContent="flex-end"
       alignItems="center"
       overflow="hidden"
       px={{ base: "6", lg901: "12" }}
@@ -152,194 +101,107 @@ export function HeroSection({
       bg="transparent"
       onClick={handleBackgroundClick}
       css={{
-        [`@media ${HERO_SHORT_VIEWPORT_STACK}`]: {
-          justifyContent: "flex-end",
-        },
         "@media (prefers-reduced-motion: reduce)": {
           cursor: "default",
         },
       }}
     >
-      <svg
-        width="0"
-        height="0"
-        aria-hidden
-        focusable="false"
-        style={{ position: "absolute" }}
-      >
-        <filter id={HERO_INK_BLEED_FILTER_ID} colorInterpolationFilters="sRGB">
-          <feComponentTransfer>
-            <feFuncA type="discrete" tableValues="0 1 1 1" />
-          </feComponentTransfer>
-        </filter>
-      </svg>
-
       <Container position="relative" zIndex={1} w="full">
-        <Flex
-          direction="column"
-          align="center"
-          w="full"
-          css={{
-            gap: HERO_STACK_GAP,
-            [`@media ${HERO_SHORT_VIEWPORT}`]: {
-              gap: "1.5rem",
-            },
-            [`@media ${HERO_SHORT_VIEWPORT_TIGHT}`]: {
-              gap: "1rem",
-            },
-          }}
-        >
-          <Box
-            w="full"
-            maxW={HERO_EMBLEM_MAX_W}
-            mx="auto"
-            flexShrink={1}
-            minH={0}
-          >
-            <AboutEmblem
-              mode="hero"
-              skipIntro={isIntroSettled}
-              onHeroSettled={handleHeroSettled}
-              curvedTextOpacity={0}
-              presentation={{
-                emblemScale: aboutHeroTransition.emblemScaleStart,
-                heroAnimationOpacity: 1,
-                aboutAnimationOpacity: 0,
-                aboutAnimationProgress: 0,
-              }}
-            />
-          </Box>
-
+        <RevealGroup w="full" rootMargin="0px">
           <Flex
             direction="column"
             align="center"
-            gap="8"
+            gap="6"
             w="full"
-            maxW="75rem"
             flexShrink={0}
             css={{
+              containerType: "inline-size",
+              [`@media ${HERO_SHORT_VIEWPORT}`]: {
+                gap: "1rem",
+              },
               [`@media ${HERO_SHORT_VIEWPORT_TIGHT}`]: {
-                gap: "1.25rem",
+                gap: "0.75rem",
               },
             }}
           >
-            <HeroCenteredCopy
-              isIntroVisible={isIntroVisible}
-              prefersReducedMotion={prefersReducedMotion}
-            />
+            <Reveal order={0} w="full">
+              <Heading
+                as="h1"
+                textAlign="center"
+                fontFamily="cossetteTitre"
+                fontWeight="bold"
+                fontSize={HERO_HEADLINE_SIZE}
+                lineHeight="1"
+                color="warmDisplay"
+                w="full"
+                whiteSpace="nowrap"
+                css={{
+                  textWrap: "nowrap",
+                }}
+              >
+                {heroSection.headlineLine1.toUpperCase()}{" "}
+                {heroSection.headlineLine2.toUpperCase()}
+              </Heading>
+            </Reveal>
 
-            <Flex
-              flexWrap="wrap"
-              align="center"
-              justify="center"
-              gap="6"
-              pointerEvents={isIntroVisible ? "auto" : "none"}
-              aria-hidden={!isIntroVisible}
-              style={getHeroRevealStyle({
-                isVisible: isIntroVisible,
-                prefersReducedMotion,
-                delayMs: HERO_REVEAL_STAGGER_MS * 2,
-              })}
-            >
-              <Button
-                href={links.getInTouch}
-                size="hero"
-                tabIndex={isIntroVisible ? 0 : -1}
-                css={bookCallButtonCss}
+            <Reveal order={1} w="full">
+              <Flex
+                direction={{ base: "column", lg901: "row" }}
+                align={{ base: "center", lg901: "center" }}
+                justify="space-between"
+                gap={{ base: "6", lg901: "8" }}
+                w="full"
               >
-                <BookCallCtaContent />
-              </Button>
-              <Button
-                type="button"
-                variant="outline-accent"
-                size="hero"
-                tabIndex={isIntroVisible ? 0 : -1}
-                aria-label={`${heroSection.secondaryCta} (temporary: swap hero layout)`}
-                onClick={onToggleLayout}
-              >
-                {heroSection.secondaryCta}
-              </Button>
-            </Flex>
+                <Text
+                  textAlign={{ base: "center", lg901: "left" }}
+                  fontFamily="cossetteTexte"
+                  fontWeight="normal"
+                  fontSize="18px"
+                  lineHeight="1.4"
+                  color="warmMuted"
+                  flex={{ base: "none", lg901: "1" }}
+                  minW="0"
+                  css={{
+                    textWrap: "pretty",
+                    [`@media ${HERO_SHORT_VIEWPORT_TIGHT}`]: {
+                      fontSize: "16px",
+                    },
+                  }}
+                >
+                  {heroSection.bodyLine1}
+                  <br />
+                  {heroSection.bodyLine2}
+                </Text>
+
+                <Flex
+                  flexWrap="wrap"
+                  align="center"
+                  justify={{ base: "center", lg901: "flex-end" }}
+                  gap="6"
+                  flexShrink={0}
+                  px="0.5"
+                >
+                  <Button
+                    href={links.getInTouch}
+                    size="hero"
+                    css={bookCallButtonCss}
+                  >
+                    <BookCallCtaContent />
+                  </Button>
+                  <Button
+                    href={links.tickets}
+                    variant="outline-accent"
+                    size="hero"
+                    css={findTicketsButtonCss}
+                  >
+                    {heroSection.secondaryCta}
+                  </Button>
+                </Flex>
+              </Flex>
+            </Reveal>
           </Flex>
-        </Flex>
+        </RevealGroup>
       </Container>
     </Box>
-  )
-}
-
-function HeroCenteredCopy({
-  isIntroVisible,
-  prefersReducedMotion,
-}: {
-  isIntroVisible: boolean
-  prefersReducedMotion: boolean
-}) {
-  return (
-    <Flex
-      direction="column"
-      align="center"
-      gap="6"
-      w="full"
-      css={{
-        [`@media ${HERO_SHORT_VIEWPORT}`]: {
-          gap: "1rem",
-        },
-        [`@media ${HERO_SHORT_VIEWPORT_TIGHT}`]: {
-          gap: "0.75rem",
-        },
-      }}
-    >
-      <Heading
-        as="h1"
-        textAlign="center"
-        fontFamily="cossetteTitre"
-        fontWeight="bold"
-        fontSize={{ base: "48px", lg901: "86px" }}
-        lineHeight="1.1"
-        color="warmDisplay"
-        maxW="54.625rem"
-        filter={`url(#${HERO_INK_BLEED_FILTER_ID})`}
-        style={getHeroRevealStyle({
-          isVisible: isIntroVisible,
-          prefersReducedMotion,
-          delayMs: 0,
-        })}
-        css={{
-          [`@media ${HERO_SHORT_VIEWPORT}`]: {
-            fontSize: "72px",
-          },
-          [`@media ${HERO_SHORT_VIEWPORT_TIGHT}`]: {
-            fontSize: "64px",
-          },
-        }}
-      >
-        {heroSection.headlineLine1}
-        <br />
-        {heroSection.headlineLine2}
-      </Heading>
-      <Text
-        textAlign="center"
-        fontFamily="sans"
-        fontWeight="normal"
-        fontSize="18px"
-        lineHeight="27px"
-        letterSpacing="-0.36px"
-        color="warmMuted"
-        maxW="33.25rem"
-        style={getHeroRevealStyle({
-          isVisible: isIntroVisible,
-          prefersReducedMotion,
-          delayMs: HERO_REVEAL_STAGGER_MS,
-        })}
-        css={{
-          [`@media ${HERO_SHORT_VIEWPORT_TIGHT}`]: {
-            fontSize: "16px",
-            lineHeight: "24px",
-          },
-        }}
-      >
-        {heroSection.body}
-      </Text>
-    </Flex>
   )
 }

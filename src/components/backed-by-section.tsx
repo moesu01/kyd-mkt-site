@@ -43,6 +43,7 @@ function BackerLogo({
       maxW={maxW}
       objectFit="contain"
       flexShrink={0}
+      opacity={0.9}
       onError={() => setHasError(true)}
       css={{ filter: "grayscale(1)" }}
     />
@@ -55,7 +56,8 @@ export function BackedBySection() {
       as="section"
       id="backed-by"
       px={{ base: "6", lg901: "12" }}
-      py={{ base: "12", lg901: "16" }}
+      pt={{ base: "18", lg901: "24" }}
+      pb={{ base: "6", lg901: "8" }}
       bg="transparent"
     >
       <RevealGroup>
@@ -76,7 +78,7 @@ export function BackedBySection() {
             listStyleType="none"
             align="stretch"
             justify="space-between"
-            gap="0"
+            gap="6"
             w="full"
             maxW="80%"
             mx="auto"

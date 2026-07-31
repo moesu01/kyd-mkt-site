@@ -57,7 +57,8 @@ body > #footer-bg-video {
 
 #hero-bg-video {
   object-fit: contain;
-  /* Fades in after hero settle. */
+  object-position: center top;
+  /* Fades in once HeroAboutBackground mounts. */
   opacity: 0;
   mix-blend-mode: normal;
 }
