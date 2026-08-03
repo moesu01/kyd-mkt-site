@@ -32,20 +32,20 @@ function StatCard({
       direction="column"
       align="center"
       justify="center"
-      gap={{ base: "2", xl1100: "4" }}
+      gap={{ base: "2", xl1600: "4" }}
       flex="1"
       minW="0"
-      minH={{ base: "auto", xl1100: "290px" }}
-      px={{ base: "3", sm: "4", xl1100: "6" }}
-      py={{ base: "5", xl1100: "6" }}
+      minH={{ base: "auto", xl1600: "290px" }}
+      px={{ base: "3", sm: "4", xl1600: "6" }}
+      py={{ base: "5", xl1600: "6" }}
       borderRadius="16px"
       bg="pageBg"
       boxShadow="0 0 2px 1px rgba(255, 255, 255, 0.15)"
       overflow="hidden"
     >
       <Box
-        w={{ base: "28px", xl1100: "36px" }}
-        h={{ base: "28px", xl1100: "36px" }}
+        w={{ base: "28px", xl1600: "36px" }}
+        h={{ base: "28px", xl1600: "36px" }}
         flexShrink={0}
         overflow="clip"
         aria-hidden
@@ -59,11 +59,11 @@ function StatCard({
         />
       </Box>
       <Text
-        pt={{ base: "0", xl1100: "6" }}
+        pt={{ base: "0", xl1600: "6" }}
         fontFamily="cossetteTitre"
-        fontSize={{ base: "2.5rem", sm: "3rem", xl1100: "91px" }}
+        fontSize={{ base: "2.5rem", sm: "3rem", xl1600: "91px" }}
         fontWeight="100"
-        lineHeight={{ base: "1", xl1100: "72px" }}
+        lineHeight={{ base: "1", xl1600: "72px" }}
         letterSpacing="0"
         color="warmSoft"
         whiteSpace="nowrap"
@@ -73,7 +73,7 @@ function StatCard({
       </Text>
       <Text
         fontFamily="cossetteTexte"
-        fontSize={{ base: "16px", xl1100: "20px" }}
+        fontSize={{ base: "16px", xl1600: "20px" }}
         fontWeight="normal"
         lineHeight="1.35"
         color="warmMuted"
@@ -110,7 +110,7 @@ function TicketRevenueCalculator() {
     <Flex
       direction="column"
       w="full"
-      minH={{ base: "auto", xl1100: "290px" }}
+      minH={{ base: "auto", xl1600: "290px" }}
       p="6"
       borderRadius="16px"
       bg="frameBg"
@@ -121,7 +121,6 @@ function TicketRevenueCalculator() {
       <Flex
         align="center"
         justify={{ base: "center", md700: "flex-start" }}
-        pb="6"
         position="relative"
         zIndex="1"
       >
@@ -150,18 +149,16 @@ function TicketRevenueCalculator() {
         <Flex align="center" justify="space-between" w="full" gap="4">
           <Text
             fontFamily="cossetteTexte"
-            fontSize={{ base: "16px", xl1100: "20px" }}
+            fontSize={{ base: "16px", xl1600: "20px" }}
             fontWeight="normal"
             lineHeight="1.35"
             color="warmMuted"
           >
-            Current monthly
-            <br />
-            ticket revenue
+            Current monthly ticket revenue
           </Text>
           <Text
             fontFamily="cossetteTexte"
-            fontSize={{ base: "28px", xl1100: "36px" }}
+            fontSize={{ base: "28px", xl1600: "36px" }}
             fontWeight="normal"
             lineHeight="1.2"
             color="warmSoft"
@@ -252,14 +249,12 @@ function TicketRevenueCalculator() {
           flex="1"
           minW="0"
           fontFamily="cossetteTexte"
-          fontSize={{ base: "16px", xl1100: "20px" }}
+          fontSize={{ base: "16px", xl1600: "20px" }}
           fontWeight="normal"
           lineHeight="1.35"
           color="warmMuted"
         >
-          Ticket Revenue
-          <br />
-          with KYD Labs
+          Ticket Revenue with KYD Labs
         </Text>
 
         <Flex
@@ -271,15 +266,15 @@ function TicketRevenueCalculator() {
         >
           <Flex
             align="center"
-            h={{ base: "28px", xl1100: "33px" }}
+            h={{ base: "28px", xl1600: "33px" }}
             pl="6px"
             pr="10px"
             borderRadius="21px"
             bg="success"
             color="pageBg"
-            fontFamily={{ base: "sans", xl1100: "cossetteTitre" }}
-            fontSize={{ base: "14px", xl1100: "24px" }}
-            fontWeight={{ base: "semibold", xl1100: "normal" }}
+            fontFamily={{ base: "sans", xl1600: "cossetteTitre" }}
+            fontSize={{ base: "14px", xl1600: "24px" }}
+            fontWeight={{ base: "semibold", xl1600: "normal" }}
             lineHeight="1"
             whiteSpace="nowrap"
             css={{ fontVariantNumeric: "tabular-nums lining-nums" }}
@@ -314,7 +309,7 @@ function TicketRevenueCalculator() {
 
           <Text
             fontFamily="cossetteTitre"
-            fontSize={{ base: "34px", xl1100: "42px" }}
+            fontSize={{ base: "34px", xl1600: "42px" }}
             fontWeight="100"
             lineHeight="1"
             color="success"
@@ -471,7 +466,7 @@ export function VenuesSection() {
                   <Text
                     maxW={{ base: "full", md700: "610px" }}
                     fontFamily="cossetteTexte"
-                    fontSize={{ base: "18px", xl1100: "24px" }}
+                    fontSize={{ base: "18px", xl1600: "24px" }}
                     fontWeight="normal"
                     lineHeight="1.4"
                     color="warmMuted"
