@@ -94,6 +94,7 @@ export function HeroSection() {
       position="relative"
       minH="heroMinHeight"
       h="100vh"
+      maxH={{ base: "heroMaxHeight", lg901: "none" }}
       display="flex"
       flexDirection="column"
       justifyContent="flex-end"

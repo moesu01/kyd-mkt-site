@@ -176,14 +176,8 @@ export const touringArtists = [
     name: "Action Bronson",
     category: "Touring Artist",
     logoSrc: assetUrl("/images/touring/action-bronson-logo.png"),
-    logoMaxH: "38px",
+    logoMaxH: "61px",
     logoMaxW: "213px",
-    logoCrop: {
-      width: "115.36%",
-      height: "214.29%",
-      left: "-6.83%",
-      top: "-47.25%",
-    },
     showsHref: "#",
   },
   {

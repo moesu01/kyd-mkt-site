@@ -1,11 +1,20 @@
 import { Box } from "@chakra-ui/react"
 import { useLayoutEffect, useRef } from "react"
-import { colors } from "../theme/tokens"
+import { colors, sizes } from "../theme/tokens"
 
 const HERO_BG_SURFACE_ID = "hero-bg-surface"
 const HERO_BG_VIDEO_ID = "hero-bg-video"
 const HERO_REVEAL_DURATION_MS = 360
 const HERO_REVEAL_EASE = "cubic-bezier(0.2, 0, 0, 1)"
+/**
+ * Mirrors the bounds HeroSection resolves to (min-height, 100vh, max-height).
+ * Without the cap the sticky stage stays a full 100dvh and spills past the
+ * hero on tall, narrow windows.
+ */
+const HERO_STAGE_HEIGHT = {
+  base: `clamp(${sizes.heroMinHeight.value}, 100dvh, ${sizes.heroMaxHeight.value})`,
+  lg901: "100dvh",
+}
 
 export function HeroAboutBackground() {
   const stageRef = useRef<HTMLDivElement>(null)
@@ -52,7 +61,7 @@ export function HeroAboutBackground() {
         ref={stageRef}
         position="sticky"
         top="0"
-        h="100dvh"
+        h={HERO_STAGE_HEIGHT}
         overflow="hidden"
       >
         <Box

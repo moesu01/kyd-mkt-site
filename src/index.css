@@ -63,6 +63,12 @@ body > #footer-bg-video {
   mix-blend-mode: normal;
 }
 
+@media (max-width: 900px) {
+  #hero-bg-video {
+    object-fit: cover;
+  }
+}
+
 #footer-bg-video {
   opacity: 0.24;
 }
@@ -76,14 +82,20 @@ body > #footer-bg-video {
 
 /* Scroll-triggered section enters (see src/components/ui/reveal.tsx).
    Hidden state is only applied pre-trigger; the enter animation uses
-   fill-mode both so items stay hidden through their stagger delay. */
+   fill-mode both so items stay hidden through their stagger delay.
+   After enter completes (or the JS fallback), keep opacity explicit so a
+   skipped 0-delay animation cannot leave text stuck invisible. */
 .section-reveal-hidden {
   opacity: 0;
 }
 
 .section-reveal-enter {
   animation: section-reveal-enter 500ms cubic-bezier(0.2, 0, 0, 1) both;
-  animation-delay: var(--reveal-delay, 0ms);
+  animation-delay: var(--reveal-delay, 50ms);
+}
+
+.section-reveal-entered {
+  opacity: 1;
 }
 
 @keyframes section-reveal-enter {
@@ -107,6 +119,11 @@ body > #footer-bg-video {
 
   .section-reveal-enter {
     animation: none;
+    opacity: 1;
+  }
+
+  .section-reveal-entered {
+    opacity: 1;
   }
 }
 

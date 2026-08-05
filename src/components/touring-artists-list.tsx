@@ -66,6 +66,13 @@ function TouringArtistRow({
   const isPlaceholderLink = showsHref === "#"
   const isBookCallCta = linkLabel === "Get In Touch"
   const displayLinkLabel = isBookCallCta ? "Book a call" : linkLabel
+  const mobileLogoMaxH = logoMaxH ? scalePxSize(logoMaxH, 0.75) : undefined
+  const scaledMobileLogoMaxW = logoMaxW
+    ? scalePxSize(logoMaxW, 0.75)
+    : undefined
+  const mobileLogoMaxW = scaledMobileLogoMaxW
+    ? `min(${scaledMobileLogoMaxW}, 32vw)`
+    : undefined
   const compactLogoMaxH = logoMaxH ? scalePxSize(logoMaxH, 0.8) : undefined
   const compactLogoMaxW = logoMaxW ? scalePxSize(logoMaxW, 0.8) : undefined
 
@@ -84,154 +91,165 @@ function TouringArtistRow({
     >
       <Grid
         templateColumns={{
-          base: "1fr",
+          base: isBookCallCta ? "1fr" : "minmax(0, 1fr) auto",
           lg901: "minmax(0, 400px) 1fr 1fr",
           xl1048: "minmax(0, 500px) 1fr 1fr",
         }}
         alignItems="center"
-        gap={{ base: "4", lg901: 0 }}
+        alignContent="center"
+        justifyItems={{ base: isBookCallCta ? "center" : "stretch", lg901: "stretch" }}
+        columnGap={{ base: "4", lg901: 0 }}
+        rowGap={{ base: "2", lg901: 0 }}
+        py={{ base: "2", lg901: "0" }}
         minH={{ base: "auto", lg901: "61px", xl1048: "76px" }}
       >
         <Flex
-          align="center"
-          gap={{ base: "4", lg901: "5", xl1048: "6" }}
+          gridColumn={{ base: "1", lg901: "auto" }}
+          direction={{ base: "column", lg901: "row" }}
+          align={{ base: isBookCallCta ? "center" : "flex-start", lg901: "center" }}
+          justify="center"
+          gap={{ base: "2", lg901: 0 }}
           minW="0"
-          flexWrap={{ base: "wrap", lg901: "nowrap" }}
+          display={{ base: "flex", lg901: "contents" }}
         >
           <Text
             as="span"
             textStyle="touringArtistName"
-            flex={{
-              base: "1 1 auto",
-              lg901: "0 0 208px",
-              xl1048: "0 0 260px",
-            }}
+            gridColumn={{ lg901: "1" }}
+            justifySelf={{ base: isBookCallCta ? "center" : "stretch", lg901: "auto" }}
+            textAlign={{ base: isBookCallCta ? "center" : "left", lg901: "left" }}
+            w={{ lg901: "208px", xl1048: "260px" }}
             minW="0"
             wordBreak="break-word"
           >
             {name}
           </Text>
-          {logoSrc && logoMaxH ? (
-            <Box
-              flexShrink={0}
+
+          <Flex
+            gridColumn={{ lg901: "2" }}
+            align="center"
+            justify={{ base: "flex-start", lg901: "flex-end" }}
+            minW="0"
+          >
+            <Text as="span" textStyle="touringCategory" whiteSpace="nowrap">
+              {category}
+            </Text>
+          </Flex>
+
+          <Flex
+            gridColumn={{ lg901: "3" }}
+            display={{ base: isBookCallCta ? "flex" : "none", lg901: "flex" }}
+            align="center"
+            justify={{ base: "center", lg901: "flex-end" }}
+            gap="2.5"
+            minW="0"
+          >
+            <ChakraLink
+              href={showsHref}
               display="inline-flex"
               alignItems="center"
-              justifyContent="flex-start"
-              position="relative"
-              h={{
-                base: logoMaxH,
-                lg901: compactLogoMaxH,
-                xl1048: logoMaxH,
-              }}
-              w={
-                logoCrop || logoObjectFit === "cover"
-                  ? {
-                      base: logoMaxW,
-                      lg901: compactLogoMaxW,
-                      xl1048: logoMaxW,
-                    }
-                  : undefined
+              gap="2.5"
+              textDecoration="none"
+              textStyle="touringShowsLink"
+              color={isHovered ? "accent" : "warmMuted"}
+              transitionProperty="color"
+              transitionDuration="200ms"
+              transitionTimingFunction={rowEase}
+              onClick={handleClick}
+              aria-label={
+                isBookCallCta
+                  ? "Book a call with KYD"
+                  : isPlaceholderLink
+                    ? `${name} ${displayLinkLabel.toLowerCase()} (link coming soon)`
+                    : `${name} ${displayLinkLabel.toLowerCase()}`
               }
-              maxW={{
-                base: logoMaxW,
-                lg901: compactLogoMaxW,
-                xl1048: logoMaxW,
-              }}
-              overflow={logoCrop || logoObjectFit === "cover" ? "hidden" : undefined}
+              _focusVisible={rowFocusVisible}
             >
-              {logoCrop ? (
-                <Image
-                  src={logoSrc}
-                  alt=""
-                  position="absolute"
-                  w={logoCrop.width}
-                  h={logoCrop.height}
-                  left={logoCrop.left}
-                  top={logoCrop.top}
-                  maxW="none"
-                  flexShrink={0}
-                />
-              ) : (
-                <Image
-                  src={logoSrc}
-                  alt=""
-                  h={{
-                    base: logoMaxH,
-                    lg901: compactLogoMaxH,
-                    xl1048: logoMaxH,
-                  }}
-                  w={
-                    logoObjectFit === "cover"
-                      ? {
-                          base: logoMaxW,
-                          lg901: compactLogoMaxW,
-                          xl1048: logoMaxW,
-                        }
-                      : (logoMaxW
-                          ? {
-                              base: logoMaxW,
-                              lg901: compactLogoMaxW,
-                              xl1048: logoMaxW,
-                            }
-                          : "auto")
-                  }
-                  maxW={{
-                    base: logoMaxW,
-                    lg901: compactLogoMaxW,
-                    xl1048: logoMaxW,
-                  }}
-                  objectFit={logoObjectFit}
-                  flexShrink={0}
-                />
-              )}
-            </Box>
-          ) : null}
+              <Text as="span">{displayLinkLabel}</Text>
+              <ExternalLinkArrow isHovered={isHovered} />
+            </ChakraLink>
+          </Flex>
         </Flex>
 
-        <Flex
-          align="center"
-          justify={{ base: "flex-start", lg901: "flex-end" }}
-          minW="0"
-        >
-          <Text as="span" textStyle="touringCategory" whiteSpace="nowrap">
-            {category}
-          </Text>
-        </Flex>
-
-        <Flex
-          align="center"
-          justify={{
-            base: isBookCallCta ? "flex-end" : "flex-start",
-            lg901: "flex-end",
-          }}
-          gap="2.5"
-          minW="0"
-        >
-          <ChakraLink
-            href={showsHref}
+        {logoSrc && logoMaxH ? (
+          <Box
+            gridColumn={{ base: "2", lg901: "1" }}
+            gridRow="1"
+            justifySelf="end"
+            alignSelf="center"
+            flexShrink={0}
             display="inline-flex"
             alignItems="center"
-            gap="2.5"
-            textDecoration="none"
-            textStyle="touringShowsLink"
-            color={isHovered ? "accent" : "warmMuted"}
-            transitionProperty="color"
-            transitionDuration="200ms"
-            transitionTimingFunction={rowEase}
-            onClick={handleClick}
-            aria-label={
-              isBookCallCta
-                ? "Book a call with KYD"
-                : isPlaceholderLink
-                  ? `${name} ${displayLinkLabel.toLowerCase()} (link coming soon)`
-                  : `${name} ${displayLinkLabel.toLowerCase()}`
+            justifyContent="flex-start"
+            position="relative"
+            h={{
+              base: mobileLogoMaxH,
+              lg901: compactLogoMaxH,
+              xl1048: logoMaxH,
+            }}
+            w={
+              logoCrop || logoObjectFit === "cover"
+                ? {
+                    base: mobileLogoMaxW,
+                    lg901: compactLogoMaxW,
+                    xl1048: logoMaxW,
+                  }
+                : undefined
             }
-            _focusVisible={rowFocusVisible}
+            maxW={{
+              base: mobileLogoMaxW,
+              lg901: compactLogoMaxW,
+              xl1048: logoMaxW,
+            }}
+            overflow={logoCrop || logoObjectFit === "cover" ? "hidden" : undefined}
           >
-            <Text as="span">{displayLinkLabel}</Text>
-            <ExternalLinkArrow isHovered={isHovered} />
-          </ChakraLink>
-        </Flex>
+            {logoCrop ? (
+              <Image
+                src={logoSrc}
+                alt=""
+                position="absolute"
+                w={logoCrop.width}
+                h={logoCrop.height}
+                left={logoCrop.left}
+                top={logoCrop.top}
+                maxW="none"
+                flexShrink={0}
+              />
+            ) : (
+              <Image
+                src={logoSrc}
+                alt=""
+                h={{
+                  base: mobileLogoMaxH,
+                  lg901: compactLogoMaxH,
+                  xl1048: logoMaxH,
+                }}
+                w={
+                  logoObjectFit === "cover"
+                    ? {
+                        base: mobileLogoMaxW,
+                        lg901: compactLogoMaxW,
+                        xl1048: logoMaxW,
+                      }
+                    : (logoMaxW
+                        ? {
+                            base: mobileLogoMaxW,
+                            lg901: compactLogoMaxW,
+                            xl1048: logoMaxW,
+                          }
+                        : "auto")
+                }
+                maxW={{
+                  base: mobileLogoMaxW,
+                  lg901: compactLogoMaxW,
+                  xl1048: logoMaxW,
+                }}
+                objectFit={logoObjectFit}
+                flexShrink={0}
+              />
+            )}
+          </Box>
+        ) : null}
       </Grid>
     </Box>
   )

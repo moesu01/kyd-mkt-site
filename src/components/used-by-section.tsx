@@ -143,14 +143,14 @@ export function UsedBySection() {
       position="relative"
       pt={{ base: "6", lg901: "8" }}
       direction={{ base: "column", lg901: "row" }}
-      align={{ base: "flex-start", lg901: "center" }}
+      align="center"
       justify="space-between"
       gap={{ base: "6", lg901: "8" }}
     >
       <Box
         order={{ base: 1, lg901: 2 }}
         flexShrink={0}
-        alignSelf={{ base: "flex-start", lg901: "center" }}
+        alignSelf="center"
       >
         <PixelGlobe />
       </Box>
@@ -163,7 +163,7 @@ export function UsedBySection() {
           textTransform="uppercase"
           lineHeight="1.1"
           color="warmDisplay"
-          textAlign="left"
+          textAlign={{ base: "center", lg901: "left" }}
           textWrap="balance"
         >
           Used by Venues &amp; Artists

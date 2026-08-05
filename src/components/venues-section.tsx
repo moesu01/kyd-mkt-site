@@ -461,7 +461,8 @@ export function VenuesSection() {
                   align="center"
                   justify="space-between"
                   gap={{ base: "5", md700: "6" }}
-                  p="6"
+                  px={{ base: "0", md700: "6" }}
+                  py="6"
                 >
                   <Text
                     maxW={{ base: "full", md700: "610px" }}

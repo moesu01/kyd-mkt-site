@@ -101,7 +101,7 @@ function CampaignPreview({ shouldAnimate }: CampaignPreviewProps) {
       left="calc(50% + 12px)"
       overflow="hidden"
       border="1px solid rgba(255, 255, 255, 0.28)"
-      borderRadius="44px"
+      borderRadius={{ base: "22px", md700: "32px", lg901: "44px" }}
       bg="rgba(8, 8, 8, 0.58)"
       boxShadow="inset 0 0 0 5px rgba(5, 5, 5, 0.72), inset 0 0 0 6px rgba(255, 255, 255, 0.08), 0 18px 42px rgba(0, 0, 0, 0.22)"
       className={shouldAnimate ? "campaign-preview-enter" : undefined}
@@ -118,7 +118,7 @@ function CampaignPreview({ shouldAnimate }: CampaignPreviewProps) {
           inset="6px"
           w="calc(100% - 12px)"
           h="calc(100% - 12px)"
-          borderRadius="38px"
+          borderRadius={{ base: "16px", md700: "26px", lg901: "38px" }}
           src={assetUrl("/images/feat/email_cmpgn2.png")}
           alt=""
           objectFit="cover"
