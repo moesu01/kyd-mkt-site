@@ -9,7 +9,6 @@ import { FeaturesSectionInteractive } from "./components/features-section-intera
 // version above. If we commit to the interactive view, delete this import,
 // <FeaturesSection /> below, and src/components/features-section.tsx.
 // import { FeaturesSection } from "./components/features-section"
-import { Footer } from "./components/footer"
 import { HeroAboutBackground } from "./components/hero-about-background"
 import { HeroSection } from "./components/hero-section"
 // TEMP: Press section hidden — restore import and <PressSection /> below when ready.
@@ -81,7 +80,6 @@ function App() {
         <AboutSection />
         {/* TEMP: Press section hidden — <PressSection /> */}
       </Box>
-      <Footer />
     </>
   )
 }

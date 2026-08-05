@@ -18,16 +18,13 @@ html {
 
 /* Hidden at body until their React owners mount them (avoids a flash at top). */
 body > #hero-bg-surface,
-body > #hero-bg-video,
-body > #footer-bg-surface,
-body > #footer-bg-video {
+body > #hero-bg-video {
   visibility: hidden;
   pointer-events: none;
 }
 
-/* Base plates under the shared Hero/About video and dimmed footer. */
-#hero-bg-surface,
-#footer-bg-surface {
+/* Base plate under the shared Hero/About video. */
+#hero-bg-surface {
   position: absolute;
   inset: 0;
   z-index: 0;
@@ -39,12 +36,7 @@ body > #footer-bg-video {
   background-color: oklch(0.178 0.01 63.9);
 }
 
-#footer-bg-surface {
-  background-color: #15100d;
-}
-
-#hero-bg-video,
-#footer-bg-video {
+#hero-bg-video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -69,13 +61,8 @@ body > #footer-bg-video {
   }
 }
 
-#footer-bg-video {
-  opacity: 0.24;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  #hero-bg-video,
-  #footer-bg-video {
+  #hero-bg-video {
     display: none !important;
   }
 }

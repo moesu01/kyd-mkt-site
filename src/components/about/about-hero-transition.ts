@@ -1,7 +1,5 @@
-/** Tunable values for the About scroll scene. */
+/** Tunable values for the About logo animation. */
 export const aboutHeroTransition = {
-  /** Sticky scrubber length as a viewport-height multiple. */
-  scrollHeightVh: 200,
   /** Emblem scale used by the standalone hero (About stays at 1). */
   emblemScaleStart: 0.64,
   /** Ascii bg video opacity at About entry / About end (matches footer). */
@@ -10,10 +8,10 @@ export const aboutHeroTransition = {
   /** Progress windows: [start, end] for each morph. */
   ranges: {
     /**
-     * Logo frame scrub. Starts immediately so early frames are visible
-     * once the one-time Reveal enters (opacity is not scroll-driven).
+     * Logo frame sequence. Driven by intro autoplay, then scroll scrubbing.
+     * Opacity is not scroll-driven.
      */
-    aboutAnimation: [0, 0.82] as const,
+    aboutAnimation: [0, 1] as const,
   },
 } as const
 

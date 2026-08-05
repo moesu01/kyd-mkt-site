@@ -88,7 +88,7 @@ export const aboutCurvedTaglineMobileParams: CurvedTaglineParams = {
     maxWidthRem: 48.25,
     markGap: 22,
     markAlign: 0.4,
-    logoLoopScale: 1,
+    logoLoopScale: 1.2,
   },
 }
 

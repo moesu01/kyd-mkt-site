@@ -1,18 +1,27 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react"
+import { Box, Flex, Heading, Link, Text } from "@chakra-ui/react"
 import {
   useEffect,
   useRef,
   useState,
   type RefObject,
 } from "react"
-import { aboutSection } from "../content/site-content"
+import {
+  aboutSection,
+  footerLegalLinks,
+  links,
+} from "../content/site-content"
 import { colors } from "../theme/tokens"
 import { AboutEmblem } from "./about/about-emblem"
+import { ABOUT_CURVED_TAGLINE_MOBILE_BREAKPOINT_PX } from "./about/about-curved-tagline-dial"
 import {
-  aboutHeroTransition,
   clamp01,
   getAboutHeroPresentation,
 } from "./about/about-hero-transition"
+import {
+  BookCallCtaContent,
+  bookCallButtonCss,
+  Button,
+} from "./ui/button"
 import { Container } from "./ui/container"
 import { Reveal, RevealGroup } from "./ui/reveal"
 
@@ -38,12 +47,38 @@ const ABOUT_END_STACK_GAP =
   "clamp(2rem, 1rem + 3dvh, 3.5rem)"
 const ABOUT_END_COPY_GAP =
   "clamp(1rem, 0.5rem + 1.25dvh, 1.5rem)"
+/** Base intro duration before the +25% per-frame stretch. */
+const ABOUT_ENTRY_ANIMATION_BASE_MS = 1400
+const ABOUT_ENTRY_ANIMATION_MS = ABOUT_ENTRY_ANIMATION_BASE_MS * 1.25
+const CURRENT_YEAR = new Date().getFullYear()
+const footerLinkStyles = {
+  fontSize: "13px",
+  lineHeight: "19.5px",
+  color: "warmMuted",
+  bg: "#000",
+  borderRadius: "2px",
+  px: "8px",
+  py: "4px",
+  textDecoration: "none",
+  transitionProperty: "color, background-color",
+  transitionDuration: "150ms",
+  transitionTimingFunction: "cubic-bezier(0.2, 0, 0, 1)",
+  _hover: { color: "fg", bg: "rgba(0, 0, 0, 0.82)" },
+  _active: { color: "fg", transform: "scale(0.96)" },
+  _focusVisible: {
+    outline: "2px solid",
+    outlineColor: "rgba(255, 255, 255, 0.45)",
+    outlineOffset: "2px",
+  },
+} as const
 
 export function AboutSection() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const revealTriggerRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLElement>(null)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
-  const progress = useAboutSceneProgress(sectionRef)
+  const progress = useAboutLogoProgress({
+    sectionRef,
+    prefersReducedMotion,
+  })
   const presentation = getAboutHeroPresentation({
     progress,
     prefersReducedMotion,
@@ -64,26 +99,17 @@ export function AboutSection() {
   return (
     <Box
       ref={sectionRef}
-      as="section"
+      as="footer"
       id="about"
       position="relative"
-      h={`${aboutHeroTransition.scrollHeightVh}vh`}
       bg="transparent"
       backgroundImage={aboutSectionGradient}
     >
       <Box
-        ref={revealTriggerRef}
-        position="absolute"
-        top="25dvh"
-        w="1px"
-        h="1px"
-        aria-hidden
-        pointerEvents="none"
-      />
-      <Box
-        position="sticky"
-        top="0"
+        position="relative"
+        minH="heroMinHeight"
         h="100dvh"
+        maxH={{ base: "heroMaxHeight", lg901: "none" }}
         display="flex"
         flexDirection="column"
         justifyContent="center"
@@ -94,20 +120,31 @@ export function AboutSection() {
         bg="transparent"
       >
         <Container position="relative" zIndex={1} w="full">
-          <RevealGroup triggerRef={revealTriggerRef} rootMargin="0px">
+          <RevealGroup triggerRef={sectionRef} rootMargin="0px">
             <Flex
               direction="column"
               align="center"
               w="full"
               css={{ gap: ABOUT_END_STACK_GAP }}
             >
-              {/* Logo + curved tagline share one-time Reveal stagger; scroll only scrubs frames. */}
+              {/* Logo + curved tagline share one-time Reveal stagger; logo auto-plays once, then scrubs. */}
               <Box
                 w="full"
                 maxW={ABOUT_END_EMBLEM_MAX_W}
                 mx="auto"
                 flexShrink={1}
                 minH={0}
+                css={{
+                  [`@media (max-width: ${ABOUT_CURVED_TAGLINE_MOBILE_BREAKPOINT_PX}px)`]:
+                    {
+                      position: "relative",
+                      left: "50%",
+                      width: "calc(100vw + 32px)",
+                      maxWidth: "calc(100vw + 32px)",
+                      flexShrink: 0,
+                      transform: "translateX(-50%)",
+                    },
+                }}
               >
                 <AboutEmblem
                   revealCurvedText
@@ -135,12 +172,62 @@ export function AboutSection() {
             </Flex>
           </RevealGroup>
         </Container>
+        <RevealGroup
+          triggerRef={sectionRef}
+          rootMargin="0px"
+          position="absolute"
+          insetInline={{ base: "6", lg901: "12" }}
+          bottom={{ base: "4", md: "8" }}
+          zIndex={1}
+        >
+          <Reveal order={4}>
+            <LegalFooterBar />
+          </Reveal>
+        </RevealGroup>
       </Box>
     </Box>
   )
 }
 
-function useAboutSceneProgress(sectionRef: RefObject<HTMLDivElement | null>) {
+function LegalFooterBar() {
+  return (
+    <Flex
+      direction={{ base: "column", md: "row" }}
+      align="center"
+      justify="space-between"
+      gap={{ base: "2", md: "8" }}
+      mx="auto"
+      w="full"
+      maxW="1256px"
+    >
+      <Flex as="nav" aria-label="Legal" gap="3" flexWrap="wrap" justify="center">
+        {footerLegalLinks.map((link) => (
+          <Link key={link.label} href={link.href} {...footerLinkStyles}>
+            {link.label}
+          </Link>
+        ))}
+      </Flex>
+      <Text
+        fontSize="12px"
+        lineHeight="18px"
+        color="warmMuted"
+        textAlign="center"
+        textTransform="uppercase"
+        whiteSpace={{ base: "normal", sm: "nowrap" }}
+      >
+        © {CURRENT_YEAR} KYD Labs. All rights reserved.
+      </Text>
+    </Flex>
+  )
+}
+
+function useAboutLogoProgress({
+  sectionRef,
+  prefersReducedMotion,
+}: {
+  sectionRef: RefObject<HTMLElement | null>
+  prefersReducedMotion: boolean
+}) {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
@@ -148,47 +235,87 @@ function useAboutSceneProgress(sectionRef: RefObject<HTMLDivElement | null>) {
     if (!section) return
 
     let frameId = 0
+    let scrollFrameId = 0
+    let introFrameId = 0
+    let hasStartedIntro = false
+    let hasFinishedIntro = false
+    let introStartedAt = 0
+    let introEndScrollY: number | null = null
 
-    const updateProgress = () => {
-      const rect = section.getBoundingClientRect()
-      const viewportHeight = window.innerHeight
-      const scrollable = section.offsetHeight - viewportHeight
-      if (scrollable <= 0) {
-        setProgress(1)
-        return
-      }
-
-      // Start scrubbing as soon as About enters the viewport (not only after
-      // it pins), so early frames play during the approach.
-      const range = viewportHeight + scrollable
-      const next = clamp01((viewportHeight - rect.top) / range)
+    function publishProgress(next: number) {
       setProgress((previous) =>
         Math.abs(previous - next) < 0.0005 ? previous : next,
       )
     }
 
-    const scheduleUpdate = () => {
-      if (frameId) return
-      frameId = window.requestAnimationFrame(() => {
-        frameId = 0
-        updateProgress()
+    function updateFromScroll() {
+      if (!hasFinishedIntro || introEndScrollY === null) return
+
+      const distanceFromIntroEnd = Math.abs(window.scrollY - introEndScrollY)
+      if (distanceFromIntroEnd === 0) return
+
+      const scrubTravel = Math.max(
+        1,
+        Math.min(window.innerHeight, section.offsetHeight),
+      )
+      publishProgress(clamp01(1 - distanceFromIntroEnd / scrubTravel))
+    }
+
+    function scheduleScrollUpdate() {
+      if (scrollFrameId) return
+      scrollFrameId = window.requestAnimationFrame(() => {
+        scrollFrameId = 0
+        updateFromScroll()
       })
     }
 
-    updateProgress()
-    window.addEventListener("scroll", scheduleUpdate, { passive: true })
-    window.addEventListener("resize", scheduleUpdate)
+    function animateIntro(now: number) {
+      if (introStartedAt === 0) introStartedAt = now
 
-    const resizeObserver = new ResizeObserver(scheduleUpdate)
-    resizeObserver.observe(section)
+      const next = clamp01((now - introStartedAt) / ABOUT_ENTRY_ANIMATION_MS)
+      publishProgress(next)
+
+      if (next < 1) {
+        introFrameId = window.requestAnimationFrame(animateIntro)
+        return
+      }
+
+      hasFinishedIntro = true
+      introEndScrollY = window.scrollY
+      publishProgress(1)
+    }
+
+    if (prefersReducedMotion) {
+      frameId = window.requestAnimationFrame(() => {
+        hasFinishedIntro = true
+        publishProgress(1)
+      })
+      return () => window.cancelAnimationFrame(frameId)
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting || hasStartedIntro) return
+        hasStartedIntro = true
+        observer.disconnect()
+        introFrameId = window.requestAnimationFrame(animateIntro)
+      },
+      { rootMargin: "0px", threshold: 0 },
+    )
+
+    observer.observe(section)
+    window.addEventListener("scroll", scheduleScrollUpdate, { passive: true })
+    window.addEventListener("resize", scheduleScrollUpdate)
 
     return () => {
       if (frameId) window.cancelAnimationFrame(frameId)
-      window.removeEventListener("scroll", scheduleUpdate)
-      window.removeEventListener("resize", scheduleUpdate)
-      resizeObserver.disconnect()
+      if (introFrameId) window.cancelAnimationFrame(introFrameId)
+      if (scrollFrameId) window.cancelAnimationFrame(scrollFrameId)
+      observer.disconnect()
+      window.removeEventListener("scroll", scheduleScrollUpdate)
+      window.removeEventListener("resize", scheduleScrollUpdate)
     }
-  }, [sectionRef])
+  }, [prefersReducedMotion, sectionRef])
 
   return progress
 }
@@ -213,7 +340,7 @@ function AboutCopyLayer({
           textAlign="center"
           fontFamily="cossetteTitre"
           fontWeight="bold"
-          fontSize={{ base: "48px", lg901: ABOUT_END_HEADLINE_SIZE }}
+          fontSize={{ base: "40px", lg901: ABOUT_END_HEADLINE_SIZE }}
           lineHeight="1.1"
           color="warmDisplay"
           maxW="54.625rem"
@@ -233,8 +360,8 @@ function AboutCopyLayer({
           textAlign="center"
           fontFamily="sans"
           fontWeight="normal"
-          fontSize="18px"
-          lineHeight="27px"
+          fontSize={{ base: "16px", lg901: "18px" }}
+          lineHeight={{ base: "24px", lg901: "27px" }}
           letterSpacing="-0.36px"
           color="warmMuted"
           maxW="33.25rem"
@@ -249,6 +376,34 @@ function AboutCopyLayer({
         >
           {body}
         </Text>
+      </Reveal>
+      <Reveal order={3}>
+        <Flex
+          direction={{ base: "column", sm: "row" }}
+          align="stretch"
+          justify="center"
+          gap="6"
+          w={{ base: "full", sm: "auto" }}
+        >
+          <Button
+            href={links.getInTouch}
+            size="hero"
+            css={{
+              ...bookCallButtonCss,
+              width: { base: "full", sm: "auto" },
+            }}
+          >
+            <BookCallCtaContent />
+          </Button>
+          <Button
+            href={links.tickets}
+            variant="outline-accent"
+            size="hero"
+            css={{ width: { base: "full", sm: "auto" } }}
+          >
+            Find my tickets
+          </Button>
+        </Flex>
       </Reveal>
     </Flex>
   )

@@ -165,6 +165,8 @@ export function UsedBySection() {
           color="warmDisplay"
           textAlign={{ base: "center", lg901: "left" }}
           textWrap="balance"
+          w={{ base: "100vw", lg901: "auto" }}
+          ms={{ base: "calc(50% - 50vw)", lg901: "0" }}
         >
           Used by Venues &amp; Artists
           <br />

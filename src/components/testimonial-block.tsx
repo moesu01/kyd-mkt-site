@@ -170,7 +170,9 @@ export function TestimonialBlock({
         placeholder ? undefined : `url(${PAPER_TEXTURE_URL})`
       }
       backgroundSize={placeholder ? undefined : "contain"}
-      backgroundPosition={placeholder ? undefined : "top left"}
+      backgroundPosition={
+        placeholder ? undefined : { base: "top right", lg901: "top left" }
+      }
       backgroundRepeat={placeholder ? undefined : "no-repeat"}
       p="8"
       overflow="hidden"
