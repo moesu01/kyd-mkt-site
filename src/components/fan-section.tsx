@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, Text } from "@chakra-ui/react"
+import { Box, Flex, Grid, Text, type SystemStyleObject } from "@chakra-ui/react"
 import { links } from "../content/site-content"
 import { assetUrl } from "../lib/asset-url"
 import { Ticket } from "./ticket"
@@ -58,14 +58,18 @@ export function FanSection() {
               Looking for your tickets? You&apos;re in the right place.
             </Text>
 
-            <Flex mt="8" align="center" gap="3">
-              <Button href={links.tickets} variant="outline">
+            <Flex mt="8" align="center" gap="3" flexWrap="nowrap">
+              <Button href={links.tickets} variant="outline" css={fanCtaButtonCss}>
                 <span>
                   Find My Tickets
                   <CtaArrow />
                 </span>
               </Button>
-              <Button href={links.contact} variant="outline-dark">
+              <Button
+                href={links.contact}
+                variant="outline-dark"
+                css={fanCtaButtonCss}
+              >
                 Get Help
               </Button>
             </Flex>
@@ -108,3 +112,9 @@ export function FanSection() {
     </Box>
   )
 }
+
+const fanCtaButtonCss = {
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  px: { base: "13.5px", lg901: "27px" },
+} satisfies SystemStyleObject
