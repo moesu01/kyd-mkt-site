@@ -251,12 +251,15 @@ function useAboutLogoProgress({
     function updateFromScroll() {
       if (!hasFinishedIntro || introEndScrollY === null) return
 
+      const activeSection = sectionRef.current
+      if (!activeSection) return
+
       const distanceFromIntroEnd = Math.abs(window.scrollY - introEndScrollY)
       if (distanceFromIntroEnd === 0) return
 
       const scrubTravel = Math.max(
         1,
-        Math.min(window.innerHeight, section.offsetHeight),
+        Math.min(window.innerHeight, activeSection.offsetHeight),
       )
       publishProgress(clamp01(1 - distanceFromIntroEnd / scrubTravel))
     }
