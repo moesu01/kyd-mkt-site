@@ -351,16 +351,16 @@ function TicketRevenueCalculator() {
 
 function VenuesPressCards() {
   return (
-    <Box pt={{ base: "12", lg901: "180px" }} pb={{ base: "12", lg901: "20px" }}>
+    <Box pt={{ base: "12", md700: "180px" }} pb={{ base: "12", md700: "20px" }}>
       <RevealGroup>
         <Grid
           templateColumns={{
             base: "1fr",
-            lg901: "repeat(2, minmax(0, 440px))",
+            md700: "repeat(2, minmax(0, 440px))",
           }}
           justifyContent="center"
           alignItems="start"
-          gap={{ base: "10", lg901: "clamp(32px, 10vw, 147px)" }}
+          gap={{ base: "10", md700: "clamp(32px, 10vw, 147px)" }}
           w="full"
           maxW="1027px"
           mx="auto"
@@ -372,14 +372,14 @@ function VenuesPressCards() {
               <Reveal
                 key={`${testimonial.attribution}-${testimonial.quote}`}
                 order={index}
-                w="full"
+                w={{ base: "calc(100vw - 88px)", md700: "full" }}
                 maxW="testimonialCard"
                 mx="auto"
               >
                 <Box
                   transform={{
                     base: isForbes ? "rotate(1.5deg)" : "none",
-                    lg901: isForbes
+                    md700: isForbes
                       ? "translateY(-80px) rotate(1.5deg)"
                       : "none",
                   }}
@@ -409,7 +409,7 @@ export function VenuesSection() {
       bg="pageBg"
       px={{ base: "6", lg901: "12" }}
       pt={{ base: "20", lg901: "28" }}
-      pb={{ base: "20", lg901: "28" }}
+      pb={{ base: "10", lg901: "14" }}
     >
       <RevealGroup>
         <Container>

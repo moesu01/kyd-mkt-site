@@ -15,6 +15,7 @@ import { HeroSection } from "./components/hero-section"
 // TEMP: Press section hidden — restore import and <PressSection /> below when ready.
 // import { PressSection } from "./components/press-section"
 import { SocialProofSection } from "./components/social-proof-section"
+import { BandSeparatorSection } from "./components/band-separator-section"
 import { UsedByPageSection } from "./components/used-by-page-section"
 import { VenuesSection } from "./components/venues-section"
 
@@ -69,6 +70,7 @@ function App() {
         </Box>
         <BackedBySection />
         <VenuesSection />
+        <BandSeparatorSection />
         <UsedByPageSection />
         <SocialProofSection />
         <FeaturesSectionInteractive />
