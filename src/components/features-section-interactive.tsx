@@ -553,7 +553,7 @@ export function FeaturesSectionInteractive() {
       py={{ base: "10", lg901: "14" }}
     >
       <Flex direction="column" gap="12" w="full">
-        <RevealGroup w="full" px="25px">
+        <RevealGroup w="full" px="25px" order="1">
           <Container>
             <Reveal order={0}>
               <Heading
@@ -567,13 +567,20 @@ export function FeaturesSectionInteractive() {
                 Our Platform
               </Heading>
             </Reveal>
-            <Box mt="12">
-              <VenueAudiencesGrid />
-            </Box>
           </Container>
         </RevealGroup>
 
-        <RevealGroup w="full">
+        <RevealGroup
+          w="full"
+          px="25px"
+          order={{ base: "3", lg901: "2" }}
+        >
+          <Container>
+            <VenueAudiencesGrid />
+          </Container>
+        </RevealGroup>
+
+        <RevealGroup w="full" order={{ base: "2", lg901: "3" }}>
         <Container maxW="containerFramed">
         <Reveal order={0}>
         <Box

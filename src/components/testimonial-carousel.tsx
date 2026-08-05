@@ -523,7 +523,7 @@ export function TestimonialCarousel() {
               key={`testimonial-${logicalIndex}`}
               flex="0 0 auto"
               flexShrink={0}
-              w="testimonialCard"
+              w={{ base: "calc(100vw - 88px)", md700: "testimonialCard" }}
               transform={{
                 base: `translateY(-${TESTIMONIAL_LIFT_MOBILE_PX * liftMultiplier}px) rotate(${rotateDeg}deg)`,
                 lg901: `translateY(-${TESTIMONIAL_LIFT_DESKTOP_PX * liftMultiplier}px) rotate(${rotateDeg}deg)`,

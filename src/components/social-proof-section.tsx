@@ -16,7 +16,7 @@ export function SocialProofSection() {
       <RevealGroup>
         <Container>
           <Flex
-            mb="16"
+            mb={{ base: "-6", lg901: "16" }}
             pt={{ base: "6", lg901: "8" }}
             flexDirection="column"
             align="flex-start"

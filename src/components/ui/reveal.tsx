@@ -28,7 +28,7 @@ interface RevealGroupProps extends BoxProps {
 }
 
 interface RevealProps extends BoxProps {
-  /** Stagger slot — delay is order * 100ms (capped at 500ms). */
+  /** Stagger slot — delay is base + order * 100ms (capped). */
   order?: number
   children: ReactNode
 }
@@ -111,15 +111,26 @@ export function useSectionReveal({
     ? "section-reveal-hidden"
     : !hasEntered
       ? "section-reveal-enter"
-      : undefined
+      : "section-reveal-entered"
 
   const revealStyle: CSSProperties | undefined =
     className === "section-reveal-enter"
       ? {
           ...style,
-          ["--reveal-delay" as string]: `${Math.min(order * revealStaggerMs, revealMaxDelayMs)}ms`,
+          // Order 0 must not use a 0ms delay: with fill-mode `both`, some
+          // mobile engines skip the animation when the element is already at
+          // opacity 0 and leave the `from` keyframe stuck forever.
+          ["--reveal-delay" as string]: `${Math.min(order * revealStaggerMs + revealBaseDelayMs, revealMaxDelayMs)}ms`,
         }
       : style
+
+  useEffect(() => {
+    if (!isRevealed || hasEntered) return
+
+    const fallbackMs = revealEnterMs + revealMaxDelayMs + 50
+    const timeoutId = window.setTimeout(() => setHasEntered(true), fallbackMs)
+    return () => window.clearTimeout(timeoutId)
+  }, [isRevealed, hasEntered])
 
   return {
     isRevealed,
@@ -137,6 +148,9 @@ export function useRevealGroup() {
     enters the screen. More negative = later. */
 const revealRootMargin = "0px 0px -15% 0px"
 const revealStaggerMs = 100
-const revealMaxDelayMs = 500
+/** Minimum delay so order-0 enters are not skipped on mobile (see useSectionReveal). */
+const revealBaseDelayMs = 50
+const revealMaxDelayMs = 550
+const revealEnterMs = 500
 
 const RevealGroupContext = createContext(true)

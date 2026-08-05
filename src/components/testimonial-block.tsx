@@ -60,18 +60,6 @@ const testimonialQuoteFeatures = {
   fontFeatureSettings: '"case" 1, "ss03" 1, "cv01" 1',
 } as const
 
-const testimonialQuoteStyles = {
-  ...testimonialQuoteFeatures,
-  /* Chrome ignores hanging-punctuation; Safari supports it. Using both
-     (negative indent + hang) double-applies in Safari and pushes the first
-     line the wrong way — gate indent behind a no-support fallback. */
-  textIndent: "calc(-0.45 * 1em)",
-  "@supports (hanging-punctuation: first)": {
-    textIndent: 0,
-    hangingPunctuation: "first last",
-  },
-} as const
-
 const testimonialRotateEase = "cubic-bezier(0.2, 0, 0, 1)"
 
 function fitQuoteFontSize({
@@ -169,12 +157,14 @@ export function TestimonialBlock({
       backgroundImage={
         placeholder ? undefined : `url(${PAPER_TEXTURE_URL})`
       }
-      backgroundSize={placeholder ? undefined : "contain"}
+      backgroundSize={placeholder ? undefined : "cover"}
       backgroundPosition={
         placeholder ? undefined : { base: "top right", lg901: "top left" }
       }
       backgroundRepeat={placeholder ? undefined : "no-repeat"}
-      p="8"
+      pt="8"
+      px={{ base: "21px", lg901: "8" }}
+      pb={{ base: "21px", lg901: "8" }}
       overflow="hidden"
       transform={`rotate(${rotateDeg}deg)`}
       transitionProperty="transform"
@@ -209,9 +199,22 @@ export function TestimonialBlock({
           color="fgDim"
           wordBreak="break-word"
           textWrap="pretty"
-          css={testimonialQuoteStyles}
+          css={testimonialQuoteFeatures}
         >
-          &ldquo;{quote}&rdquo;
+          <Box
+            as="span"
+            display="block"
+            fontSize="2em"
+            fontWeight="100"
+            lineHeight="0.5"
+            opacity={0.6}
+            aria-hidden
+          >
+            &ldquo; &rdquo;
+          </Box>
+          <Box as="span" display="block">
+            {quote}
+          </Box>
         </Text>
       </Flex>
 
@@ -260,7 +263,7 @@ const foldedPosterCss = {
     bottom: "-4%",
     backgroundRepeat: "no-repeat",
     backgroundImage:
-      "linear-gradient(177deg, rgba(0, 0, 0, 0.12) 10%, transparent 50%), linear-gradient(-177deg, rgba(0, 0, 0, 0.12) 10%, transparent 50%)",
+      "linear-gradient(177deg, rgba(0, 0, 0, 0.09) 10%, transparent 50%), linear-gradient(-177deg, rgba(0, 0, 0, 0.09) 10%, transparent 50%)",
     backgroundSize: "49% 100%",
     backgroundPosition: "2% 0, 98% 0",
   },
@@ -270,16 +273,16 @@ const foldedPosterCss = {
     zIndex: 2,
     backgroundRepeat: "no-repeat",
     backgroundImage: [
-      "linear-gradient(to right, rgba(255, 255, 255, 0.1) 0.5%, rgba(0, 0, 0, 0.08) 1.2%, transparent 1.2%)",
-      "linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 0.5%, rgba(0, 0, 0, 0.08) 1.2%, transparent 1.2%)",
-      "linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 0.5%, rgba(0, 0, 0, 0.08) 1.2%, transparent 1.2%)",
-      "linear-gradient(265deg, rgba(0, 0, 0, 0.1), transparent 10%)",
-      "linear-gradient(5deg, rgba(0, 0, 0, 0.1), transparent 15%)",
-      "linear-gradient(-5deg, rgba(0, 0, 0, 0.05), transparent 10%)",
-      "linear-gradient(5deg, rgba(0, 0, 0, 0.05), transparent 10%)",
-      "linear-gradient(-265deg, rgba(0, 0, 0, 0.1), transparent 10%)",
-      "linear-gradient(-5deg, rgba(0, 0, 0, 0.1), transparent 15%)",
-      "linear-gradient(266deg, rgba(0, 0, 0, 0.1), transparent 10%)",
+      "linear-gradient(to right, rgba(255, 255, 255, 0.075) 0.5%, rgba(0, 0, 0, 0.06) 1.2%, transparent 1.2%)",
+      "linear-gradient(to bottom, rgba(255, 255, 255, 0.075) 0.5%, rgba(0, 0, 0, 0.06) 1.2%, transparent 1.2%)",
+      "linear-gradient(to bottom, rgba(255, 255, 255, 0.075) 0.5%, rgba(0, 0, 0, 0.06) 1.2%, transparent 1.2%)",
+      "linear-gradient(265deg, rgba(0, 0, 0, 0.075), transparent 10%)",
+      "linear-gradient(5deg, rgba(0, 0, 0, 0.075), transparent 15%)",
+      "linear-gradient(-5deg, rgba(0, 0, 0, 0.04), transparent 10%)",
+      "linear-gradient(5deg, rgba(0, 0, 0, 0.04), transparent 10%)",
+      "linear-gradient(-265deg, rgba(0, 0, 0, 0.075), transparent 10%)",
+      "linear-gradient(-5deg, rgba(0, 0, 0, 0.075), transparent 15%)",
+      "linear-gradient(266deg, rgba(0, 0, 0, 0.075), transparent 10%)",
     ].join(", "),
     backgroundSize: [
       "50% 100%",
