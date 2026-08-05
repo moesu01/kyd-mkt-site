@@ -40,9 +40,10 @@ function BackerLogo({
       h="auto"
       w="auto"
       maxH={maxH}
-      maxW={maxW}
+      maxW={{ base: "100%", lg901: maxW }}
       objectFit="contain"
-      flexShrink={0}
+      flexShrink={1}
+      minW="0"
       opacity={0.9}
       onError={() => setHasError(true)}
       css={{ filter: "grayscale(1)" }}
@@ -78,12 +79,13 @@ export function BackedBySection() {
             listStyleType="none"
             align="stretch"
             justify="space-between"
-            gap="6"
+            gap={{ base: "3", lg901: "6" }}
             w="full"
-            maxW="80%"
+            maxW={{ base: "full", lg901: "80%" }}
             mx="auto"
             pt="5"
             pb="2"
+            minW="0"
           >
             {backers.map((backer, index) => (
               <Reveal
@@ -94,9 +96,10 @@ export function BackedBySection() {
                 flex="1"
                 flexDirection="column"
                 gap="4"
-                p={{ base: "4", lg901: "5" }}
+                minW="0"
+                p={{ base: "2", sm: "3", lg901: "5" }}
               >
-                <Flex flex="1" align="center" justify="center" minH="12">
+                <Flex flex="1" align="center" justify="center" minH="12" minW="0">
                   <BackerLogo
                     name={backer.name}
                     logoSrc={backer.logoSrc}

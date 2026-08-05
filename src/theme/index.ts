@@ -232,7 +232,7 @@ const config = defineConfig({
         value: {
           fontFamily: "cossetteTitre",
           fontWeight: "normal",
-          fontSize: "72px",
+          fontSize: { base: "2.25rem", md700: "3rem", lg901: "72px" },
           lineHeight: "1.1",
           letterSpacing: "1%",
           textTransform: "uppercase",

@@ -14,10 +14,14 @@ const HERO_BG_VIDEO_ID = "hero-bg-video"
 const HERO_SHORT_VIEWPORT = "(max-height: 900px)"
 const HERO_SHORT_VIEWPORT_TIGHT = "(max-height: 720px)"
 /**
- * Figma uses 84.5px type across a 1200px content bar. Container query units
- * preserve that ratio at every intermediate viewport without wrapping.
+ * Desktop: Figma uses 84.5px across a 1200px content bar — cqw keeps that
+ * single-line ratio. Mobile: two-line wrap with a larger fixed scale so the
+ * headline stays punchy instead of shrinking to fit one line.
  */
-const HERO_HEADLINE_SIZE = "min(84.5px, 7.0417cqw)"
+const HERO_HEADLINE_SIZE = {
+  base: "clamp(2.5rem, 9.5vw, 3.25rem)",
+  lg901: "min(84.5px, 7.0417cqw)",
+} as const
 /**
  * Nav occupies ~84px (top offset + bar). Reserve that plus breathing room so
  * content never sits under the sticky nav.
@@ -134,12 +138,19 @@ export function HeroSection() {
                 lineHeight="1"
                 color="warmDisplay"
                 w="full"
-                whiteSpace="nowrap"
+                whiteSpace={{ base: "normal", lg901: "nowrap" }}
                 css={{
-                  textWrap: "nowrap",
+                  textWrap: "balance",
+                  "@media (min-width: 901px)": {
+                    textWrap: "nowrap",
+                  },
                 }}
               >
-                {heroSection.headlineLine1.toUpperCase()}{" "}
+                {heroSection.headlineLine1.toUpperCase()}
+                <Box as="br" display={{ base: "block", lg901: "none" }} />
+                <Box as="span" display={{ base: "none", lg901: "inline" }}>
+                  {" "}
+                </Box>
                 {heroSection.headlineLine2.toUpperCase()}
               </Heading>
             </Reveal>

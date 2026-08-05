@@ -142,11 +142,20 @@ export function UsedBySection() {
     <Flex
       position="relative"
       pt={{ base: "6", lg901: "8" }}
-      align="center"
+      direction={{ base: "column", lg901: "row" }}
+      align={{ base: "flex-start", lg901: "center" }}
       justify="space-between"
-      gap="8"
+      gap={{ base: "6", lg901: "8" }}
     >
-      <Box minW="0">
+      <Box
+        order={{ base: 1, lg901: 2 }}
+        flexShrink={0}
+        alignSelf={{ base: "flex-start", lg901: "center" }}
+      >
+        <PixelGlobe />
+      </Box>
+
+      <Box minW="0" order={{ base: 2, lg901: 1 }} w="full">
         <Heading
           as="h2"
           textStyle="cossetteDisplayHeading"
@@ -154,6 +163,7 @@ export function UsedBySection() {
           textTransform="uppercase"
           lineHeight="1.1"
           color="warmDisplay"
+          textAlign="left"
           textWrap="balance"
         >
           Used by Venues &amp; Artists
@@ -163,8 +173,6 @@ export function UsedBySection() {
           </Text>
         </Heading>
       </Box>
-
-      <PixelGlobe />
     </Flex>
   )
 }
