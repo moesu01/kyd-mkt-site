@@ -70,12 +70,12 @@ function App() {
         <BackedBySection />
         <VenuesSection />
         <BandSeparatorSection />
-        <UsedByPageSection />
-        <SocialProofSection />
         <FeaturesSectionInteractive />
         {/* TODO: Hidden pending decision on interactive vs. original Platform
             section. Remove FeaturesSection entirely if unused. */}
         {/* <FeaturesSection /> */}
+        <UsedByPageSection />
+        <SocialProofSection />
         <FanSection />
         <AboutSection />
         {/* TEMP: Press section hidden — <PressSection /> */}

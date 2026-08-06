@@ -368,7 +368,7 @@ function ClaimButton({ label, isDisabled, onClick, onKeyDown }: ClaimButtonProps
   )
 }
 
-function TicketQrCode() {
+export function TicketQrCode() {
   return (
     <svg
       width="100%"

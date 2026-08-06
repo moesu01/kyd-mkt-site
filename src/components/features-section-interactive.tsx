@@ -15,6 +15,7 @@ import {
   EmailCampaignVisual,
   emailCampaignVisualTitle,
 } from "./email-campaign-visual"
+import { TixSpotlight } from "./tix-spotlight"
 import { Container } from "./ui/container"
 import { Reveal, RevealGroup } from "./ui/reveal"
 import { VenueAudiencesGrid } from "./venue-audiences-grid"
@@ -553,7 +554,13 @@ export function FeaturesSectionInteractive() {
       py={{ base: "10", lg901: "14" }}
     >
       <Flex direction="column" gap="12" w="full">
-        <RevealGroup w="full" px="25px" order="1">
+        <RevealGroup w="full" order="1">
+          <Container maxW="containerFramed">
+            <TixSpotlight />
+          </Container>
+        </RevealGroup>
+
+        <RevealGroup w="full" px="25px" order="2">
           <Container>
             <Reveal order={0}>
               <Heading
@@ -573,14 +580,14 @@ export function FeaturesSectionInteractive() {
         <RevealGroup
           w="full"
           px="25px"
-          order={{ base: "3", lg901: "2" }}
+          order={{ base: "4", lg901: "3" }}
         >
           <Container>
             <VenueAudiencesGrid />
           </Container>
         </RevealGroup>
 
-        <RevealGroup w="full" order={{ base: "2", lg901: "3" }}>
+        <RevealGroup w="full" order={{ base: "3", lg901: "4" }}>
         <Container maxW="containerFramed">
         <Reveal order={0}>
         <Box

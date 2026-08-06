@@ -7,7 +7,7 @@ export const links = {
   refund: "#",
   forFans: "#",
   forVenues: "#",
-  tix: "#",
+  tix: "https://tix.xyz",
   terms: "#",
   privacy: "#",
   contact: "#",
@@ -34,7 +34,7 @@ export const heroSection = {
 
 export const aboutSection = {
   eyebrow: "About KYD",
-  curvedTagline: "Keep your data. Keep your fans. Keep your distribution.",
+  curvedTagline: "Keep your data. Own your fans. Keep your distribution.",
   headline: "Built for the People Who Actually Create Value.",
   body: "Live events are the beating heart of culture. For too long, venues and artists have been cut off from the fans and revenue they generate. KYD is the infrastructure to change that.",
 } as const
@@ -84,6 +84,57 @@ export const venueAudiences = [
     body: "Run your own touring and ticketing. Keep your fans, your data, and your revenue.",
   },
 ] as const
+
+/** Platform spotlight for TIX integration — matches Figma programmable-ticket composition. */
+export const tixSpotlight = {
+  eyebrow: "Powered by TIX",
+  brandImageSrc: "/images/kyd_tix.png",
+  brandImageAlt: "KYD connected to TIX",
+  headlineLine1: "Control every resale.",
+  headlineLine2: "Make tickets unscalpable.",
+  body: "KYD runs on TIX, the programmable, onchain ticket standard that puts resale rules, royalties, and identity-bound access into every ticket.",
+  href: links.tix,
+  ticket: {
+    eyebrow: "World Cup 2026 • Group C",
+    title: "Brazil vs Morocco",
+    venue: "MetLife Stadium",
+    city: "East Rutherford, NJ",
+    ticketType: "General Admission",
+    date: "Jun 13, 2026",
+    time: "8:00PM",
+    admit: 1,
+    tixId: "TIX-012390ZZV9A0D9F80",
+  },
+  rules: [
+    {
+      label: "Event",
+      value: "Brazil vs Morocco - World Cup • Group C",
+    },
+    {
+      label: "Resale Royalty",
+      value: "10% of secondary sales",
+    },
+    {
+      label: "Resale Cap",
+      value: "120% of face value",
+    },
+    {
+      label: "Payout Account",
+      value: "BR18 •••• •••• •••• •••• 4821",
+      showFlag: true,
+    },
+  ],
+  benefits: [
+    {
+      title: "Control & Capture Resale",
+      body: "Set price caps and transfer rules that follow every ticket. Route a percentage back to the venue, artist, or partners automatically.",
+    },
+    {
+      title: "Unscalpable Tickets",
+      body: "Identity-bound tickets with on chain verification, help prevent speculative listings and screenshot fraud.",
+    },
+  ],
+} as const
 
 export const features = [
   {
