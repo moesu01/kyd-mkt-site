@@ -201,11 +201,21 @@ function LegalFooterBar() {
       maxW="1256px"
     >
       <Flex as="nav" aria-label="Legal" gap="3" flexWrap="wrap" justify="center">
-        {footerLegalLinks.map((link) => (
-          <Link key={link.label} href={link.href} {...footerLinkStyles}>
-            {link.label}
-          </Link>
-        ))}
+        {footerLegalLinks.map((link) => {
+          const isExternal = link.href.startsWith("http")
+          return (
+            <Link
+              key={link.label}
+              href={link.href}
+              {...footerLinkStyles}
+              {...(isExternal
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+            >
+              {link.label}
+            </Link>
+          )
+        })}
       </Flex>
       <Text
         fontSize="12px"

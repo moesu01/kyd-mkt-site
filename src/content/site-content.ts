@@ -85,14 +85,16 @@ export const venueAudiences = [
   },
 ] as const
 
+const tixTicketId = "TIX-012390ZZV9A0D9F80"
+
 /** Platform spotlight for TIX integration — matches Figma programmable-ticket composition. */
 export const tixSpotlight = {
   eyebrow: "Powered by TIX",
   brandImageSrc: "/images/kyd_tix.png",
   brandImageAlt: "KYD connected to TIX",
-  headlineLine1: "Control every resale.",
-  headlineLine2: "Make tickets unscalpable.",
-  body: "KYD runs on TIX, the programmable, onchain ticket standard that puts resale rules, royalties, and identity-bound access into every ticket.",
+  headlineLine1: "Capture every resale,",
+  headlineLine2: "make tickets unscalpable.",
+  body: "KYD runs on TIX, the programmable, onchain ticket standard that gives venues and artists control wherever a ticket moves.",
   href: links.tix,
   ticket: {
     eyebrow: "World Cup 2026 • Group C",
@@ -103,25 +105,35 @@ export const tixSpotlight = {
     date: "Jun 13, 2026",
     time: "8:00PM",
     admit: 1,
-    tixId: "TIX-012390ZZV9A0D9F80",
+    tixId: tixTicketId,
   },
   rules: [
     {
-      label: "Event",
-      value: "Brazil vs Morocco - World Cup • Group C",
+      label: "Ticket Info",
+      value: "Brazil vs Morocco • 1x",
+      secondaryValue: tixTicketId,
+      markSrc: "/icons/kyd-mark-sm.svg",
+      shouldInvertMark: true,
     },
     {
       label: "Resale Royalty",
-      value: "10% of secondary sales",
+      value: "10%",
+      valueSuffix: "of every secondary sale",
+      markSrc: "/icons/tix_logo.svg",
+      hasMarkGlow: true,
     },
     {
       label: "Resale Cap",
-      value: "120% of face value",
+      value: "120%",
+      valueSuffix: "of face value",
+      markSrc: "/icons/tix_logo.svg",
+      hasMarkGlow: true,
     },
     {
       label: "Payout Account",
       value: "BR18 •••• •••• •••• •••• 4821",
       showFlag: true,
+      isHidden: true,
     },
   ],
   benefits: [
@@ -382,4 +394,6 @@ export const footerPrimaryLinks = [
 export const footerLegalLinks = [
   { label: "Terms of Service", href: links.terms },
   { label: "Privacy Policy", href: links.privacy },
+  { label: "TIX", href: links.tix },
+  { label: "Get Help", href: "#fans" },
 ] as const

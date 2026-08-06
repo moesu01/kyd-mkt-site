@@ -10,7 +10,6 @@ import {
 import { tixSpotlight } from "../content/site-content"
 import { assetUrl } from "../lib/asset-url"
 import { ProgrammableTicket } from "./programmable-ticket"
-import { prominentEyebrowTextProps } from "./ui/prominent-eyebrow-styles"
 import { Reveal } from "./ui/reveal"
 
 interface ConnectorPoint {
@@ -24,6 +23,10 @@ interface ConnectorPath {
   end: ConnectorPoint
 }
 
+const visibleTixRules = tixSpotlight.rules.filter(
+  (rule) => !("isHidden" in rule && rule.isHidden),
+)
+
 function buildConnectorPath(start: ConnectorPoint, end: ConnectorPoint) {
   const dx = Math.max(end.x - start.x, 24)
   const controlOffset = dx * 0.55
@@ -35,78 +38,119 @@ function buildConnectorPath(start: ConnectorPoint, end: ConnectorPoint) {
 function RuleCard({
   label,
   value,
+  valueSuffix,
+  secondaryValue,
+  markSrc,
+  shouldInvertMark = false,
+  hasMarkGlow = false,
   showFlag = false,
   cardRef,
 }: {
   label: string
   value: string
+  valueSuffix?: string
+  secondaryValue?: string
+  markSrc?: string
+  shouldInvertMark?: boolean
+  hasMarkGlow?: boolean
   showFlag?: boolean
   cardRef: (node: HTMLDivElement | null) => void
 }) {
   return (
-    <Box
+    <Flex
       ref={cardRef}
       as="article"
       position="relative"
+      align="center"
+      gap={{ base: "3", md: "6" }}
       w="full"
       maxW={{ base: "full", lg901: "420px" }}
-      p="3"
+      px="4"
+      py="3"
+      overflow="hidden"
       borderRadius="16px"
-      bg="frameBg"
-      boxShadow="frame"
-      _before={{
-        content: '""',
-        position: "absolute",
-        inset: "0",
-        borderRadius: "inherit",
-        p: "1px",
-        bgImage:
-          "linear-gradient(to left, oklch(0.78 0.16 195 / 0.8), rgba(255, 255, 255, 0.05) 58%, transparent 100%)",
-        WebkitMask:
-          "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-        WebkitMaskComposite: "xor",
-        maskComposite: "exclude",
-        pointerEvents: "none",
-      }}
+      bg="#0e0a07"
+      boxShadow="0 0 1px 1px rgba(255, 255, 255, 0.1), 0 2px 12px 1px rgba(0, 0, 0, .35)"
     >
-      <Text
-        as="p"
-        fontSize="14px"
-        fontWeight="medium"
-        lineHeight="1.2"
-        color="rgba(236, 242, 241, 0.7)"
-        mb="1"
-      >
-        {label}
-      </Text>
-      <Flex align="center" gap="3" minW="0">
-        {showFlag ? (
-          <Box
-            as="span"
-            flexShrink={0}
-            w="8"
-            h="8"
-            borderRadius="full"
-            overflow="hidden"
-            boxShadow="0 0 0 1px rgba(255,255,255,0.15)"
-            aria-hidden
-            bgImage="linear-gradient(to bottom, #009c3b 0%, #009c3b 33%, #ffdf00 33%, #ffdf00 66%, #002776 66%, #002776 100%)"
-          />
-        ) : null}
+      {markSrc ? (
+        <Image
+          src={assetUrl(markSrc)}
+          alt=""
+          flexShrink={0}
+          w="5"
+          h="5"
+          objectFit="contain"
+          opacity={hasMarkGlow ? "0.9" : "0.65"}
+          filter={[
+            shouldInvertMark ? "invert(1)" : "",
+            hasMarkGlow
+              ? "drop-shadow(0 0 4px rgba(130, 255, 238, 0.75)) drop-shadow(0 0 9px rgba(130, 255, 238, 0.4))"
+              : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          aria-hidden
+        />
+      ) : null}
+      <Box flex="1" minW="0">
         <Text
           as="p"
-          fontSize="17px"
+          fontSize="12px"
           fontWeight="medium"
-          lineHeight="1.2"
-          letterSpacing="-0.34px"
-          color="#ecf2f1"
-          textWrap="pretty"
-          minW="0"
+          lineHeight="1.4"
+          color="rgba(236, 242, 241, 0.7)"
         >
-          {value}
+          {label}
         </Text>
-      </Flex>
-    </Box>
+        <Flex align="center" gap="3" minW="0">
+          {showFlag ? (
+            <Box
+              as="span"
+              flexShrink={0}
+              w="8"
+              h="8"
+              borderRadius="full"
+              overflow="hidden"
+              boxShadow="0 0 0 1px rgba(255,255,255,0.15)"
+              aria-hidden
+              bgImage="linear-gradient(to bottom, #009c3b 0%, #009c3b 33%, #ffdf00 33%, #ffdf00 66%, #002776 66%, #002776 100%)"
+            />
+          ) : null}
+          <Text
+            as="p"
+            fontSize="15px"
+            fontWeight="medium"
+            lineHeight="1.36"
+            letterSpacing="-0.34px"
+            color="#ecf2f1"
+            textWrap="pretty"
+            minW="0"
+          >
+            {value}
+            {valueSuffix ? (
+              <Box as="span" opacity="0.65">
+                {" "}
+                {valueSuffix}
+              </Box>
+            ) : null}
+          </Text>
+          {secondaryValue ? (
+            <Text
+              as="p"
+              ms="auto"
+              flexShrink={0}
+              fontFamily="mono"
+              fontSize="10px"
+              lineHeight="1.2"
+              color="rgba(236, 242, 241, 0.5)"
+              textAlign="right"
+            >
+              {secondaryValue}
+            </Text>
+          ) : null}
+        </Flex>
+      </Box>
+    </Flex>
   )
 }
 
@@ -144,9 +188,9 @@ function useConnectorPaths({
       const startX = cardRect.right - containerRect.left
       const startY =
         cardRect.top - containerRect.top + cardRect.height / 2
-      const spread = (index - (tixSpotlight.rules.length - 1) / 2) * 28
+      const spread = (index - (visibleTixRules.length - 1) / 2) * 28
       nextPaths.push({
-        id: tixSpotlight.rules[index]?.label ?? `rule-${index}`,
+        id: visibleTixRules[index]?.label ?? `rule-${index}`,
         start: { x: startX, y: startY },
         end: { x: endX, y: ticketCenterY + spread },
       })
@@ -294,49 +338,80 @@ function TicketDiagram() {
       <Grid
         templateColumns={{
           base: "1fr",
-          lg901: "minmax(0, 420px) minmax(96px, 1fr) minmax(0, 360px)",
+          lg901: "minmax(0, 420px) minmax(96px, 1fr) minmax(0, 408px)",
         }}
         gap={{ base: "8", lg901: "0" }}
-        alignItems="start"
+        alignItems={{ base: "start", lg901: "stretch" }}
         position="relative"
         zIndex="2"
       >
         <Flex
           direction="column"
           align="stretch"
-          gap="8"
+          gap="6"
           w="full"
+          maxW={{ base: "408px", lg901: "420px" }}
+          p="6"
+          borderRadius="28px"
+          bg="rgba(227, 221, 215, 0.04)"
+          justifySelf="center"
           gridColumn={{ lg901: 1 }}
         >
-          <BenefitIntro
-            title={tixSpotlight.benefits[0].title}
-            body={tixSpotlight.benefits[0].body}
-          />
-          {tixSpotlight.rules.map((rule, index) => (
-            <RuleCard
-              key={rule.label}
-              label={rule.label}
-              value={rule.value}
-              showFlag={"showFlag" in rule ? rule.showFlag : false}
-              cardRef={setCardRef(index)}
+          <Box textAlign="center">
+            <BenefitIntro
+              title={tixSpotlight.benefits[0].title}
+              body={tixSpotlight.benefits[0].body}
+              showBody={false}
             />
-          ))}
+          </Box>
+          <Flex direction="column" gap="3">
+            {visibleTixRules.map((rule, index) => (
+              <RuleCard
+                key={rule.label}
+                label={rule.label}
+                value={rule.value}
+                valueSuffix={"valueSuffix" in rule ? rule.valueSuffix : undefined}
+                markSrc={"markSrc" in rule ? rule.markSrc : undefined}
+                shouldInvertMark={
+                  "shouldInvertMark" in rule
+                    ? rule.shouldInvertMark
+                    : false
+                }
+                hasMarkGlow={"hasMarkGlow" in rule ? rule.hasMarkGlow : false}
+                secondaryValue={
+                  "secondaryValue" in rule ? rule.secondaryValue : undefined
+                }
+                showFlag={"showFlag" in rule ? rule.showFlag : false}
+                cardRef={setCardRef(index)}
+              />
+            ))}
+          </Flex>
+          <Box w="full" maxW="352px" mx="auto" textAlign="center">
+            <BenefitBody body={tixSpotlight.benefits[0].body} />
+          </Box>
         </Flex>
 
         <Flex
           direction="column"
-          align={{ base: "center", lg901: "stretch" }}
-          gap="6"
+          align="center"
+          gap="8"
+          justify="space-between"
           justifySelf={{ base: "center", lg901: "end" }}
           w="full"
-          maxW={{ base: "280px", md: "320px", lg901: "360px" }}
+          maxW={{ base: "408px", lg901: "408px" }}
+          p="6"
+          borderRadius="28px"
+          bg="rgba(227, 221, 215, 0.04)"
           gridColumn={{ lg901: 3 }}
         >
-          <BenefitIntro
-            title={tixSpotlight.benefits[1].title}
-            body={tixSpotlight.benefits[1].body}
-          />
-          <Box ref={ticketRef} w="full">
+          <Box w="full" textAlign="center">
+            <BenefitIntro
+              title={tixSpotlight.benefits[1].title}
+              body={tixSpotlight.benefits[1].body}
+              showBody={false}
+            />
+          </Box>
+          <Box ref={ticketRef} w="full" maxW="360px">
             <ProgrammableTicket
               eyebrow={tixSpotlight.ticket.eyebrow}
               title={tixSpotlight.ticket.title}
@@ -349,13 +424,24 @@ function TicketDiagram() {
               tixId={tixSpotlight.ticket.tixId}
             />
           </Box>
+          <Box w="full" maxW="360px" textAlign="center">
+            <BenefitBody body={tixSpotlight.benefits[1].body} />
+          </Box>
         </Flex>
       </Grid>
     </Box>
   )
 }
 
-function BenefitIntro({ title, body }: { title: string; body: string }) {
+function BenefitIntro({
+  title,
+  body,
+  showBody = true,
+}: {
+  title: string
+  body: string
+  showBody?: boolean
+}) {
   return (
     <Box as="header" w="full">
       <Heading
@@ -370,18 +456,25 @@ function BenefitIntro({ title, body }: { title: string; body: string }) {
       >
         {title}
       </Heading>
-      <Text
-        as="p"
-        pt="2"
-        fontSize="14px"
-        lineHeight="1.4"
-        letterSpacing="-0.36px"
-        color="warmMuted"
-        textWrap="pretty"
-      >
-        {body}
-      </Text>
+      {showBody ? <BenefitBody body={body} pt="2" /> : null}
     </Box>
+  )
+}
+
+function BenefitBody({ body, pt }: { body: string; pt?: string }) {
+  return (
+    <Text
+      as="p"
+      pt={pt}
+      fontFamily="sans"
+      fontSize="14px"
+      lineHeight="1.4"
+      letterSpacing="0"
+      color="warmDisplay"
+      textWrap="pretty"
+    >
+      {body}
+    </Text>
   )
 }
 
@@ -396,8 +489,9 @@ export function TixSpotlight() {
         <Flex
           direction="column"
           align="center"
-          gap={{ base: "8", lg901: "8" }}
+          gap={{ base: "12", lg901: "16" }}
           w="full"
+          pb="12"
         >
           <Flex
             direction="column"
@@ -406,55 +500,58 @@ export function TixSpotlight() {
             w="full"
             textAlign="center"
           >
-            <Text as="p" {...prominentEyebrowTextProps}>
-              {tixSpotlight.eyebrow}
-            </Text>
-
             <Heading
               as="h3"
               id="tix-spotlight-heading"
               color="warmDisplay"
-              fontFamily="cossetteTitre"
-              fontSize={{
-                base: "32px",
-                md: "44px",
-                lg901: "clamp(2.75rem, 4.2vw, 3.6875rem)",
-              }}
-              fontWeight="normal"
-              lineHeight="1.2"
-              letterSpacing="0.01em"
+              fontFamily="cossetteTexte"
+              fontSize="14px"
+              fontWeight="bold"
+              lineHeight="14px"
+              letterSpacing="1.4px"
               textTransform="uppercase"
-              textWrap="balance"
-              maxW={{ base: "18ch", md: "22ch", lg901: "26ch" }}
             >
-              {tixSpotlight.headlineLine1}
-              <Box as="br" />
-              {tixSpotlight.headlineLine2}
+              {tixSpotlight.eyebrow}
             </Heading>
-
             <Image
-              src={assetUrl(tixSpotlight.brandImageSrc)}
-              alt={tixSpotlight.brandImageAlt}
-              mt={{ base: "-5", md: "-6", lg901: "-8" }}
-              w={{ base: "220px", md: "280px", lg901: "320px" }}
-              h="auto"
+              src={assetUrl("/icons/tix_logo.svg")}
+              alt=""
+              w="48px"
+              h="53px"
               objectFit="contain"
               draggable={false}
+              aria-hidden
             />
-
-            {/* TEMP: supporting body hidden while evaluating headline-only header
-            <Text
-              as="p"
-              fontSize={{ base: "15px", md: "18px" }}
-              lineHeight={{ base: "1.5", md: "27px" }}
-              letterSpacing="-0.36px"
-              color="warmMuted"
-              textWrap="pretty"
-              maxW="540px"
-            >
-              {tixSpotlight.body}
-            </Text>
-            */}
+            <Flex direction="column" align="center" gap="6" w="full">
+              <Text
+                as="p"
+                fontFamily="cossetteTitre"
+                fontSize="36px"
+                fontStyle="normal"
+                fontWeight="400"
+                lineHeight="1.2"
+                letterSpacing="0"
+                color="#ccc5be"
+                textWrap="pretty"
+                maxW="670px"
+              >
+                {tixSpotlight.headlineLine1}
+                <Box as="br" />
+                {tixSpotlight.headlineLine2}
+              </Text>
+              <Text
+                as="p"
+                fontFamily="cossetteTexte"
+                fontSize="18px"
+                lineHeight="1.4"
+                letterSpacing="0"
+                color="#ccc5be"
+                textWrap="balance"
+                maxW="670px"
+              >
+                {tixSpotlight.body}
+              </Text>
+            </Flex>
           </Flex>
 
           <TicketDiagram />

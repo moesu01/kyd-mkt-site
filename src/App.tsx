@@ -68,6 +68,7 @@ function App() {
           </Box>
         </Box>
         <BackedBySection />
+        {/* TEMP: Reversed separator hidden while evaluating placement. */}
         <VenuesSection />
         <BandSeparatorSection />
         <FeaturesSectionInteractive />

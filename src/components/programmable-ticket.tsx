@@ -1,4 +1,5 @@
-import { Box, Flex, Grid, Text, VStack } from "@chakra-ui/react"
+import { Box, Flex, Grid, Image, Text, VStack } from "@chakra-ui/react"
+import { assetUrl } from "../lib/asset-url"
 import { TicketQrCode } from "./ticket"
 
 export function ProgrammableTicket({
@@ -19,136 +20,103 @@ export function ProgrammableTicket({
       maxW={maxWidth}
       mx="auto"
       position="relative"
-      borderRadius="18px"
-      filter="drop-shadow(0 0 12px oklch(0.82 0.14 190 / 0.36)) drop-shadow(0 0 34px oklch(0.72 0.15 190 / 0.24)) drop-shadow(0 0 72px oklch(0.65 0.12 190 / 0.14))"
+      overflow="hidden"
+      borderRadius="16px"
+      bg="#0e0a07"
+      boxShadow="0 0 1px 1px rgba(255, 255, 255, 0.1), 0 10px 20px 1px #14100d"
       css={{ WebkitFontSmoothing: "antialiased" }}
       aria-label={`Programmable ticket for ${title}`}
     >
-      <Box
-        position="absolute"
-        inset="-10px"
-        borderRadius="26px"
-        bg="oklch(0.75 0.14 190 / 0.06)"
-        filter="blur(14px)"
-        pointerEvents="none"
-        aria-hidden
-      />
-
-      <VStack gap="0" align="stretch" position="relative">
-        <Box
-          position="relative"
-          overflow="hidden"
-          borderTopRadius="18px"
-          borderBottomRadius="18px"
-          border="1px solid rgba(236, 255, 252, 0.35)"
-          bgImage={ticketSurfaceGradient}
-          boxShadow={ticketSurfaceShadow}
-        >
-          <Box p={{ base: "16px", md: "18px" }}>
+      <Grid
+        templateColumns={{
+          base: "minmax(0, 1fr) 82px",
+          md: "minmax(0, 1fr) 110px",
+        }}
+      >
+        <Flex direction="column" minW="0">
+          <Flex
+            direction="column"
+            gap="1"
+            px={{ base: "3", md: "4.5" }}
+            pt="16px"
+            pb="12px"
+          >
             <Text
-              fontSize={{ base: "12px", md: "13px" }}
+              fontSize="13px"
               fontWeight="500"
               lineHeight="1.2"
               color={ticketLabelColor}
+              whiteSpace="nowrap"
             >
               {eyebrow}
             </Text>
             <Text
-              mt="4px"
               fontFamily="cossetteTexte"
-              fontSize={{ base: "20px", md: "23px" }}
-              fontWeight="bold"
-              lineHeight="1.12"
-              letterSpacing="-0.4px"
+              fontSize="20px"
+              fontWeight="medium"
+              lineHeight="1.288"
+              letterSpacing="0.25px"
               color={ticketValueColor}
-              textWrap="balance"
+              whiteSpace="nowrap"
             >
               {title}
             </Text>
+          </Flex>
+          <VStack mt="auto" gap="0" align="stretch">
+            <ProgrammableDetailRow
+              label="TICKET"
+              value={`${admit}x - ${ticketType}`}
+            />
+            <ProgrammableDetailRow
+              label="DATE"
+              value={`${date} • ${time}`}
+            />
+            <ProgrammableDetailRow
+              label="VENUE"
+              value={`${venue} · ${city}`}
+            />
+            <ProgrammableDetailRow label="TX" value={tixId} isMono />
+          </VStack>
+        </Flex>
 
-            <VStack mt="28px" gap="0" align="stretch">
-              <ProgrammableDetailRow
-                label="VENUE"
-                value={`${venue} · ${city}`}
-              />
-              <ProgrammableDetailRow
-                label="TICKET"
-                value={`${admit}x - ${ticketType}`}
-              />
-            </VStack>
-          </Box>
-        </Box>
-
-        <Box
-          position="relative"
-          mt="-2px"
-          overflow="hidden"
-          borderTopRadius="18px"
-          borderBottomRadius="18px"
-          border="1px solid rgba(236, 255, 252, 0.31)"
-          bgImage={ticketSurfaceGradient}
-          boxShadow={ticketSurfaceShadow}
+        <Flex
+          direction="column"
+          align="center"
+          justify="space-between"
+          pt="3"
+          pb="1.5"
+          pe="0"
+          borderLeft="1px dashed rgba(255, 255, 255, 0.1)"
         >
-          <Grid
-            templateColumns="minmax(0, 0.92fr) minmax(0, 1.08fr)"
-            gap={{ base: "12px", md: "16px" }}
-            p={{ base: "14px", md: "18px" }}
-            alignItems="start"
+          <Flex flex="1" w="full" align="center" justify="center">
+            <Image
+              src={assetUrl("/icons/tix_logo.svg")}
+              alt=""
+              w="5"
+              h="5"
+              opacity="0.9"
+              filter="drop-shadow(0 0 4px rgba(130, 255, 238, 0.75)) drop-shadow(0 0 9px rgba(130, 255, 238, 0.4))"
+              aria-hidden
+            />
+          </Flex>
+          <Flex
+            align="center"
+            justify="center"
+            w={{ base: "70px", md: "96px" }}
+            h={{ base: "70px", md: "96px" }}
+            borderRadius="12px"
+            bg="transparent"
+            p={{ base: "1.5", md: "2.5" }}
+            overflow="hidden"
+            aria-label="Ticket QR code"
           >
-            <Flex direction="column" minW="0">
-              <TicketInfoBlock label="DATE" value={date} />
-              <TicketInfoBlock label="TIME" value={time} isLast />
-              <Box
-                mt="12px"
-                pt="12px"
-                borderTop="1px solid rgba(236, 255, 252, 0.18)"
-              >
-                <Text
-                  fontSize={{ base: "10px", md: "11px" }}
-                  fontWeight="500"
-                  color={ticketLabelColor}
-                >
-                  OWNER
-                </Text>
-                <Text
-                  mt="3px"
-                  fontSize={{ base: "13px", md: "14px" }}
-                  fontWeight="bold"
-                  color={ticketValueColor}
-                >
-                  Verified
-                </Text>
-                <Text
-                  mt="6px"
-                  fontFamily="mono"
-                  fontSize="9px"
-                  lineHeight="1"
-                  color="rgba(236, 242, 241, 0.5)"
-                >
-                  {tixId}
-                </Text>
-              </Box>
-            </Flex>
-
-            <Flex
-              align="center"
-              justify="center"
-              w="full"
-              maxW="full"
-              minW="0"
-              aspectRatio="1"
-              borderRadius="12px"
-              bg="#ffffff"
-              p={{ base: "10px", md: "12px" }}
-              overflow="hidden"
-              boxShadow="inset 0 0 0 1px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.2), 0 14px 32px rgba(0, 0, 0, 0.16)"
-              aria-label="Ticket QR code"
-            >
-              <TicketQrCode />
-            </Flex>
-          </Grid>
-        </Box>
-      </VStack>
+            <TicketQrCode
+              backgroundColor="transparent"
+              foregroundColor="#ccc5be"
+            />
+          </Flex>
+        </Flex>
+      </Grid>
     </Box>
   )
 }
@@ -156,17 +124,19 @@ export function ProgrammableTicket({
 function ProgrammableDetailRow({
   label,
   value,
+  isMono = false,
 }: ProgrammableDetailRowProps) {
   return (
     <Grid
-      templateColumns="minmax(0, 1fr) auto"
-      gap="12px"
+      templateColumns="minmax(44px, 1fr) minmax(0, 145px)"
+      gap="2"
       alignItems="center"
-      py="10px"
-      borderTop="1px solid rgba(236, 255, 252, 0.18)"
+      h="8"
+      px={{ base: "3", md: "4.5" }}
+      borderTop="1px solid rgba(255, 255, 255, 0.1)"
     >
       <Text
-        fontSize={{ base: "11px", md: "12px" }}
+        fontSize="11px"
         fontWeight="500"
         lineHeight="1.2"
         color={ticketLabelColor}
@@ -174,11 +144,16 @@ function ProgrammableDetailRow({
         {label}
       </Text>
       <Text
-        fontSize={{ base: "12px", md: "14px" }}
-        fontWeight="bold"
-        lineHeight="1.2"
-        color={ticketValueColor}
+        overflow="hidden"
+        fontFamily={isMono ? "mono" : undefined}
+        fontSize={isMono ? "9px" : "11px"}
+        fontWeight={isMono ? "normal" : "semibold"}
+        lineHeight={isMono ? "1" : "1.5"}
+        color={isMono ? "rgba(236, 242, 241, 0.5)" : ticketValueColor}
         textAlign="right"
+        textOverflow="ellipsis"
+        whiteSpace="nowrap"
+        fontVariantNumeric="tabular-nums"
       >
         {value}
       </Text>
@@ -186,47 +161,8 @@ function ProgrammableDetailRow({
   )
 }
 
-function TicketInfoBlock({
-  label,
-  value,
-  isLast = false,
-}: TicketInfoBlockProps) {
-  return (
-    <Box
-      pb={isLast ? "0" : "10px"}
-      mb={isLast ? "0" : "10px"}
-      borderBottom={isLast ? undefined : "1px solid rgba(236, 255, 252, 0.18)"}
-    >
-      <Text
-        fontSize={{ base: "10px", md: "11px" }}
-        fontWeight="500"
-        lineHeight="1.2"
-        color={ticketLabelColor}
-      >
-        {label}
-      </Text>
-      <Text
-        mt="3px"
-        fontSize={{ base: "13px", md: "14px" }}
-        fontWeight="bold"
-        lineHeight="1.2"
-        color={ticketValueColor}
-        fontVariantNumeric="tabular-nums"
-      >
-        {value}
-      </Text>
-    </Box>
-  )
-}
-
-const ticketSurfaceGradient =
-  "linear-gradient(145deg, rgba(106, 121, 130, 0.9) 0%, rgba(55, 66, 74, 0.96) 22%, rgba(29, 38, 44, 0.98) 62%, rgba(47, 59, 66, 0.98) 100%)"
-
-const ticketSurfaceShadow =
-  "inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 12px 22px rgba(255, 255, 255, 0.16), inset 12px 0 24px rgba(182, 255, 245, 0.06), inset -14px -18px 28px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(120, 255, 235, 0.2)"
-
 const ticketLabelColor = "rgba(236, 242, 241, 0.68)"
-const ticketValueColor = "#ecf2f1"
+const ticketValueColor = "#ccc5be"
 
 interface ProgrammableTicketProps {
   eyebrow: string
@@ -244,10 +180,5 @@ interface ProgrammableTicketProps {
 interface ProgrammableDetailRowProps {
   label: string
   value: string
-}
-
-interface TicketInfoBlockProps {
-  label: string
-  value: string
-  isLast?: boolean
+  isMono?: boolean
 }

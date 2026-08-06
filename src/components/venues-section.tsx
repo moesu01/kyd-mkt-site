@@ -40,7 +40,7 @@ function StatCard({
       py={{ base: "5", xl1600: "6" }}
       borderRadius="16px"
       bg="pageBg"
-      boxShadow="0 0 2px 1px rgba(255, 255, 255, 0.15)"
+      boxShadow="0 0 1px 1px rgba(255, 255, 255, 0.1)"
       overflow="hidden"
     >
       <Box
@@ -113,8 +113,8 @@ function TicketRevenueCalculator() {
       minH={{ base: "auto", xl1600: "290px" }}
       p="6"
       borderRadius="16px"
-      bg="frameBg"
-      boxShadow="frame"
+      bg="#0e0a07"
+      boxShadow="0 0 1px 1px rgba(255, 255, 255, 0.1), 0 2px 12px 1px rgba(0, 0, 0, .35)"
       position="relative"
       overflow="hidden"
     >
@@ -453,8 +453,7 @@ export function VenuesSection() {
                 p="3"
                 w="full"
                 borderRadius="27px"
-                border="3px solid"
-                borderColor="rgba(255, 255, 255, 0.1)"
+                bg="rgba(227, 221, 215, 0.04)"
               >
                 <Flex
                   direction={{ base: "column", md700: "row" }}
@@ -472,6 +471,7 @@ export function VenuesSection() {
                     lineHeight="1.4"
                     color="warmMuted"
                     textAlign={{ base: "center", md700: "left" }}
+                    textWrap="pretty"
                   >
                     {venuesSection.groupIntro}
                   </Text>
