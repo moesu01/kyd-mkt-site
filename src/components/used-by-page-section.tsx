@@ -9,7 +9,7 @@ export function UsedByPageSection() {
     <Box
       as="section"
       px={{ base: "6", lg901: "12" }}
-      pt={{ base: "10", lg901: "28" }}
+      pt={{ base: "5", lg901: "14" }}
       pb={{ base: "10", lg901: "14" }}
       bg="pageBg"
     >

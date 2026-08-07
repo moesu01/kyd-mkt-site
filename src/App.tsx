@@ -68,13 +68,13 @@ function App() {
           </Box>
         </Box>
         <BackedBySection />
-        {/* TEMP: Reversed separator hidden while evaluating placement. */}
         <VenuesSection />
         <BandSeparatorSection />
         <FeaturesSectionInteractive />
         {/* TODO: Hidden pending decision on interactive vs. original Platform
             section. Remove FeaturesSection entirely if unused. */}
         {/* <FeaturesSection /> */}
+        <BandSeparatorSection isReversed />
         <UsedByPageSection />
         <SocialProofSection />
         <FanSection />

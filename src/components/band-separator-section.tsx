@@ -22,10 +22,6 @@ export function BandSeparatorSection({
           flexWrap="nowrap"
           w="full"
           minW="0"
-          transform={{
-            base: isReversed ? "none" : "translateX(85px)",
-            md700: isReversed ? "none" : "translateX(170px)",
-          }}
         >
           {bandOrder.map((band) =>
             band === "stacked" ? (

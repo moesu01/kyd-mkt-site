@@ -467,10 +467,11 @@ export function FeaturesSectionInteractive() {
       id="platform"
       bg="pageBg"
       px={{ base: "6", lg901: "12" }}
-      py={{ base: "10", lg901: "14" }}
+      pt={{ base: "10", lg901: "14" }}
+      pb={{ base: "10", lg901: "28" }}
     >
       <Flex direction="column" gap="12" w="full">
-        <RevealGroup w="full" px="25px" order="1">
+        <RevealGroup w="full" order="1">
           <Container minW="0">
             <Flex direction="column" gap="6" w="full" minW="0">
               <Reveal order={0}>
@@ -520,7 +521,7 @@ export function FeaturesSectionInteractive() {
         </RevealGroup>
 
         <RevealGroup w="full" order="2">
-          <Container maxW="containerFramed">
+          <Container minW="0">
             <TixSpotlight />
           </Container>
         </RevealGroup>

@@ -139,11 +139,11 @@ export const tixSpotlight = {
   benefits: [
     {
       title: "Control & Capture Resale",
-      body: "Set price caps and transfer rules that follow every ticket. Route a percentage back to the venue, artist, or partners automatically.",
+      body: "Set resale price caps and royalty rules that follow every ticket. All handled automatically.",
     },
     {
       title: "Unscalpable Tickets",
-      body: "Identity-bound tickets with on chain verification, help prevent speculative listings and screenshot fraud.",
+      body: "Identity-bound tickets with on chain verification, prevents speculative listings and screenshot fraud.",
     },
   ],
 } as const
