@@ -167,12 +167,12 @@ export const features = [
   {
     icon: "⚡",
     title: "Comprehensive Ticketing",
-    body: "Launch events, configure pricing, manage box office, and track performance, all in one place. Your fan CRM and analytics are built in.",
+    body: "Launch events, manage box office, and track performance in one place.",
   },
   {
     icon: "↻",
     title: "Unscalpable Resale Capture",
-    body: "Capture every resale and keep the upside with the venue. Unscalpable tickets stay controlled wherever they move.",
+    body: "Control and capture every resale. Unscalpable tickets stay controlled wherever they move.",
   },
 ] as const
 

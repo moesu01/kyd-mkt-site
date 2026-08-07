@@ -37,65 +37,70 @@ export function PlatformFeaturesBento() {
   const metaFeature = getFeatureByTitle(metaAdsVisualTitle)
   const dataFeature = getFeatureByTitle("Data Ownership")
   const ticketsFeature = getFeatureByTitle("Comprehensive Ticketing")
-  const resaleFeature = getFeatureByTitle("Unscalpable Resale Capture")
   const shouldAnimate = !prefersReducedMotion
 
   return (
-    <RevealGroup w="full">
-      <Flex direction="column" gap="25px" w="full">
+    <RevealGroup w="full" minW="0" maxW="100%">
+      <Flex direction="column" gap="25px" w="full" minW="0" maxW="100%">
         <Grid
           w="full"
-          templateColumns={{ base: "1fr", lg901: "1fr 1fr" }}
+          minW="0"
+          maxW="100%"
+          templateColumns={{ base: "minmax(0, 1fr)", lg901: "minmax(0, 7fr) minmax(0, 3fr)" }}
           gap="25px"
           alignItems="stretch"
         >
-          <Reveal order={0} h="full" minH="0">
+          <Reveal order={0} h="full" minH="0" minW="0" w="full">
             <LargeFeatureTile
               title={emailFeature.title}
               body={emailFeature.body}
+              backgroundSrc={assetUrl("/images/feat/feat_w_04.png")}
+              backgroundPosition="bottom"
             >
               <EmailCampaignVisual shouldAnimate={shouldAnimate} />
             </LargeFeatureTile>
           </Reveal>
 
-          <Reveal order={1} h="full" minH="0">
-            <LargeFeatureTile
-              title={metaFeature.title}
-              body={metaFeature.body}
-            >
-              <MetaAdsVisual shouldAnimate={shouldAnimate} />
-            </LargeFeatureTile>
+          <Reveal order={1} h="full" minH="0" minW="0" w="full">
+            <SmallFeatureTile
+              icon={dataFeature.icon}
+              title={dataFeature.title}
+              body={dataFeature.body}
+              backgroundSrc={assetUrl("/images/feat/feat_w_03.png")}
+            />
           </Reveal>
         </Grid>
 
         <Grid
           w="full"
-          templateColumns={{ base: "1fr", lg901: "repeat(3, 1fr)" }}
+          minW="0"
+          maxW="100%"
+          templateColumns={{
+            base: "minmax(0, 1fr)",
+            lg901: "minmax(0, 3fr) minmax(0, 7fr)",
+          }}
           gap="25px"
           alignItems="stretch"
         >
-          <Reveal order={2} h="full" minH="0">
+          <Reveal order={2} h="full" minH="0" minW="0" w="full">
             <SmallFeatureTile
-              icon={dataFeature.icon}
-              title={dataFeature.title}
-              body={dataFeature.body}
-            />
-          </Reveal>
-
-          <Reveal order={3} h="full" minH="0">
-            <SmallFeatureTile
-              icon={ticketsFeature.icon}
+              iconSrc={assetUrl("/icons/kyd-mark-sm.svg")}
+              invertIcon
               title={ticketsFeature.title}
               body={ticketsFeature.body}
+              backgroundSrc={assetUrl("/images/feat/feat_w_02.png")}
             />
           </Reveal>
 
-          <Reveal order={4} h="full" minH="0">
-            <SmallFeatureTile
-              iconSrc={assetUrl("/icons/tix_logo.svg")}
-              title={resaleFeature.title}
-              body={resaleFeature.body}
-            />
+          <Reveal order={3} h="full" minH="0" minW="0" w="full">
+            <LargeFeatureTile
+              title={metaFeature.title}
+              body={metaFeature.body}
+              backgroundSrc={assetUrl("/images/feat/feat_w_01.png")}
+              backgroundPosition="top"
+            >
+              <MetaAdsVisual shouldAnimate={shouldAnimate} />
+            </LargeFeatureTile>
           </Reveal>
         </Grid>
       </Flex>
@@ -109,6 +114,8 @@ function BentoTile({ children, p = "25px", overflow }: BentoTileProps) {
       as="article"
       h="full"
       minH="0"
+      minW="0"
+      w="full"
       borderRadius="32px"
       bg="frameBg"
       p={p}
@@ -120,57 +127,95 @@ function BentoTile({ children, p = "25px", overflow }: BentoTileProps) {
   )
 }
 
-function SmallFeatureTile({ icon, iconSrc, title, body }: SmallFeatureTileProps) {
+function SmallFeatureTile({
+  icon,
+  iconSrc,
+  invertIcon,
+  title,
+  body,
+  backgroundSrc,
+}: SmallFeatureTileProps) {
   return (
-    <BentoTile>
-      <Flex direction="column" gap="5" h="full" minH="0">
+    <BentoTile p="0" overflow="hidden">
+      <Box position="relative" h="full" minH="0" minW="0" w="full">
+        <Image
+          position="absolute"
+          inset="0"
+          w="full"
+          h="full"
+          src={backgroundSrc}
+          alt=""
+          objectFit="cover"
+          objectPosition="top"
+          opacity="0.05"
+          draggable={false}
+          pointerEvents="none"
+        />
+        <Box
+          position="absolute"
+          inset="0"
+          pointerEvents="none"
+          bg="linear-gradient(to bottom, oklch(0.15 0.01 63.9) 0%, transparent 55%)"
+        />
         <Flex
-          align="center"
-          justify="center"
-          h="10"
-          w="10"
-          flexShrink={0}
-          fontSize="2xl"
-          color="accent"
-          aria-hidden
+          position="relative"
+          direction="column"
+          justify="space-between"
+          gap="5"
+          h="full"
+          minH="0"
+          p="25px"
         >
-          {iconSrc ? (
-            <Image
-              src={iconSrc}
-              alt=""
-              w="7"
-              h="7"
-              objectFit="contain"
-              draggable={false}
-            />
-          ) : (
-            icon
-          )}
+          <Flex
+            align="center"
+            justify="center"
+            alignSelf="flex-start"
+            fontSize="2xl"
+            color="accent"
+            lineHeight="1"
+            aria-hidden
+          >
+            {iconSrc ? (
+              <Image
+                src={iconSrc}
+                alt=""
+                w="7"
+                h="7"
+                objectFit="contain"
+                filter={invertIcon ? "invert(1)" : undefined}
+                draggable={false}
+              />
+            ) : (
+              icon
+            )}
+          </Flex>
+          <Flex direction="column" gap="2">
+            <Heading
+              as="h4"
+              fontFamily="cossetteTexte"
+              fontSize="16px"
+              fontWeight="700"
+              lineHeight="22.4px"
+              letterSpacing="0.16px"
+              color="fg"
+              textWrap="balance"
+            >
+              {title}
+            </Heading>
+            <Text
+              as="p"
+              fontFamily="sans"
+              fontSize={{ base: "13px", lg: "14px" }}
+              lineHeight="1.4"
+              letterSpacing="0"
+              color="warmMuted"
+              textWrap="pretty"
+            >
+              {body}
+            </Text>
+          </Flex>
         </Flex>
-        <Heading
-          as="h4"
-          fontFamily="cossetteTexte"
-          fontSize="16px"
-          fontWeight="700"
-          lineHeight="22.4px"
-          letterSpacing="0.16px"
-          color="fg"
-          textWrap="balance"
-        >
-          {title}
-        </Heading>
-        <Text
-          as="p"
-          fontFamily="sans"
-          fontSize={{ base: "13px", lg: "14px" }}
-          lineHeight="1.4"
-          letterSpacing="0"
-          color="warmMuted"
-          textWrap="pretty"
-        >
-          {body}
-        </Text>
-      </Flex>
+      </Box>
     </BentoTile>
   )
 }
@@ -178,49 +223,64 @@ function SmallFeatureTile({ icon, iconSrc, title, body }: SmallFeatureTileProps)
 function LargeFeatureTile({
   title,
   body,
+  backgroundSrc,
+  backgroundPosition = "top",
   children,
 }: LargeFeatureTileProps) {
   return (
     <BentoTile p="0" overflow="hidden">
-      <Flex direction="column" h="full" minH="0">
-        <Box px="25px" pt="25px" pb="5">
-          <Heading
-            as="h4"
-            fontFamily="cossetteTexte"
-            fontSize="16px"
-            fontWeight="700"
-            lineHeight="22.4px"
-            letterSpacing="0.16px"
-            color="fg"
-            textWrap="balance"
-          >
-            {title}
-          </Heading>
-          <Text
-            as="p"
-            pt="2"
-            fontFamily="sans"
-            fontSize={{ base: "13px", lg: "14px" }}
-            lineHeight="1.4"
-            letterSpacing="0"
-            color="warmMuted"
-            textWrap="pretty"
-          >
-            {body}
-          </Text>
-        </Box>
-        <Box
-          position="relative"
+      <Box position="relative" h="full" minH="0" minW="0" w="full">
+        <Image
+          position="absolute"
+          inset="0"
           w="full"
-          flex="1"
-          minH="0"
-          aspectRatio="4/3"
-          bg="frameBg"
-          overflow="hidden"
-        >
-          {children}
-        </Box>
-      </Flex>
+          h="full"
+          src={backgroundSrc}
+          alt=""
+          objectFit="cover"
+          objectPosition={backgroundPosition}
+          opacity="0.18"
+          draggable={false}
+          pointerEvents="none"
+        />
+        <Box
+          position="absolute"
+          inset="0"
+          pointerEvents="none"
+          bg="linear-gradient(to top, oklch(0.15 0.01 63.9) 0%, transparent 55%)"
+        />
+        <Flex position="relative" direction="column" h="full" minH="0" minW="0" w="full">
+          <Box position="relative" w="full" minW="0" overflow="hidden" flex="1">
+            {children}
+          </Box>
+          <Box px="25px" pt="5" pb="25px">
+            <Heading
+              as="h4"
+              fontFamily="cossetteTexte"
+              fontSize="16px"
+              fontWeight="700"
+              lineHeight="22.4px"
+              letterSpacing="0.16px"
+              color="fg"
+              textWrap="balance"
+            >
+              {title}
+            </Heading>
+            <Text
+              as="p"
+              pt="2"
+              fontFamily="sans"
+              fontSize={{ base: "13px", lg: "14px" }}
+              lineHeight="1.4"
+              letterSpacing="0"
+              color="warmMuted"
+              textWrap="pretty"
+            >
+              {body}
+            </Text>
+          </Box>
+        </Flex>
+      </Box>
     </BentoTile>
   )
 }
@@ -234,12 +294,16 @@ interface BentoTileProps {
 interface SmallFeatureTileProps {
   icon?: string
   iconSrc?: string
+  invertIcon?: boolean
   title: string
   body: string
+  backgroundSrc: string
 }
 
 interface LargeFeatureTileProps {
   title: string
   body: string
+  backgroundSrc: string
+  backgroundPosition?: "top" | "bottom" | "center"
   children: ReactNode
 }

@@ -486,6 +486,7 @@ export function FeaturesSectionInteractive() {
                 textTransform="uppercase"
                 color="warmDisplay"
                 textWrap="balance"
+                textAlign={{ base: "center", lg901: "left" }}
                 borderTop="3px solid"
                 borderColor="rgba(255, 255, 255, 0.1)"
                 pt="48px"
@@ -501,7 +502,7 @@ export function FeaturesSectionInteractive() {
                 letterSpacing="0"
                 color="#ccc5be"
                 textWrap="balance"
-                textAlign="left"
+                textAlign={{ base: "center", lg901: "left" }}
               >
                 Built for venues, agents, and artists.
               </Text>
@@ -509,8 +510,8 @@ export function FeaturesSectionInteractive() {
           </Container>
         </RevealGroup>
 
-        <RevealGroup w="full" order="3">
-          <Container maxW="containerFramed">
+        <RevealGroup w="full" minW="0" order="3">
+          <Container maxW="containerFramed" minW="0">
             {/* Flip useBentoLayout to false to restore the interactive tab panel. */}
             {useBentoLayout ? (
               <PlatformFeaturesBento />
