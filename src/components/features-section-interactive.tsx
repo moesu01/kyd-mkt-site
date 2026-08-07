@@ -19,7 +19,6 @@ import { PlatformFeaturesBento } from "./features-section-bento"
 import { TixSpotlight } from "./tix-spotlight"
 import { Container } from "./ui/container"
 import { Reveal, RevealGroup } from "./ui/reveal"
-import { VenueAudiencesGrid } from "./venue-audiences-grid"
 
 const dwellMs = 6000
 const iconEase = "cubic-bezier(0.2, 0, 0, 1)"
@@ -487,24 +486,30 @@ export function FeaturesSectionInteractive() {
                 textTransform="uppercase"
                 color="warmDisplay"
                 textWrap="balance"
+                borderTop="3px solid"
+                borderColor="rgba(255, 255, 255, 0.1)"
+                pt="48px"
               >
                 Our Platform
               </Heading>
+              <Text
+                as="p"
+                pt="4"
+                fontFamily="cossetteTexte"
+                fontSize="18px"
+                lineHeight="1.4"
+                letterSpacing="0"
+                color="#ccc5be"
+                textWrap="balance"
+                textAlign="left"
+              >
+                Built for venues, agents, and artists.
+              </Text>
             </Reveal>
           </Container>
         </RevealGroup>
 
-        <RevealGroup
-          w="full"
-          px="25px"
-          order={{ base: "4", lg901: "3" }}
-        >
-          <Container>
-            <VenueAudiencesGrid />
-          </Container>
-        </RevealGroup>
-
-        <RevealGroup w="full" order={{ base: "3", lg901: "4" }}>
+        <RevealGroup w="full" order="3">
           <Container maxW="containerFramed">
             {/* Flip useBentoLayout to false to restore the interactive tab panel. */}
             {useBentoLayout ? (
