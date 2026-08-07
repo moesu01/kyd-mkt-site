@@ -74,7 +74,7 @@ function RuleCard({
       as="article"
       position="relative"
       align="center"
-      gap={{ base: "3", md: "6" }}
+      gap="4"
       w="full"
       maxW={{ base: "full", lg901: "420px" }}
       px="4"
@@ -114,7 +114,7 @@ function RuleCard({
         >
           {label}
         </Text>
-        <Flex align="center" gap="3" minW="0">
+        <Flex align="center" gap="3" minW="0" flexWrap="nowrap">
           {showFlag ? (
             <Box
               as="span"
@@ -130,13 +130,16 @@ function RuleCard({
           ) : null}
           <Text
             as="p"
+            flex="1"
+            minW="0"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
             fontSize="15px"
             fontWeight="medium"
             lineHeight="1.36"
             letterSpacing="-0.34px"
             color="#ecf2f1"
-            textWrap="pretty"
-            minW="0"
           >
             {value}
             {valueSuffix ? (
@@ -149,8 +152,11 @@ function RuleCard({
           {secondaryValue ? (
             <Text
               as="p"
-              ms="auto"
               flexShrink={0}
+              maxW="40%"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
               fontFamily="mono"
               fontSize="10px"
               lineHeight="1.2"
@@ -189,7 +195,7 @@ function useConnectorPaths({
 
     const containerRect = container.getBoundingClientRect()
     const ticketRect = ticket.getBoundingClientRect()
-    const endX = ticketRect.left - containerRect.left + 8
+    const endX = ticketRect.left - containerRect.left
     const ticketCenterY =
       ticketRect.top - containerRect.top + ticketRect.height * 0.42
 
@@ -286,7 +292,7 @@ function TicketDiagram() {
           inset="0"
           pointerEvents="none"
           overflow="visible"
-          zIndex="1"
+          zIndex="3"
           aria-hidden
         >
           <svg
@@ -359,25 +365,48 @@ function TicketDiagram() {
         zIndex="2"
       >
         <Flex
+          position="relative"
           direction="column"
           align="stretch"
           gap="6"
           w="full"
           maxW={{ base: "408px", lg901: "420px" }}
           p="6"
+          overflow="hidden"
           borderRadius="28px"
-          bg="rgba(227, 221, 215, 0.04)"
+          bg="frameBg"
+          boxShadow="frame"
           justifySelf="center"
           gridColumn={{ lg901: 1 }}
         >
-          <Box textAlign="center">
+          <Image
+            position="absolute"
+            inset="0"
+            w="full"
+            h="full"
+            src={assetUrl("/images/feat/feat_sq_1.png")}
+            alt=""
+            objectFit="cover"
+            objectPosition="top"
+            opacity="0.1"
+            filter="blur(2px)"
+            draggable={false}
+            pointerEvents="none"
+          />
+          <Box
+            position="absolute"
+            inset="0"
+            pointerEvents="none"
+            bg="linear-gradient(to bottom, oklch(0.15 0.01 63.9) 0%, transparent 55%)"
+          />
+          <Box position="relative" textAlign="center">
             <BenefitIntro
               title={tixSpotlight.benefits[0].title}
               body={tixSpotlight.benefits[0].body}
               showBody={false}
             />
           </Box>
-          <Flex direction="column" gap="3">
+          <Flex position="relative" direction="column" gap="3">
             {visibleTixRules.map((rule, index) => (
               <RuleCard
                 key={rule.label}
@@ -399,12 +428,13 @@ function TicketDiagram() {
               />
             ))}
           </Flex>
-          <Box w="full" maxW="352px" mx="auto" textAlign="center">
+          <Box position="relative" w="full" maxW="352px" mx="auto" textAlign="center">
             <BenefitBody body={tixSpotlight.benefits[0].body} />
           </Box>
         </Flex>
 
         <Flex
+          position="relative"
           direction="column"
           align="center"
           gap="8"
@@ -413,18 +443,40 @@ function TicketDiagram() {
           w="full"
           maxW={{ base: "408px", lg901: "408px" }}
           p="6"
+          overflow="hidden"
           borderRadius="28px"
-          bg="rgba(227, 221, 215, 0.04)"
+          bg="frameBg"
+          boxShadow="frame"
           gridColumn={{ lg901: 3 }}
         >
-          <Box w="full" textAlign="center">
+          <Image
+            position="absolute"
+            inset="0"
+            w="full"
+            h="full"
+            src={assetUrl("/images/feat/feat_sq_2.png")}
+            alt=""
+            objectFit="cover"
+            objectPosition="top"
+            opacity="0.1"
+            filter="blur(2px)"
+            draggable={false}
+            pointerEvents="none"
+          />
+          <Box
+            position="absolute"
+            inset="0"
+            pointerEvents="none"
+            bg="linear-gradient(to bottom, oklch(0.15 0.01 63.9) 0%, transparent 55%)"
+          />
+          <Box position="relative" w="full" textAlign="center">
             <BenefitIntro
               title={tixSpotlight.benefits[1].title}
               body={tixSpotlight.benefits[1].body}
               showBody={false}
             />
           </Box>
-          <Box ref={ticketRef} w="full" maxW="360px">
+          <Box position="relative" ref={ticketRef} w="full" maxW="360px">
             <ProgrammableTicket
               eyebrow={tixSpotlight.ticket.eyebrow}
               title={tixSpotlight.ticket.title}
@@ -437,7 +489,7 @@ function TicketDiagram() {
               tixId={tixSpotlight.ticket.tixId}
             />
           </Box>
-          <Box w="full" maxW="360px" textAlign="center">
+          <Box position="relative" w="full" maxW="360px" textAlign="center">
             <BenefitBody body={tixSpotlight.benefits[1].body} />
           </Box>
         </Flex>
@@ -504,7 +556,7 @@ export function TixSpotlight() {
           align="center"
           gap={{ base: "12", lg901: "16" }}
           w="full"
-          pb="12"
+          pt="12"
         >
           <Flex
             direction="column"

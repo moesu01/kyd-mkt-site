@@ -470,54 +470,58 @@ export function FeaturesSectionInteractive() {
       py={{ base: "10", lg901: "14" }}
     >
       <Flex direction="column" gap="12" w="full">
-        <RevealGroup w="full" order="1">
+        <RevealGroup w="full" px="25px" order="1">
+          <Container minW="0">
+            <Flex direction="column" gap="6" w="full" minW="0">
+              <Reveal order={0}>
+                <Flex
+                  direction={{ base: "column", lg901: "row" }}
+                  align={{ base: "center", lg901: "center" }}
+                  justify={{ base: "center", lg901: "space-between" }}
+                  gap={{ base: "4", lg901: "8" }}
+                  w="full"
+                >
+                  <Heading
+                    as="h2"
+                    textStyle="cossetteDisplayHeading"
+                    fontWeight="normal"
+                    textTransform="uppercase"
+                    color="warmDisplay"
+                    textWrap="balance"
+                    textAlign={{ base: "center", lg901: "left" }}
+                  >
+                    Our Platform
+                  </Heading>
+                  <Text
+                    as="p"
+                    fontFamily="cossetteTexte"
+                    fontSize="18px"
+                    lineHeight="1.4"
+                    letterSpacing="0"
+                    color="#ccc5be"
+                    textWrap="balance"
+                    textAlign={{ base: "center", lg901: "right" }}
+                    flexShrink={0}
+                  >
+                    Built for venues, agents, and artists.
+                  </Text>
+                </Flex>
+              </Reveal>
+
+              {useBentoLayout ? (
+                <PlatformFeaturesBento />
+              ) : (
+                <Reveal order={1}>
+                  <PlatformFeaturesInteractive />
+                </Reveal>
+              )}
+            </Flex>
+          </Container>
+        </RevealGroup>
+
+        <RevealGroup w="full" order="2">
           <Container maxW="containerFramed">
             <TixSpotlight />
-          </Container>
-        </RevealGroup>
-
-        <RevealGroup w="full" px="25px" order="2">
-          <Container>
-            <Reveal order={0}>
-              <Heading
-                as="h2"
-                textStyle="cossetteDisplayHeading"
-                fontWeight="normal"
-                textTransform="uppercase"
-                color="warmDisplay"
-                textWrap="balance"
-                textAlign={{ base: "center", lg901: "left" }}
-                borderTop="3px solid"
-                borderColor="rgba(255, 255, 255, 0.1)"
-                pt="48px"
-              >
-                Our Platform
-              </Heading>
-              <Text
-                as="p"
-                pt="4"
-                fontFamily="cossetteTexte"
-                fontSize="18px"
-                lineHeight="1.4"
-                letterSpacing="0"
-                color="#ccc5be"
-                textWrap="balance"
-                textAlign={{ base: "center", lg901: "left" }}
-              >
-                Built for venues, agents, and artists.
-              </Text>
-            </Reveal>
-          </Container>
-        </RevealGroup>
-
-        <RevealGroup w="full" minW="0" order="3">
-          <Container maxW="containerFramed" minW="0">
-            {/* Flip useBentoLayout to false to restore the interactive tab panel. */}
-            {useBentoLayout ? (
-              <PlatformFeaturesBento />
-            ) : (
-              <PlatformFeaturesInteractive />
-            )}
           </Container>
         </RevealGroup>
       </Flex>

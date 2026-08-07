@@ -56,6 +56,7 @@ export function PlatformFeaturesBento() {
               body={emailFeature.body}
               backgroundSrc={assetUrl("/images/feat/feat_w_04.png")}
               backgroundPosition="bottom"
+              radii={bentoRadii.topLeft}
             >
               <EmailCampaignVisual shouldAnimate={shouldAnimate} />
             </LargeFeatureTile>
@@ -67,6 +68,7 @@ export function PlatformFeaturesBento() {
               title={dataFeature.title}
               body={dataFeature.body}
               backgroundSrc={assetUrl("/images/feat/feat_w_03.png")}
+              radii={bentoRadii.topRight}
             />
           </Reveal>
         </Grid>
@@ -88,7 +90,8 @@ export function PlatformFeaturesBento() {
               invertIcon
               title={ticketsFeature.title}
               body={ticketsFeature.body}
-              backgroundSrc={assetUrl("/images/feat/feat_w_02.png")}
+              backgroundSrc={assetUrl("/images/feat/feat_w_05.png")}
+              radii={bentoRadii.bottomLeft}
             />
           </Reveal>
 
@@ -98,6 +101,7 @@ export function PlatformFeaturesBento() {
               body={metaFeature.body}
               backgroundSrc={assetUrl("/images/feat/feat_w_01.png")}
               backgroundPosition="top"
+              radii={bentoRadii.bottomRight}
             >
               <MetaAdsVisual shouldAnimate={shouldAnimate} />
             </LargeFeatureTile>
@@ -108,7 +112,7 @@ export function PlatformFeaturesBento() {
   )
 }
 
-function BentoTile({ children, p = "25px", overflow }: BentoTileProps) {
+function BentoTile({ children, p = "25px", overflow, radii }: BentoTileProps) {
   return (
     <Box
       as="article"
@@ -116,7 +120,10 @@ function BentoTile({ children, p = "25px", overflow }: BentoTileProps) {
       minH="0"
       minW="0"
       w="full"
-      borderRadius="32px"
+      borderTopLeftRadius={radii.topLeft}
+      borderTopRightRadius={radii.topRight}
+      borderBottomRightRadius={radii.bottomRight}
+      borderBottomLeftRadius={radii.bottomLeft}
       bg="frameBg"
       p={p}
       overflow={overflow}
@@ -134,9 +141,10 @@ function SmallFeatureTile({
   title,
   body,
   backgroundSrc,
+  radii,
 }: SmallFeatureTileProps) {
   return (
-    <BentoTile p="0" overflow="hidden">
+    <BentoTile p="0" overflow="hidden" radii={radii}>
       <Box position="relative" h="full" minH="0" minW="0" w="full">
         <Image
           position="absolute"
@@ -225,10 +233,11 @@ function LargeFeatureTile({
   body,
   backgroundSrc,
   backgroundPosition = "top",
+  radii,
   children,
 }: LargeFeatureTileProps) {
   return (
-    <BentoTile p="0" overflow="hidden">
+    <BentoTile p="0" overflow="hidden" radii={radii}>
       <Box position="relative" h="full" minH="0" minW="0" w="full">
         <Image
           position="absolute"
@@ -285,10 +294,18 @@ function LargeFeatureTile({
   )
 }
 
+interface BentoCornerRadii {
+  topLeft: string
+  topRight: string
+  bottomRight: string
+  bottomLeft: string
+}
+
 interface BentoTileProps {
   children: ReactNode
   p?: string
   overflow?: "hidden" | "visible"
+  radii: BentoCornerRadii
 }
 
 interface SmallFeatureTileProps {
@@ -298,6 +315,7 @@ interface SmallFeatureTileProps {
   title: string
   body: string
   backgroundSrc: string
+  radii: BentoCornerRadii
 }
 
 interface LargeFeatureTileProps {
@@ -305,5 +323,36 @@ interface LargeFeatureTileProps {
   body: string
   backgroundSrc: string
   backgroundPosition?: "top" | "bottom" | "center"
+  radii: BentoCornerRadii
   children: ReactNode
 }
+
+const outerRadius = "32px"
+const innerRadius = "16px"
+
+const bentoRadii = {
+  topLeft: {
+    topLeft: outerRadius,
+    topRight: innerRadius,
+    bottomRight: innerRadius,
+    bottomLeft: innerRadius,
+  },
+  topRight: {
+    topLeft: innerRadius,
+    topRight: outerRadius,
+    bottomRight: innerRadius,
+    bottomLeft: innerRadius,
+  },
+  bottomLeft: {
+    topLeft: innerRadius,
+    topRight: innerRadius,
+    bottomRight: innerRadius,
+    bottomLeft: outerRadius,
+  },
+  bottomRight: {
+    topLeft: innerRadius,
+    topRight: innerRadius,
+    bottomRight: outerRadius,
+    bottomLeft: innerRadius,
+  },
+} as const satisfies Record<string, BentoCornerRadii>

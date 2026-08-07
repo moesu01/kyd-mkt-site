@@ -127,7 +127,7 @@ function StatGroup({ title, metrics }: StatGroupProps) {
         pr="6"
         color="warmMuted"
         fontFamily="sans"
-        fontSize="11px"
+        fontSize="10px"
         fontWeight="700"
         lineHeight="1.2"
         letterSpacing="0.12em"
