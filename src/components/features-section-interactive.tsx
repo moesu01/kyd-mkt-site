@@ -15,6 +15,7 @@ import {
   EmailCampaignVisual,
   emailCampaignVisualTitle,
 } from "./email-campaign-visual"
+import { PlatformFeaturesBento } from "./features-section-bento"
 import { TixSpotlight } from "./tix-spotlight"
 import { Container } from "./ui/container"
 import { Reveal, RevealGroup } from "./ui/reveal"
@@ -461,6 +462,66 @@ function FeatureVisualContent({
 }
 
 export function FeaturesSectionInteractive() {
+  return (
+    <Box
+      as="section"
+      id="platform"
+      bg="pageBg"
+      px={{ base: "6", lg901: "12" }}
+      py={{ base: "10", lg901: "14" }}
+    >
+      <Flex direction="column" gap="12" w="full">
+        <RevealGroup w="full" order="1">
+          <Container maxW="containerFramed">
+            <TixSpotlight />
+          </Container>
+        </RevealGroup>
+
+        <RevealGroup w="full" px="25px" order="2">
+          <Container>
+            <Reveal order={0}>
+              <Heading
+                as="h2"
+                textStyle="cossetteDisplayHeading"
+                fontWeight="normal"
+                textTransform="uppercase"
+                color="warmDisplay"
+                textWrap="balance"
+              >
+                Our Platform
+              </Heading>
+            </Reveal>
+          </Container>
+        </RevealGroup>
+
+        <RevealGroup
+          w="full"
+          px="25px"
+          order={{ base: "4", lg901: "3" }}
+        >
+          <Container>
+            <VenueAudiencesGrid />
+          </Container>
+        </RevealGroup>
+
+        <RevealGroup w="full" order={{ base: "3", lg901: "4" }}>
+          <Container maxW="containerFramed">
+            {/* Flip useBentoLayout to false to restore the interactive tab panel. */}
+            {useBentoLayout ? (
+              <PlatformFeaturesBento />
+            ) : (
+              <PlatformFeaturesInteractive />
+            )}
+          </Container>
+        </RevealGroup>
+      </Flex>
+    </Box>
+  )
+}
+
+const useBentoLayout = true
+
+function PlatformFeaturesInteractive() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [exitingIndex, setExitingIndex] = useState<number | null>(null)
   const [enterDirection, setEnterDirection] = useState<NavDirection>("none")
@@ -546,67 +607,20 @@ export function FeaturesSectionInteractive() {
   }, [exitingIndex, handleExitComplete, prefersReducedMotion])
 
   return (
-    <Box
-      as="section"
-      id="platform"
-      bg="pageBg"
-      px={{ base: "6", lg901: "12" }}
-      py={{ base: "10", lg901: "14" }}
-    >
-      <Flex direction="column" gap="12" w="full">
-        <RevealGroup w="full" order="1">
-          <Container maxW="containerFramed">
-            <TixSpotlight />
-          </Container>
-        </RevealGroup>
-
-        <RevealGroup w="full" px="25px" order="2">
-          <Container>
-            <Reveal order={0}>
-              <Heading
-                as="h2"
-                textStyle="cossetteDisplayHeading"
-                fontWeight="normal"
-                textTransform="uppercase"
-                color="warmDisplay"
-                textWrap="balance"
-              >
-                Our Platform
-              </Heading>
-            </Reveal>
-          </Container>
-        </RevealGroup>
-
-        <RevealGroup
-          w="full"
-          px="25px"
-          order={{ base: "4", lg901: "3" }}
+    <Reveal order={0}>
+      <Box
+        w="full"
+        borderRadius="32px"
+        bg="frameBg"
+        p="25px"
+        boxShadow="frame"
+      >
+        <Grid
+          templateColumns={{ base: "1fr", lg901: "2fr 3fr" }}
+          gap={{ base: "6", lg901: "6" }}
+          alignItems="stretch"
         >
-          <Container>
-            <VenueAudiencesGrid />
-          </Container>
-        </RevealGroup>
-
-        <RevealGroup w="full" order={{ base: "3", lg901: "4" }}>
-        <Container maxW="containerFramed">
-        <Reveal order={0}>
-        <Box
-          w="full"
-          borderRadius="32px"
-          bg="frameBg"
-          p="25px"
-          boxShadow="frame"
-        >
-          <Grid
-            templateColumns={{ base: "1fr", lg901: "2fr 3fr" }}
-            gap={{ base: "6", lg901: "6" }}
-            alignItems="stretch"
-          >
-          <Flex
-            direction="column"
-            h="full"
-            minH="0"
-          >
+          <Flex direction="column" h="full" minH="0">
             <PlatformInteractiveHeader />
 
             <Box
@@ -678,12 +692,8 @@ export function FeaturesSectionInteractive() {
               )
             })}
           </Box>
-          </Grid>
-        </Box>
-        </Reveal>
-      </Container>
-        </RevealGroup>
-      </Flex>
-    </Box>
+        </Grid>
+      </Box>
+    </Reveal>
   )
 }

@@ -29,10 +29,22 @@ const visibleTixRules = tixSpotlight.rules.filter(
 
 function buildConnectorPath(start: ConnectorPoint, end: ConnectorPoint) {
   const dx = Math.max(end.x - start.x, 24)
-  const controlOffset = dx * 0.55
-  const c1x = start.x + controlOffset
-  const c2x = end.x - controlOffset
-  return `M ${start.x} ${start.y} C ${c1x} ${start.y}, ${c2x} ${end.y}, ${end.x} ${end.y}`
+  const dy = end.y - start.y
+  const midX = start.x + dx * 0.5
+
+  if (Math.abs(dy) < 2) return `M ${start.x} ${start.y} L ${end.x} ${end.y}`
+
+  const corner = Math.min(10, dx * 0.18, Math.abs(dy) * 0.35)
+  const dir = dy > 0 ? 1 : -1
+
+  return [
+    `M ${start.x} ${start.y}`,
+    `L ${midX - corner} ${start.y}`,
+    `Q ${midX} ${start.y} ${midX} ${start.y + dir * corner}`,
+    `L ${midX} ${end.y - dir * corner}`,
+    `Q ${midX} ${end.y} ${midX + corner} ${end.y}`,
+    `L ${end.x} ${end.y}`,
+  ].join(" ")
 }
 
 function RuleCard({
@@ -327,7 +339,8 @@ function TicketDiagram() {
                 fill="none"
                 stroke="url(#tix-connector-gradient)"
                 strokeWidth="2"
-                strokeLinecap="round"
+                strokeLinecap="square"
+                strokeLinejoin="miter"
                 filter="url(#tix-connector-glow)"
               />
             ))}

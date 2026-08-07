@@ -41,8 +41,8 @@ export const aboutSection = {
 
 export const navMenuLinks = [
   { label: "For venues", href: "#venues" },
-  { label: "Press", href: "#press" },
   { label: "Platform", href: "#platform" },
+  { label: "Press", href: "#press" },
 ] as const
 
 export const venuesSection = {
@@ -162,7 +162,7 @@ export const features = [
   {
     icon: "✦",
     title: "On-Platform Meta Ads",
-    body: "Launch and manage Meta ad campaigns directly from KYD. Turn audience insights into targeted promotion without switching tools.",
+    body: "Launch and manage Meta ad campaigns directly from KYD using your first-party fan data. Turn audience insights into targeted promotion without switching tools.",
   },
   {
     icon: "⚡",
@@ -172,7 +172,7 @@ export const features = [
   {
     icon: "↻",
     title: "Unscalpable Resale Capture",
-    body: "Keep tickets in fans' hands while capturing resale activity wherever tickets move. KYD gives venues control over resale and keeps the upside with the venue, not the secondary market.",
+    body: "Capture every resale and keep the upside with the venue. Unscalpable tickets stay controlled wherever they move.",
   },
 ] as const
 

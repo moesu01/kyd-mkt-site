@@ -3,9 +3,7 @@ import type { ReactNode } from "react"
 import platformVisualBg from "../assets/images/platform-visual-temp.jpg"
 import { assetUrl } from "../lib/asset-url"
 
-export function EmailCampaignVisual({
-  shouldAnimate,
-}: EmailCampaignVisualProps) {
+export function MetaAdsVisual({ shouldAnimate }: MetaAdsVisualProps) {
   return (
     <Box position="absolute" inset="0" overflow="hidden">
       <Image
@@ -25,7 +23,7 @@ export function EmailCampaignVisual({
         pointerEvents="none"
         bg="linear-gradient(to bottom, oklch(0.15 0.01 63.9) 0%, transparent 14%)"
       />
-      <CampaignPreview shouldAnimate={shouldAnimate} />
+      <AdCreativePreview shouldAnimate={shouldAnimate} />
       <Flex
         position="absolute"
         inset="0 50% 0 0"
@@ -44,23 +42,28 @@ export function EmailCampaignVisual({
           style={getEnterStyle({ delay: 0 })}
           flexShrink={0}
           color="white"
-          fontSize={campaignFontSizes.title}
+          fontSize={metaFontSizes.title}
           fontWeight="500"
           lineHeight="1.2"
           letterSpacing="-0.03em"
           whiteSpace="nowrap"
         >
-          Campaign Review
+          Ad Manager
         </Text>
         */}
 
         <MetricSection
-          title="Email Ticket Sales"
+          title="Campaign Performance"
           delay={60}
           shouldAnimate={shouldAnimate}
         >
-          <Box display="grid" gridTemplateColumns="repeat(2, minmax(0, 1fr))" gap="3.4cqw" p="1px">
-            {ticketSalesMetrics.map((metric, index) => (
+          <Box
+            display="grid"
+            gridTemplateColumns="repeat(2, minmax(0, 1fr))"
+            gap="3.4cqw"
+            p="1px"
+          >
+            {performanceMetrics.map((metric, index) => (
               <MetricCard
                 key={metric.label}
                 metric={metric}
@@ -72,38 +75,34 @@ export function EmailCampaignVisual({
         </MetricSection>
 
         <MetricSection
-          title="Email Metrics"
+          title="Delivery"
           delay={350}
           shouldAnimate={shouldAnimate}
         >
-          <Flex direction="column" gap="3.4cqw" p="1px">
-            {emailMetricRows.map((row, rowIndex) => (
-              <Box
-                key={row.map((metric) => metric.label).join("-")}
-                display="grid"
-                gridTemplateColumns={`repeat(${row.length}, minmax(0, 1fr))`}
-                gap="3.4cqw"
-              >
-                {row.map((metric, metricIndex) => (
-                  <MetricCard
-                    key={metric.label}
-                    metric={metric}
-                    delay={410 + (rowIndex * 3 + metricIndex) * 45}
-                    shouldAnimate={shouldAnimate}
-                    isCompact
-                  />
-                ))}
-              </Box>
+          <Box
+            display="grid"
+            gridTemplateColumns="repeat(2, minmax(0, 1fr))"
+            gap="3.4cqw"
+            p="1px"
+          >
+            {deliveryMetrics.map((metric, index) => (
+              <MetricCard
+                key={metric.label}
+                metric={metric}
+                delay={410 + index * 45}
+                shouldAnimate={shouldAnimate}
+                isCompact
+              />
             ))}
-          </Flex>
+          </Box>
         </MetricSection>
       </Flex>
     </Box>
   )
 }
 
-function CampaignPreview({ shouldAnimate }: CampaignPreviewProps) {
-  const frameRadius = { base: "16px", md700: "20px", lg901: "24px" }
+function AdCreativePreview({ shouldAnimate }: AdCreativePreviewProps) {
+  const phoneRadius = { base: "16px", md700: "20px", lg901: "24px" }
 
   return (
     <Box
@@ -114,25 +113,126 @@ function CampaignPreview({ shouldAnimate }: CampaignPreviewProps) {
       left="calc(50% + 12px)"
       overflow="hidden"
       border="1px solid rgba(255, 255, 255, 0.28)"
-      borderTopLeftRadius={frameRadius}
-      borderTopRightRadius={frameRadius}
+      borderTopLeftRadius={phoneRadius}
+      borderTopRightRadius={phoneRadius}
       borderBottomLeftRadius="0"
       borderBottomRightRadius="0"
       bg="rgba(8, 8, 8, 0.72)"
       boxShadow="0 18px 42px rgba(0, 0, 0, 0.22)"
       className={shouldAnimate ? "campaign-preview-enter" : undefined}
+      containerType="inline-size"
     >
-      <Image
-        position="absolute"
-        inset="0"
-        w="full"
-        h="full"
-        src={assetUrl("/images/feat/email_cmpgn2.png")}
-        alt=""
-        objectFit="cover"
-        objectPosition="top"
-        draggable={false}
-      />
+      <Flex direction="column" h="full" minH="0">
+        <Flex align="center" gap="2.8cqw" px="4cqw" py="3.5cqw" flexShrink={0}>
+          <Box
+            w="8cqw"
+            h="8cqw"
+            borderRadius="full"
+            bg="rgba(255, 255, 255, 0.18)"
+            flexShrink={0}
+          />
+          <Flex direction="column" gap="1cqw" minW="0">
+            <Text
+              color="white"
+              fontSize="4.5cqw"
+              fontWeight="600"
+              lineHeight="1.2"
+              letterSpacing="-0.02em"
+              whiteSpace="nowrap"
+            >
+              KYD Tickets
+            </Text>
+            <Text
+              color="rgba(255, 255, 255, 0.5)"
+              fontSize="3.5cqw"
+              fontWeight="400"
+              lineHeight="1"
+              whiteSpace="nowrap"
+            >
+              Sponsored
+            </Text>
+          </Flex>
+        </Flex>
+
+        <Box position="relative" flex="1" minH="0" overflow="hidden">
+          <Image
+            position="absolute"
+            inset="0"
+            w="full"
+            h="full"
+            src={platformVisualBg}
+            alt=""
+            objectFit="cover"
+            objectPosition="center"
+            draggable={false}
+          />
+          <Box
+            position="absolute"
+            inset="auto 0 0"
+            h="40%"
+            bg="linear-gradient(to bottom, transparent, rgba(8, 8, 8, 0.85))"
+            pointerEvents="none"
+          />
+          <Flex
+            position="absolute"
+            inset="auto 0 0"
+            direction="column"
+            gap="1.5cqw"
+            p="4cqw"
+          >
+            <Text
+              color="white"
+              fontSize="5cqw"
+              fontWeight="600"
+              lineHeight="1.2"
+              letterSpacing="-0.03em"
+            >
+              This weekend only
+            </Text>
+            <Text
+              color="rgba(255, 255, 255, 0.7)"
+              fontSize="3.8cqw"
+              fontWeight="400"
+              lineHeight="1.3"
+            >
+              Get tickets before they sell out
+            </Text>
+          </Flex>
+        </Box>
+
+        <Flex
+          align="center"
+          justify="space-between"
+          gap="3cqw"
+          px="4cqw"
+          py="3.5cqw"
+          flexShrink={0}
+          borderTop="1px solid rgba(255, 255, 255, 0.1)"
+        >
+          <Text
+            color="rgba(255, 255, 255, 0.64)"
+            fontSize="3.8cqw"
+            fontWeight="500"
+            lineHeight="1"
+            whiteSpace="nowrap"
+          >
+            kyd.com
+          </Text>
+          <Box
+            px="3.5cqw"
+            py="2cqw"
+            borderRadius="1.5cqw"
+            bg="rgba(255, 255, 255, 0.14)"
+            color="white"
+            fontSize="3.5cqw"
+            fontWeight="600"
+            lineHeight="1"
+            whiteSpace="nowrap"
+          >
+            Get Tickets
+          </Box>
+        </Flex>
+      </Flex>
     </Box>
   )
 }
@@ -150,7 +250,7 @@ function MetricSection({
         style={getEnterStyle({ delay })}
         flexShrink={0}
         color="warmMuted"
-        fontSize={campaignFontSizes.sectionHeading}
+        fontSize={metaFontSizes.sectionHeading}
         fontWeight="500"
         lineHeight="1.2"
         letterSpacing="-0.03em"
@@ -198,7 +298,7 @@ function MetricCard({
         <Text
           minW="0"
           color="rgba(255, 255, 255, 0.64)"
-          fontSize={campaignFontSizes.metricLabel}
+          fontSize={metaFontSizes.metricLabel}
           fontWeight="500"
           lineHeight="1"
           letterSpacing="-0.03em"
@@ -211,8 +311,8 @@ function MetricCard({
         color="warmDisplay"
         fontSize={
           isCompact
-            ? campaignFontSizes.compactMetricValue
-            : campaignFontSizes.metricValue
+            ? metaFontSizes.compactMetricValue
+            : metaFontSizes.metricValue
         }
         fontWeight="400"
         lineHeight="1.2"
@@ -245,9 +345,9 @@ function getEnterStyle({ delay }: GetEnterStyleOptions) {
   return { ["--campaign-enter-delay" as string]: `${delay}ms` }
 }
 
-export const emailCampaignVisualTitle = "Email Campaigns"
+export const metaAdsVisualTitle = "On-Platform Meta Ads"
 
-const campaignFontSizes = {
+const metaFontSizes = {
   title: "10cqw",
   sectionHeading: "7.5cqw",
   metricLabel: "4.75cqw",
@@ -255,34 +355,25 @@ const campaignFontSizes = {
   compactMetricValue: "7cqw",
 } as const
 
-const ticketSalesMetrics: Metric[] = [
-  { label: "Tickets Sold", value: "72" },
-  { label: "Avg. Order Size", value: "$24.31" },
-  { label: "ROAS", value: "2.7X", isAttributed: true },
-  { label: "Revenue", value: "$1750.32", isAttributed: true },
+const performanceMetrics: Metric[] = [
+  { label: "Reach", value: "84.2K" },
+  { label: "Spend", value: "$1,240" },
+  { label: "ROAS", value: "3.4X", isAttributed: true },
+  { label: "Attributed Sales", value: "$4,216", isAttributed: true },
 ]
 
-const emailMetricRows: Metric[][] = [
-  [
-    { label: "Delivered", value: "113.4K" },
-    { label: "Opened", value: "10.6K" },
-    { label: "Open Rate", value: "14.92%" },
-  ],
-  [
-    { label: "Clicked", value: "292" },
-    { label: "CTR", value: "0.21%" },
-  ],
-  [
-    { label: "Unsubscribed", value: "209" },
-    { label: "Unsubscribe Rate", value: "0.18%" },
-  ],
+const deliveryMetrics: Metric[] = [
+  { label: "Impressions", value: "312K" },
+  { label: "CTR", value: "1.8%" },
+  { label: "CPC", value: "$0.42" },
+  { label: "Conv. Rate", value: "2.1%" },
 ]
 
-interface EmailCampaignVisualProps {
+interface MetaAdsVisualProps {
   shouldAnimate: boolean
 }
 
-interface CampaignPreviewProps {
+interface AdCreativePreviewProps {
   shouldAnimate: boolean
 }
 
