@@ -14,6 +14,12 @@ const shadowBorder = "0 0 0 1px rgba(255, 255, 255, 0.1)"
 /** Fixed compact nav: 20px top inset + 52px shell (40px controls + 6px py). */
 const compactNavBottomPx = 72
 
+/**
+ * Where an anchored section top comes to rest: clear of the nav, with a 16px
+ * breath above it. Also the line the nav's active-section probe reads from.
+ */
+export const navScrollOffsetPx = compactNavBottomPx + 16
+
 const primaryShadowRest =
   "0 2px 10px rgba(0, 0, 0, 0), inset 0 1px 0 rgba(255, 255, 255, 0)"
 const primaryShadowHover =
@@ -308,7 +314,7 @@ const config = defineConfig({
       scrollBehavior: "smooth",
       // Compact nav is fixed at top 20px over a 52px shell, so its bottom edge
       // sits at 72px. Without this, hash jumps tuck section headings under it.
-      scrollPaddingTop: `${compactNavBottomPx + 16}px`,
+      scrollPaddingTop: `${navScrollOffsetPx}px`,
       fontFamily: "Inter, sans-serif",
       fontFeatureSettings: "'liga' 1, 'calt' 1",
       bg: "pageBg",

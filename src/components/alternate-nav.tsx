@@ -9,7 +9,9 @@ import {
 import { createPortal } from "react-dom"
 import { links, navMenuLinks } from "../content/site-content"
 import { assetUrl } from "../lib/asset-url"
+import { navScrollOffsetPx } from "../theme"
 import { Button, CtaArrow } from "./ui/button"
+import { useActiveSection } from "./use-active-section"
 
 const interactionEase = "cubic-bezier(0.2, 0, 0, 1)"
 const navShellRadius = 16
@@ -43,6 +45,10 @@ const navMenuGapPx = 8
 const navHoverInDurationMs = 60
 const navHoverOutDurationMs = 140
 const navPressDurationMs = 150
+/** Only the section you are reading gets pure white. */
+const navActiveColor = "#fff"
+/** DOM order matters: the probe walks these top to bottom. */
+const navSectionIds = navMenuLinks.map((item) => item.href.replace("#", ""))
 
 export type AlternateNavVariant = "hero" | "compact"
 
@@ -58,34 +64,47 @@ const navLinkStyles = {
   minH: "10",
   px: "4",
   bg: "transparent",
-  color: "fg",
+  color: "warmDisplay",
   fontFamily: "sans",
   fontSize: "13px",
-  fontWeight: "medium",
+  fontWeight: "normal",
   lineHeight: "1",
   textDecoration: "none",
   borderRadius: "4px",
   // Press animates `scale`, not `transform`, so it can never fight the
   // staggered translateY the mobile menu runs on each item's wrapper.
-  transitionProperty: "background-color, scale",
-  transitionDuration: `${navHoverOutDurationMs}ms, ${navPressDurationMs}ms`,
-  transitionTimingFunction: `${interactionEase}, ease-out`,
+  transitionProperty: "background-color, color, scale",
+  transitionDuration: `${navHoverOutDurationMs}ms, ${navHoverOutDurationMs}ms, ${navPressDurationMs}ms`,
+  transitionTimingFunction: `${interactionEase}, ${interactionEase}, ease-out`,
   _hover: {
     bg: "surfaceRaised",
-    transitionDuration: `${navHoverInDurationMs}ms, ${navPressDurationMs}ms`,
+    transitionDuration: `${navHoverInDurationMs}ms, ${navHoverInDurationMs}ms, ${navPressDurationMs}ms`,
   },
   _active: {
     scale: "0.96",
   },
+  // Ring only — weight and color are reserved for the active section, so a
+  // focused link can never impersonate the one you are reading.
   _focusVisible: {
-    outline: "2px solid",
-    outlineColor: "rgba(255, 255, 255, 0.45)",
+    outline: "1px solid",
+    outlineColor: "rgba(255, 255, 255, 0.24)",
     outlineOffset: "2px",
   },
 } as const
 
+function getNavLinkStyles({ isActive }: { isActive: boolean }) {
+  return {
+    ...navLinkStyles,
+    color: isActive ? navActiveColor : "warmDisplay",
+    fontWeight: isActive ? "medium" : "normal",
+  } as const
+}
+
 const ticketsButtonStyles = {
   bg: "frameBg",
+  // One step under the `dark` variant's semibold, matching the resting links.
+  color: "warmDisplay",
+  fontWeight: "medium",
   boxShadow: "0 0 2px 1px rgba(255, 255, 255, 0.15)",
   // Overrides the recipe's symmetric 220ms so this matches the sibling links.
   transitionDuration: `${navHoverOutDurationMs}ms`,
@@ -236,6 +255,10 @@ export function AlternateNav({
   const menuPanelRef = useRef<HTMLDivElement>(null)
   const wasMenuOpenRef = useRef(false)
   const isHero = variant === "hero"
+  const { activeId } = useActiveSection({
+    sectionIds: navSectionIds,
+    offsetPx: navScrollOffsetPx,
+  })
 
   useEffect(() => {
     setIsPortalReady(true)
@@ -320,10 +343,11 @@ export function AlternateNav({
 
   useEffect(() => {
     if (isMenuOpen) {
-      const firstFocusable = menuPanelRef.current?.querySelector<HTMLElement>(
-        "a[href], button:not([disabled])",
-      )
-      firstFocusable?.focus()
+      // Focus the panel rather than its first link. Focus still enters the
+      // menu (Tab and Escape work), but programmatically focusing a link can
+      // satisfy :focus-visible even on tap, and a lit first item reads as
+      // "this is your current section" when it only means "focus landed here".
+      menuPanelRef.current?.focus()
       wasMenuOpenRef.current = true
       return
     }
@@ -380,6 +404,7 @@ export function AlternateNav({
               ref={menuPanelRef}
               id="alternate-nav-menu"
               as="nav"
+              tabIndex={-1}
               direction="column"
               gap="2"
               p="2"
@@ -394,6 +419,9 @@ export function AlternateNav({
                 filter: "none",
                 backdropFilter: navGlassFilter,
                 WebkitBackdropFilter: navGlassFilter,
+                // Scripted focus target, never tabbed to — a ring here would
+                // just outline the whole panel on open.
+                outline: "none",
               }}
             >
               {navMenuLinks.map((item, index) => (
@@ -410,8 +438,13 @@ export function AlternateNav({
                     href={item.href}
                     w="full"
                     tabIndex={isMenuOpen ? 0 : -1}
+                    aria-current={
+                      activeId === item.href.slice(1) ? "location" : undefined
+                    }
                     css={{
-                      ...navLinkStyles,
+                      ...getNavLinkStyles({
+                        isActive: activeId === item.href.slice(1),
+                      }),
                       fontSize: "18px",
                       minH: "12",
                       px: "4",
@@ -515,7 +548,16 @@ export function AlternateNav({
             aria-label="Page sections"
           >
             {navMenuLinks.map((item) => (
-              <Link key={item.href} href={item.href} css={navLinkStyles}>
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={
+                  activeId === item.href.slice(1) ? "location" : undefined
+                }
+                css={getNavLinkStyles({
+                  isActive: activeId === item.href.slice(1),
+                })}
+              >
                 {item.label}
               </Link>
             ))}
