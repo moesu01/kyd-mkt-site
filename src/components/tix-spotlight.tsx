@@ -390,7 +390,7 @@ function TicketDiagram() {
             alt=""
             objectFit="cover"
             objectPosition="top"
-            opacity="0.1"
+            opacity="0.18"
             filter="blur(2px)"
             draggable={false}
             pointerEvents="none"
@@ -475,7 +475,7 @@ function TicketDiagram() {
             alt=""
             objectFit="cover"
             objectPosition="top"
-            opacity="0.1"
+            opacity="0.18"
             filter="blur(2px)"
             draggable={false}
             pointerEvents="none"

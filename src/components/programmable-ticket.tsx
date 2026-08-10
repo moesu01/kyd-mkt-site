@@ -42,15 +42,6 @@ export function ProgrammableTicket({
             pb="12px"
           >
             <Text
-              fontSize="13px"
-              fontWeight="500"
-              lineHeight="1.2"
-              color={ticketLabelColor}
-              whiteSpace="nowrap"
-            >
-              {eyebrow}
-            </Text>
-            <Text
               fontFamily="cossetteTexte"
               fontSize="20px"
               fontWeight="medium"
@@ -60,6 +51,15 @@ export function ProgrammableTicket({
               whiteSpace="nowrap"
             >
               {title}
+            </Text>
+            <Text
+              fontSize="13px"
+              fontWeight="500"
+              lineHeight="1.2"
+              color={ticketLabelColor}
+              whiteSpace="nowrap"
+            >
+              {eyebrow}
             </Text>
           </Flex>
           <VStack mt="auto" gap="0" align="stretch">
@@ -73,7 +73,7 @@ export function ProgrammableTicket({
             />
             <ProgrammableDetailRow
               label="VENUE"
-              value={`${venue} · ${city}`}
+              value={city ? `${venue} · ${city}` : venue}
             />
             <ProgrammableDetailRow label="TX" value={tixId} isMono />
           </VStack>

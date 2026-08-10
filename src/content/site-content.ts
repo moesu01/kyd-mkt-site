@@ -97,10 +97,10 @@ export const tixSpotlight = {
   body: "KYD runs on TIX, the programmable, onchain ticket standard that gives venues and artists control wherever a ticket moves.",
   href: links.tix,
   ticket: {
-    eyebrow: "World Cup 2026 • Group C",
-    title: "Brazil vs Morocco",
-    venue: "MetLife Stadium",
-    city: "East Rutherford, NJ",
+    eyebrow: "With Saving Grace & Suzi Dian",
+    title: "Robert Plant",
+    venue: "The Cathedral of St. John the Divine",
+    city: "",
     ticketType: "General Admission",
     date: "Jun 13, 2026",
     time: "8:00PM",
@@ -110,7 +110,7 @@ export const tixSpotlight = {
   rules: [
     {
       label: "Ticket Info",
-      value: "Brazil vs Morocco • 1x",
+      value: "Robert Plant • 1x",
       secondaryValue: tixTicketId,
       markSrc: "/icons/kyd-mark-sm.svg",
       shouldInvertMark: true,
