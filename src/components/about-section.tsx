@@ -8,6 +8,7 @@ import {
 import {
   aboutSection,
   footerLegalLinks,
+  footerUtilityLinks,
   links,
 } from "../content/site-content"
 import { colors } from "../theme/tokens"
@@ -195,28 +196,26 @@ function LegalFooterBar() {
       direction={{ base: "column", md: "row" }}
       align="center"
       justify="space-between"
-      gap={{ base: "2", md: "8" }}
+      gap={{ base: "2", md: "0" }}
       mx="auto"
       w="full"
       maxW="1256px"
+      position="relative"
     >
-      <Flex as="nav" aria-label="Legal" gap="3" flexWrap="wrap" justify="center">
-        {footerLegalLinks.map((link) => {
-          const isExternal = link.href.startsWith("http")
-          return (
-            <Link
-              key={link.label}
-              href={link.href}
-              {...footerLinkStyles}
-              {...(isExternal
-                ? { target: "_blank", rel: "noopener noreferrer" }
-                : {})}
-            >
-              {link.label}
-            </Link>
-          )
-        })}
+      <Flex
+        as="nav"
+        aria-label="Legal"
+        gap="3"
+        flexWrap="wrap"
+        justify={{ base: "center", md: "flex-start" }}
+        flex={{ md: "1" }}
+        minW="0"
+      >
+        {footerLegalLinks.map((link) => (
+          <FooterBarLink key={link.label} link={link} />
+        ))}
       </Flex>
+
       <Text
         fontSize="12px"
         lineHeight="18px"
@@ -224,10 +223,48 @@ function LegalFooterBar() {
         textAlign="center"
         textTransform="uppercase"
         whiteSpace={{ base: "normal", sm: "nowrap" }}
+        position={{ md: "absolute" }}
+        left={{ md: "50%" }}
+        transform={{ md: "translateX(-50%)" }}
+        pointerEvents="none"
       >
         © {CURRENT_YEAR} KYD Labs. All rights reserved.
       </Text>
+
+      <Flex
+        as="nav"
+        aria-label="Support"
+        gap="3"
+        flexWrap="wrap"
+        justify={{ base: "center", md: "flex-end" }}
+        flex={{ md: "1" }}
+        minW="0"
+      >
+        {footerUtilityLinks.map((link) => (
+          <FooterBarLink key={link.label} link={link} />
+        ))}
+      </Flex>
     </Flex>
+  )
+}
+
+function FooterBarLink({
+  link,
+}: {
+  link: { label: string; href: string }
+}) {
+  const isExternal = link.href.startsWith("http")
+
+  return (
+    <Link
+      href={link.href}
+      {...footerLinkStyles}
+      {...(isExternal
+        ? { target: "_blank", rel: "noopener noreferrer" }
+        : {})}
+    >
+      {link.label}
+    </Link>
   )
 }
 

@@ -394,6 +394,9 @@ export const footerPrimaryLinks = [
 export const footerLegalLinks = [
   { label: "Terms of Service", href: links.terms },
   { label: "Privacy Policy", href: links.privacy },
+] as const
+
+export const footerUtilityLinks = [
   { label: "TIX", href: links.tix },
   { label: "Get Help", href: "#fans" },
 ] as const
