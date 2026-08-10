@@ -34,12 +34,10 @@ const ABOUT_EXTREME_VIEWPORT = "(max-height: 640px)"
  * (Social Proof bottom / Used By / Venues: py 20 / 28).
  */
 const ABOUT_STAGE_PY = { base: "20", lg901: "28" } as const
-/**
- * Absolute legal bar sits on top of the stage — reserve enough bottom
- * padding so the Book a call CTA stays clear of the copyright row on
- * short viewports (stacked mobile footer is taller than the desktop row).
- */
-const ABOUT_FOOTER_CLEARANCE = { base: "9rem", md: "6rem" } as const
+/** Space below the legal bar, matching its old absolute bottom inset. */
+const ABOUT_FOOTER_INSET = { base: "4", md: "8" } as const
+/** Breathing room between the CTA row and the legal bar. */
+const ABOUT_FOOTER_GAP = { base: "10", md: "12" } as const
 /** Below this height, tighten copy width so the stack stays readable. */
 const ABOUT_SHORT_VIEWPORT = "(max-height: 901px)"
 /**
@@ -113,80 +111,85 @@ export function AboutSection() {
       bg="transparent"
       backgroundImage={aboutSectionGradient}
     >
+      {/*
+        Full viewport when the stack fits, taller when it does not. The legal
+        bar is in flow below the stage rather than absolutely pinned to it, so
+        a stack that outgrows the viewport pushes the bar down instead of
+        sliding under it.
+      */}
       <Box
         position="relative"
-        minH="heroMinHeight"
-        h="100dvh"
-        maxH={{ base: "heroMaxHeight", lg901: "none" }}
+        minH="100dvh"
         display="flex"
         flexDirection="column"
-        justifyContent="center"
         alignItems="center"
         overflow="hidden"
         px={{ base: "6", lg901: "12" }}
         pt={ABOUT_STAGE_PY}
-        pb={ABOUT_FOOTER_CLEARANCE}
+        pb={ABOUT_FOOTER_INSET}
         bg="transparent"
       >
-        <Container position="relative" zIndex={1} w="full">
-          <RevealGroup triggerRef={sectionRef} rootMargin="0px">
-            <Flex
-              direction="column"
-              align="center"
-              w="full"
-              css={{ gap: ABOUT_END_STACK_GAP }}
-            >
-              {/* Logo + curved tagline share one-time Reveal stagger; logo auto-plays once, then scrubs. */}
-              <Box
-                w="full"
-                maxW={ABOUT_END_EMBLEM_MAX_W}
-                mx="auto"
-                flexShrink={1}
-                minH={0}
-                css={{
-                  [`@media (max-width: ${ABOUT_CURVED_TAGLINE_MOBILE_BREAKPOINT_PX}px)`]:
-                    {
-                      position: "relative",
-                      left: "50%",
-                      width: "calc(100vw + 32px)",
-                      maxWidth: "calc(100vw + 32px)",
-                      flexShrink: 0,
-                      transform: "translateX(-50%)",
-                    },
-                }}
-              >
-                <AboutEmblem
-                  revealCurvedText
-                  presentation={{
-                    emblemScale: presentation.emblemScale,
-                    aboutAnimationOpacity: presentation.aboutAnimationOpacity,
-                    aboutAnimationProgress: presentation.aboutAnimationProgress,
-                  }}
-                />
-              </Box>
-
+        <Flex flex="1" w="full" align="center" justify="center">
+          <Container position="relative" zIndex={1} w="full">
+            <RevealGroup triggerRef={sectionRef} rootMargin="0px">
               <Flex
                 direction="column"
                 align="center"
                 w="full"
-                maxW="75rem"
-                flexShrink={0}
-                css={{ gap: ABOUT_END_COPY_GAP }}
+                css={{ gap: ABOUT_END_STACK_GAP }}
               >
-                <AboutCopyLayer
-                  headline={aboutSection.headline}
-                  body={aboutSection.body}
-                />
+                {/* Logo + curved tagline share one-time Reveal stagger; logo auto-plays once, then scrubs. */}
+                <Box
+                  w="full"
+                  maxW={ABOUT_END_EMBLEM_MAX_W}
+                  mx="auto"
+                  flexShrink={1}
+                  minH={0}
+                  css={{
+                    [`@media (max-width: ${ABOUT_CURVED_TAGLINE_MOBILE_BREAKPOINT_PX}px)`]:
+                      {
+                        position: "relative",
+                        left: "50%",
+                        width: "calc(100vw + 32px)",
+                        maxWidth: "calc(100vw + 32px)",
+                        flexShrink: 0,
+                        transform: "translateX(-50%)",
+                      },
+                  }}
+                >
+                  <AboutEmblem
+                    revealCurvedText
+                    presentation={{
+                      emblemScale: presentation.emblemScale,
+                      aboutAnimationOpacity: presentation.aboutAnimationOpacity,
+                      aboutAnimationProgress:
+                        presentation.aboutAnimationProgress,
+                    }}
+                  />
+                </Box>
+
+                <Flex
+                  direction="column"
+                  align="center"
+                  w="full"
+                  maxW="75rem"
+                  flexShrink={0}
+                  css={{ gap: ABOUT_END_COPY_GAP }}
+                >
+                  <AboutCopyLayer
+                    headline={aboutSection.headline}
+                    body={aboutSection.body}
+                  />
+                </Flex>
               </Flex>
-            </Flex>
-          </RevealGroup>
-        </Container>
+            </RevealGroup>
+          </Container>
+        </Flex>
         <RevealGroup
           triggerRef={sectionRef}
           rootMargin="0px"
-          position="absolute"
-          insetInline={{ base: "6", lg901: "12" }}
-          bottom={{ base: "4", md: "8" }}
+          w="full"
+          mt={ABOUT_FOOTER_GAP}
           zIndex={1}
         >
           <Reveal order={4}>
@@ -462,12 +465,11 @@ function AboutCopyLayer({
           >
             <BookCallCtaContent />
           </Button>
-          {/* TEMP: Find my tickets hidden in About — restore when ready. */}
           <Button
             href={links.tickets}
             variant="outline-accent"
             size="hero"
-            css={{ ...findTicketsButtonCss, display: "none" }}
+            css={findTicketsButtonCss}
           >
             Find my tickets
           </Button>
