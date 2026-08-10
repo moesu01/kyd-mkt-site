@@ -1,7 +1,7 @@
 export const prominentEyebrowTextProps = {
   fontFamily: "cossetteTexte",
-  fontSize: "14px",
-  fontWeight: "bold",
+  fontSize: { base: "13px", lg901: "14px" },
+  fontWeight: { base: "semibold", lg901: "bold" },
   textTransform: "uppercase",
   letterSpacing: "0.1em",
   color: "warmMuted",

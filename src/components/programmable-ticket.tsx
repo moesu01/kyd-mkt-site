@@ -29,7 +29,7 @@ export function ProgrammableTicket({
     >
       <Grid
         templateColumns={{
-          base: "minmax(0, 1fr) 82px",
+          base: "1fr",
           md: "minmax(0, 1fr) 110px",
         }}
       >
@@ -80,12 +80,12 @@ export function ProgrammableTicket({
         </Flex>
 
         <Flex
+          display={{ base: "none", md: "flex" }}
           direction="column"
           align="center"
           justify="space-between"
           pt="3"
           pb="1.5"
-          pe="0"
           borderLeft="1px dashed rgba(255, 255, 255, 0.1)"
         >
           <Flex flex="1" w="full" align="center" justify="center">
@@ -102,11 +102,11 @@ export function ProgrammableTicket({
           <Flex
             align="center"
             justify="center"
-            w={{ base: "70px", md: "96px" }}
-            h={{ base: "70px", md: "96px" }}
+            w="96px"
+            h="96px"
             borderRadius="12px"
             bg="transparent"
-            p={{ base: "1.5", md: "2.5" }}
+            p="2.5"
             overflow="hidden"
             aria-label="Ticket QR code"
           >

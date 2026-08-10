@@ -249,6 +249,11 @@ function useConnectorPaths({
   return paths
 }
 
+/** Vertical space between the stacked cards on mobile; also the connector run. */
+const MOBILE_CARD_GAP = "8"
+/** Matches the md700 breakpoint where the two cards move side by side. */
+const SIDE_BY_SIDE_QUERY = "(min-width: 700px)"
+
 function TicketDiagram() {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const ticketRef = useRef<HTMLDivElement | null>(null)
@@ -256,7 +261,7 @@ function TicketDiagram() {
   const [isDesktop, setIsDesktop] = useState(false)
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 901px)")
+    const mediaQuery = window.matchMedia(SIDE_BY_SIDE_QUERY)
 
     function handleChange() {
       setIsDesktop(mediaQuery.matches)
@@ -357,10 +362,11 @@ function TicketDiagram() {
       <Grid
         templateColumns={{
           base: "1fr",
+          md700: "minmax(0, 1fr) 40px minmax(0, 1fr)",
           lg901: "minmax(0, 420px) 64px minmax(0, 408px)",
         }}
-        gap={{ base: "8", lg901: "0" }}
-        alignItems={{ base: "start", lg901: "stretch" }}
+        gap={{ base: MOBILE_CARD_GAP, md700: "0" }}
+        alignItems={{ base: "start", md700: "stretch" }}
         justifyContent="center"
         position="relative"
         zIndex="2"
@@ -372,14 +378,15 @@ function TicketDiagram() {
           align="stretch"
           gap="6"
           w="full"
-          maxW={{ base: "408px", lg901: "420px" }}
+          maxW={{ base: "408px", md700: "full", lg901: "420px" }}
           p="6"
           overflow="hidden"
           borderRadius="28px"
           bg="frameBg"
           boxShadow="frame"
           justifySelf="center"
-          gridColumn={{ lg901: 1 }}
+          gridRow={1}
+          gridColumn={1}
         >
           <Image
             position="absolute"
@@ -450,21 +457,45 @@ function TicketDiagram() {
           </Flex>
         </Flex>
 
+        {/*
+          Mobile connector: sits inside the row-1 cell but is pushed into the
+          grid gap by a negative margin, so it can never overlap card content.
+          Height and offset track MOBILE_CARD_GAP.
+        */}
+        <Box
+          display={{ base: "block", md700: "none" }}
+          gridRow={1}
+          gridColumn={1}
+          alignSelf="end"
+          justifySelf="center"
+          w="2px"
+          h={MOBILE_CARD_GAP}
+          mb={`-${MOBILE_CARD_GAP}`}
+          zIndex="3"
+          pointerEvents="none"
+          aria-hidden
+          bgImage="linear-gradient(to bottom, oklch(0.72 0.14 195 / 0.15) 0%, oklch(0.78 0.16 195 / 0.95) 45%, oklch(0.82 0.14 200 / 0.35) 100%)"
+          css={{
+            filter: "drop-shadow(0 0 4px oklch(0.78 0.16 195 / 0.55))",
+          }}
+        />
+
         <Flex
           position="relative"
           direction="column"
           align="stretch"
           gap="8"
           justify="space-between"
-          justifySelf={{ base: "center", lg901: "stretch" }}
+          justifySelf={{ base: "center", md700: "stretch" }}
           w="full"
-          maxW={{ base: "408px", lg901: "408px" }}
+          maxW={{ base: "408px", md700: "full", lg901: "408px" }}
           p="6"
           overflow="hidden"
           borderRadius="28px"
           bg="frameBg"
           boxShadow="frame"
-          gridColumn={{ lg901: 3 }}
+          gridRow={{ base: 2, md700: 1 }}
+          gridColumn={{ base: 1, md700: 3 }}
         >
           <Image
             position="absolute"
@@ -572,12 +603,8 @@ export function TixSpotlight() {
             />
             <Text
               as="p"
-              fontFamily="cossetteTitre"
-              fontSize="36px"
-              fontStyle="normal"
-              fontWeight="400"
-              lineHeight="1.2"
-              letterSpacing="0"
+              textStyle="cossetteDisplayHeading"
+              textTransform="none"
               color="#ccc5be"
               textWrap="pretty"
             >
@@ -589,9 +616,9 @@ export function TixSpotlight() {
               as="p"
               fontFamily="sans"
               fontWeight="normal"
-              fontSize="18px"
-              lineHeight="27px"
-              letterSpacing="-0.36px"
+              fontSize={{ base: "16px", lg901: "18px" }}
+              lineHeight={{ base: "1.4", lg901: "27px" }}
+              letterSpacing={{ base: "0", lg901: "-0.36px" }}
               color="warmMuted"
               textWrap="balance"
             >

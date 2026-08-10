@@ -15,6 +15,12 @@ interface TestimonialBlockProps {
 const PAPER_TEXTURE_URL = assetUrl("/images/paper_tx2.png")
 const QUOTE_FONT_MIN_PX = 18
 const QUOTE_FONT_MAX_PX = 26
+/**
+ * Mobile skips the height fitter: the card is only ~290px wide there, so any
+ * size that fills the card height leaves fewer than 30 characters per line.
+ */
+const QUOTE_FONT_MOBILE_PX = 20
+const QUOTE_DESKTOP_QUERY = "(min-width: 901px)"
 
 function TestimonialLogo({
   logoSrc,
@@ -120,9 +126,14 @@ export function TestimonialBlock({
     if (!container || !quoteEl) return
 
     let isCancelled = false
+    const desktopQuery = window.matchMedia(QUOTE_DESKTOP_QUERY)
 
     const updateFontSize = () => {
       if (isCancelled) return
+      if (!desktopQuery.matches) {
+        setQuoteFontSizePx(QUOTE_FONT_MOBILE_PX)
+        return
+      }
       setQuoteFontSizePx(fitQuoteFontSize({ container, quoteEl }))
     }
 
@@ -134,9 +145,11 @@ export function TestimonialBlock({
 
     const observer = new ResizeObserver(updateFontSize)
     observer.observe(container)
+    desktopQuery.addEventListener("change", updateFontSize)
     return () => {
       isCancelled = true
       observer.disconnect()
+      desktopQuery.removeEventListener("change", updateFontSize)
     }
   }, [quote])
 
@@ -149,7 +162,8 @@ export function TestimonialBlock({
       position="relative"
       w="full"
       maxW="testimonialCard"
-      h={{ base: "480px", lg901: "550px" }}
+      h={{ base: "auto", lg901: "550px" }}
+      minH={{ base: "360px", lg901: "auto" }}
       borderRadius="8px"
       border="1px solid"
       borderColor="rgba(0, 0, 0, 0.1)"
@@ -163,7 +177,7 @@ export function TestimonialBlock({
       }
       backgroundRepeat={placeholder ? undefined : "no-repeat"}
       pt="8"
-      px={{ base: "21px", lg901: "8" }}
+      px={{ base: "18px", lg901: "8" }}
       pb={{ base: "21px", lg901: "8" }}
       overflow="hidden"
       transform={`rotate(${rotateDeg}deg)`}
@@ -183,8 +197,8 @@ export function TestimonialBlock({
         direction="column"
         justify="center"
         minH={0}
-        px="12px"
-        py={{ base: "8", lg901: "12" }}
+        px={{ base: "0", lg901: "12px" }}
+        py={{ base: "6", lg901: "12" }}
         position="relative"
         zIndex={1}
       >

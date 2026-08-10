@@ -222,7 +222,7 @@ const config = defineConfig({
       },
       displayHeading: {
         value: {
-          fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
+          fontSize: "clamp(2rem, 5vw, 4.5rem)",
           fontWeight: "bold",
           lineHeight: "0.95",
           letterSpacing: "tight",
@@ -232,7 +232,7 @@ const config = defineConfig({
         value: {
           fontFamily: "cossetteTitre",
           fontWeight: "normal",
-          fontSize: { base: "2.25rem", md700: "3rem", lg901: "72px" },
+          fontSize: { base: "2rem", md700: "3rem", lg901: "72px" },
           lineHeight: "1.1",
           letterSpacing: "1%",
           textTransform: "uppercase",

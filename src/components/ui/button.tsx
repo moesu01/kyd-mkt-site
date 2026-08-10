@@ -45,11 +45,8 @@ export function CtaArrow() {
 export function BookCallCtaContent() {
   return (
     <ChakraSpan display="inline-flex" alignItems="center" gap="24px">
-      <ChakraSpan display="inline-flex" alignItems="center" gap="4px">
-        <BookCallCalendarIcon />
-        Book a call
-      </ChakraSpan>
-      <CtaArrow />
+      Book a call
+      <BookCallCalendarIcon />
     </ChakraSpan>
   )
 }
@@ -120,5 +117,4 @@ export const bookCallButtonCss = {
   fontWeight: "bold",
   paddingInline: "16px",
   borderRadius: "8px",
-  "& .cta-arrow": { marginInlineStart: "0" },
 } satisfies SystemStyleObject

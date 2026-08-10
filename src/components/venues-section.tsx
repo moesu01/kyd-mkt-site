@@ -73,7 +73,7 @@ function StatCard({
       </Text>
       <Text
         fontFamily="cossetteTexte"
-        fontSize={{ base: "16px", xl1600: "20px" }}
+        fontSize={{ base: "15px", xl1600: "20px" }}
         fontWeight="normal"
         lineHeight="1.35"
         color="warmMuted"
@@ -111,7 +111,7 @@ function TicketRevenueCalculator() {
       direction="column"
       w="full"
       minH={{ base: "auto", xl1600: "290px" }}
-      p="6"
+      p={{ base: "18px", xl1600: "6" }}
       borderRadius="16px"
       bg="#0e0a07"
       boxShadow="0 0 1px 1px rgba(255, 255, 255, 0.1), 0 2px 12px 1px rgba(0, 0, 0, .35)"
@@ -126,9 +126,9 @@ function TicketRevenueCalculator() {
       >
         <Text
           fontFamily="cossetteTexte"
-          fontSize="14px"
+          fontSize={{ base: "13px", lg901: "14px" }}
           fontWeight="bold"
-          lineHeight="14px"
+          lineHeight="1"
           letterSpacing="0.1em"
           textTransform="uppercase"
           color="warmMuted"
@@ -149,7 +149,7 @@ function TicketRevenueCalculator() {
         <Flex align="center" justify="space-between" w="full" gap="4">
           <Text
             fontFamily="cossetteTexte"
-            fontSize={{ base: "16px", xl1600: "20px" }}
+            fontSize={{ base: "15px", xl1600: "20px" }}
             fontWeight="normal"
             lineHeight="1.35"
             color="warmMuted"
@@ -249,7 +249,7 @@ function TicketRevenueCalculator() {
           flex="1"
           minW="0"
           fontFamily="cossetteTexte"
-          fontSize={{ base: "16px", xl1600: "20px" }}
+          fontSize={{ base: "15px", xl1600: "20px" }}
           fontWeight="normal"
           lineHeight="1.35"
           color="warmMuted"
@@ -372,7 +372,7 @@ function VenuesPressCards() {
               <Reveal
                 key={`${testimonial.attribution}-${testimonial.quote}`}
                 order={index}
-                w={{ base: "calc(100vw - 88px)", md700: "full" }}
+                w={{ base: "calc(100vw - 60px)", md700: "full" }}
                 maxW="testimonialCard"
                 mx="auto"
               >
@@ -437,7 +437,7 @@ export function VenuesSection() {
                 css={{
                   "& > p": { mb: "3", mx: "auto" },
                   "& > h2": {
-                    fontSize: { base: "2.25rem", md700: "59px" },
+                    fontSize: { base: "2rem", md700: "59px" },
                     lineHeight: "1.2",
                     letterSpacing: "0.01em",
                     color: "warmDisplay",
@@ -466,7 +466,7 @@ export function VenuesSection() {
                   <Text
                     maxW={{ base: "full", md700: "610px" }}
                     fontFamily="cossetteTexte"
-                    fontSize={{ base: "18px", xl1600: "24px" }}
+                    fontSize={{ base: "16px", xl1600: "24px" }}
                     fontWeight="normal"
                     lineHeight="1.4"
                     color="warmMuted"
@@ -520,9 +520,9 @@ export function VenuesSection() {
                 maxW="bodyCopy"
                 fontFamily="sans"
                 fontWeight="normal"
-                fontSize="18px"
-                lineHeight="27px"
-                letterSpacing="-0.36px"
+                fontSize={{ base: "16px", lg901: "18px" }}
+                lineHeight={{ base: "1.4", lg901: "27px" }}
+                letterSpacing={{ base: "0", lg901: "-0.36px" }}
                 color="warmMuted"
                 textAlign="center"
               >

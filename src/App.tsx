@@ -18,6 +18,10 @@ import { BandSeparatorSection } from "./components/band-separator-section"
 import { UsedByPageSection } from "./components/used-by-page-section"
 import { VenuesSection } from "./components/venues-section"
 
+/** Hero nav floats free of the shell, so its top inset matches its side inset. */
+const HERO_NAV_INSET = { base: "6", lg901: "37px" } as const
+const COMPACT_NAV_INSET = { base: "6", lg901: "10" } as const
+
 function App() {
   const [isHeroNav, setIsHeroNav] = useState(true)
 
@@ -45,14 +49,11 @@ function App() {
       <Box position="relative" zIndex={1}>
         <Box
           position={isHeroNav ? "absolute" : "fixed"}
-          top={isHeroNav ? "34px" : "5"}
+          top={isHeroNav ? HERO_NAV_INSET : "5"}
           left="0"
           right="0"
           zIndex="100"
-          px={{
-            base: "6",
-            lg901: isHeroNav ? "37px" : "10",
-          }}
+          px={isHeroNav ? HERO_NAV_INSET : COMPACT_NAV_INSET}
           display="flex"
           justifyContent="center"
           transitionProperty="top, padding"

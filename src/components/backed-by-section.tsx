@@ -56,7 +56,7 @@ export function BackedBySection() {
     <Box
       as="section"
       id="backed-by"
-      px={{ base: "6", lg901: "12" }}
+      px={{ base: "0", lg901: "12" }}
       pt={{ base: "18", lg901: "24" }}
       pb={{ base: "6", lg901: "8" }}
       bg="transparent"

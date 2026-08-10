@@ -10,17 +10,32 @@ import { Container } from "./ui/container"
 import { Reveal, RevealGroup } from "./ui/reveal"
 
 const HERO_BG_VIDEO_ID = "hero-bg-video"
-/** Pin/compress hero copy when the viewport is too short to center copy. */
-const HERO_SHORT_VIEWPORT = "(max-height: 900px)"
-const HERO_SHORT_VIEWPORT_TIGHT = "(max-height: 720px)"
+/**
+ * Pin/compress hero copy when the viewport is too short to center copy. Scoped
+ * to landscape so tall portrait phones (e.g. 390x844) keep the roomier mobile
+ * rhythm instead of being treated as short viewports.
+ */
+const HERO_SHORT_VIEWPORT = "(max-height: 900px) and (orientation: landscape)"
+const HERO_SHORT_VIEWPORT_TIGHT =
+  "(max-height: 720px) and (orientation: landscape)"
 /**
  * Desktop: Figma uses 84.5px across a 1200px content bar — cqw keeps that
- * single-line ratio. Mobile: two-line wrap with a larger fixed scale so the
- * headline stays punchy instead of shrinking to fit one line.
+ * single-line ratio. Mobile: two-line wrap sized in cqw so each line fills the
+ * content width without spilling to a 3rd line. The longest line
+ * ("MODERN TICKETING,") measures ~7.35x its font size, so 13cqw leaves a small
+ * margin under the ~13.6cqw hard limit.
  */
 const HERO_HEADLINE_SIZE = {
-  base: "clamp(2.5rem, 9.5vw, 3.25rem)",
+  base: "clamp(1.875rem, 13cqw, 3.25rem)",
   lg901: "min(84.5px, 7.0417cqw)",
+} as const
+/**
+ * Mobile steps the sub-copy down so it settles on its two authored lines
+ * instead of breaking mid-word; the headline carries the size on small screens.
+ */
+const HERO_BODY_SIZE = {
+  base: "16px",
+  lg901: "18px",
 } as const
 /**
  * Nav occupies ~84px (top offset + bar). Reserve that plus breathing room so
@@ -100,7 +115,7 @@ export function HeroSection() {
       justifyContent="flex-end"
       alignItems="center"
       overflow="hidden"
-      px={{ base: "6", lg901: "12" }}
+      px={{ base: "4", md700: "6", lg901: "12" }}
       pt={HERO_STAGE_PT}
       pb={HERO_STAGE_PB}
       bg="transparent"
@@ -161,14 +176,14 @@ export function HeroSection() {
                 direction={{ base: "column", lg901: "row" }}
                 align={{ base: "center", lg901: "center" }}
                 justify="space-between"
-                gap={{ base: "6", lg901: "8" }}
+                gap="6"
                 w="full"
               >
                 <Text
                   textAlign={{ base: "center", lg901: "left" }}
                   fontFamily="cossetteTexte"
                   fontWeight="normal"
-                  fontSize="18px"
+                  fontSize={HERO_BODY_SIZE}
                   lineHeight="1.4"
                   color="warmMuted"
                   flex={{ base: "none", lg901: "1" }}
@@ -186,10 +201,14 @@ export function HeroSection() {
                 </Text>
 
                 <Flex
-                  flexWrap="wrap"
-                  align="center"
+                  direction={{ base: "column", lg901: "row" }}
+                  flexWrap={{ base: "nowrap", lg901: "wrap" }}
+                  align={{ base: "stretch", lg901: "center" }}
                   justify={{ base: "center", lg901: "flex-end" }}
-                  gap="6"
+                  w={{ base: "fit-content", lg901: "auto" }}
+                  mx={{ base: "auto", lg901: "0" }}
+                  columnGap="6"
+                  rowGap="2"
                   flexShrink={0}
                   px="0.5"
                 >
