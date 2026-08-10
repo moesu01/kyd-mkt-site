@@ -10,7 +10,9 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider>
       <App />
-      {import.meta.env.DEV ? <DialRoot defaultOpen={false} /> : null}
+      {import.meta.env.DEV ? (
+        <DialRoot defaultOpen={false} position="bottom-right" />
+      ) : null}
     </Provider>
   </StrictMode>,
 )

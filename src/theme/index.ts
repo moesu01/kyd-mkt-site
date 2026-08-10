@@ -11,6 +11,9 @@ const buttonDuration = "220ms"
 
 const shadowBorder = "0 0 0 1px rgba(255, 255, 255, 0.1)"
 
+/** Fixed compact nav: 20px top inset + 52px shell (40px controls + 6px py). */
+const compactNavBottomPx = 72
+
 const primaryShadowRest =
   "0 2px 10px rgba(0, 0, 0, 0), inset 0 1px 0 rgba(255, 255, 255, 0)"
 const primaryShadowHover =
@@ -303,6 +306,9 @@ const config = defineConfig({
   globalCss: {
     html: {
       scrollBehavior: "smooth",
+      // Compact nav is fixed at top 20px over a 52px shell, so its bottom edge
+      // sits at 72px. Without this, hash jumps tuck section headings under it.
+      scrollPaddingTop: `${compactNavBottomPx + 16}px`,
       fontFamily: "Inter, sans-serif",
       fontFeatureSettings: "'liga' 1, 'calt' 1",
       bg: "pageBg",
