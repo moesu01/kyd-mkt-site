@@ -200,13 +200,18 @@ export function HeroSection() {
                   {heroSection.bodyLine2}
                 </Text>
 
+                {/*
+                  Both CTAs fit on one line down to 500px. Below that they
+                  stack, and `stretch` on a fit-content column matches their
+                  widths to the wider label.
+                */}
                 <Flex
-                  direction={{ base: "column", lg901: "row" }}
-                  flexWrap={{ base: "nowrap", lg901: "wrap" }}
-                  align={{ base: "stretch", lg901: "center" }}
-                  justify={{ base: "center", lg901: "flex-end" }}
-                  w={{ base: "fit-content", lg901: "auto" }}
-                  mx={{ base: "auto", lg901: "0" }}
+                  direction={{ base: "column", sm500: "row" }}
+                  flexWrap={{ base: "nowrap", sm500: "wrap" }}
+                  align={{ base: "stretch", sm500: "center" }}
+                  justify={{ base: "center", sm500: "center", lg901: "flex-end" }}
+                  w={{ base: "fit-content", sm500: "auto" }}
+                  mx={{ base: "auto", sm500: "0" }}
                   columnGap="6"
                   rowGap="2"
                   flexShrink={0}

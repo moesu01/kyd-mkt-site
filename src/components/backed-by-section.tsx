@@ -40,7 +40,7 @@ function BackerLogo({
       h="auto"
       w="auto"
       maxH={maxH}
-      maxW={{ base: "100%", lg901: maxW }}
+      maxW={{ base: maxW, sm500: "100%", lg901: maxW }}
       objectFit="contain"
       flexShrink={1}
       minW="0"
@@ -77,9 +77,10 @@ export function BackedBySection() {
           <Flex
             as="ul"
             listStyleType="none"
-            align="stretch"
+            direction={{ base: "column", sm500: "row" }}
+            align={{ base: "center", sm500: "stretch" }}
             justify="space-between"
-            gap={{ base: "3", lg901: "6" }}
+            gap={{ base: "2", sm500: "3", lg901: "6" }}
             w="full"
             maxW={{ base: "full", lg901: "80%" }}
             mx="auto"
@@ -93,11 +94,12 @@ export function BackedBySection() {
                 order={index + 1}
                 key={backer.name}
                 display="flex"
-                flex="1"
+                flex={{ base: "0 0 auto", sm500: "1" }}
+                w={{ base: "full", sm500: "auto" }}
                 flexDirection="column"
                 gap="4"
                 minW="0"
-                p={{ base: "2", sm: "3", lg901: "5" }}
+                p={{ base: "2", sm500: "3", lg901: "5" }}
               >
                 <Flex flex="1" align="center" justify="center" minH="12" minW="0">
                   <BackerLogo

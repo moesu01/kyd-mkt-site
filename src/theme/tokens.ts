@@ -71,6 +71,7 @@ export const sizes = {
 }
 
 export const breakpoints = {
+  sm500: "500px",
   md700: "700px",
   lg901: "901px",
   xl1048: "1048px",

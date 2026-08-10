@@ -294,11 +294,23 @@ function LargeFeatureTile({
   )
 }
 
-interface BentoCornerRadii {
+interface ResponsiveRadius {
+  base: string
+  lg901: string
+}
+
+interface MosaicCorners {
   topLeft: string
   topRight: string
   bottomRight: string
   bottomLeft: string
+}
+
+interface BentoCornerRadii {
+  topLeft: ResponsiveRadius
+  topRight: ResponsiveRadius
+  bottomRight: ResponsiveRadius
+  bottomLeft: ResponsiveRadius
 }
 
 interface BentoTileProps {
@@ -330,29 +342,40 @@ interface LargeFeatureTileProps {
 const outerRadius = "32px"
 const innerRadius = "16px"
 
+// Below lg901 the grid collapses to one column, so each tile is an isolated
+// card and the shared mosaic corners would read as asymmetric.
+function mosaicRadii(corners: MosaicCorners): BentoCornerRadii {
+  return {
+    topLeft: { base: outerRadius, lg901: corners.topLeft },
+    topRight: { base: outerRadius, lg901: corners.topRight },
+    bottomRight: { base: outerRadius, lg901: corners.bottomRight },
+    bottomLeft: { base: outerRadius, lg901: corners.bottomLeft },
+  }
+}
+
 const bentoRadii = {
-  topLeft: {
+  topLeft: mosaicRadii({
     topLeft: outerRadius,
     topRight: innerRadius,
     bottomRight: innerRadius,
     bottomLeft: innerRadius,
-  },
-  topRight: {
+  }),
+  topRight: mosaicRadii({
     topLeft: innerRadius,
     topRight: outerRadius,
     bottomRight: innerRadius,
     bottomLeft: innerRadius,
-  },
-  bottomLeft: {
+  }),
+  bottomLeft: mosaicRadii({
     topLeft: innerRadius,
     topRight: innerRadius,
     bottomRight: innerRadius,
     bottomLeft: outerRadius,
-  },
-  bottomRight: {
+  }),
+  bottomRight: mosaicRadii({
     topLeft: innerRadius,
     topRight: innerRadius,
     bottomRight: outerRadius,
     bottomLeft: innerRadius,
-  },
-} as const satisfies Record<string, BentoCornerRadii>
+  }),
+} satisfies Record<string, BentoCornerRadii>

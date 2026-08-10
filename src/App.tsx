@@ -46,13 +46,17 @@ function App() {
 
   return (
     <>
-      <Box position="relative" zIndex={1}>
+      {/*
+        Nav sits above page content (z=1). Mobile scrim lives inside the nav
+        tree so it cannot paint over the logo/close control.
+      */}
+      <Box position="relative">
         <Box
           position={isHeroNav ? "absolute" : "fixed"}
           top={isHeroNav ? HERO_NAV_INSET : "5"}
           left="0"
           right="0"
-          zIndex="100"
+          zIndex={110}
           px={isHeroNav ? HERO_NAV_INSET : COMPACT_NAV_INSET}
           display="flex"
           justifyContent="center"
@@ -62,25 +66,27 @@ function App() {
         >
           <AlternateNav variant={isHeroNav ? "hero" : "compact"} />
         </Box>
-        <Box position="relative">
-          <HeroAboutBackground />
-          <Box position="relative" zIndex={1}>
-            <HeroSection />
+        <Box position="relative" zIndex={1}>
+          <Box position="relative">
+            <HeroAboutBackground />
+            <Box position="relative" zIndex={1}>
+              <HeroSection />
+            </Box>
           </Box>
+          <BackedBySection />
+          <VenuesSection />
+          <BandSeparatorSection />
+          <FeaturesSectionInteractive />
+          {/* TODO: Hidden pending decision on interactive vs. original Platform
+              section. Remove FeaturesSection entirely if unused. */}
+          {/* <FeaturesSection /> */}
+          <BandSeparatorSection isReversed />
+          <UsedByPageSection />
+          <SocialProofSection />
+          <FanSection />
+          <AboutSection />
+          {/* TEMP: Press section hidden — <PressSection /> */}
         </Box>
-        <BackedBySection />
-        <VenuesSection />
-        <BandSeparatorSection />
-        <FeaturesSectionInteractive />
-        {/* TODO: Hidden pending decision on interactive vs. original Platform
-            section. Remove FeaturesSection entirely if unused. */}
-        {/* <FeaturesSection /> */}
-        <BandSeparatorSection isReversed />
-        <UsedByPageSection />
-        <SocialProofSection />
-        <FanSection />
-        <AboutSection />
-        {/* TEMP: Press section hidden — <PressSection /> */}
       </Box>
     </>
   )
