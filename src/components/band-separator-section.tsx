@@ -1,4 +1,5 @@
 import { Box, Flex, chakra } from "@chakra-ui/react"
+import { assetUrl } from "../lib/asset-url"
 import { Reveal, RevealGroup } from "./ui/reveal"
 
 export function BandSeparatorSection({
@@ -46,7 +47,7 @@ function StackedBand() {
       overflow="clip"
     >
       <chakra.img
-        src="/images/kyd_band_2.png"
+        src={stackedBandSrc}
         alt=""
         display="block"
         w="100%"
@@ -76,7 +77,7 @@ function StripBand() {
         overflow="clip"
       >
         <chakra.img
-          src="/images/kyd_band_1b.png"
+          src={stripBandSrc}
           alt=""
           display="block"
           w="100%"
@@ -88,6 +89,9 @@ function StripBand() {
     </Box>
   )
 }
+
+const stackedBandSrc = assetUrl("/images/kyd_band_2.png")
+const stripBandSrc = assetUrl("/images/kyd_band_1b.png")
 
 const defaultBandOrder = ["stacked", "strip"] as const
 const reversedBandOrder = ["strip", "stacked"] as const

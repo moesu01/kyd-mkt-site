@@ -397,8 +397,11 @@ function TicketDiagram() {
             alt=""
             objectFit="cover"
             objectPosition="top"
-            opacity="0.18"
+            opacity="0.12"
             filter="blur(2px)"
+            // Safari won't apply the parent's rounded overflow clip to a
+            // filtered child, so this layer needs to clip its own corners.
+            clipPath="inset(0 round 28px)"
             draggable={false}
             pointerEvents="none"
           />
@@ -506,8 +509,11 @@ function TicketDiagram() {
             alt=""
             objectFit="cover"
             objectPosition="top"
-            opacity="0.18"
+            opacity="0.12"
             filter="blur(2px)"
+            // Safari won't apply the parent's rounded overflow clip to a
+            // filtered child, so this layer needs to clip its own corners.
+            clipPath="inset(0 round 28px)"
             draggable={false}
             pointerEvents="none"
           />
@@ -603,6 +609,9 @@ export function TixSpotlight() {
             />
             <Text
               as="p"
+              // Shrink-to-fit inside the centered column makes Safari break
+              // the second line early, so size it to the column instead.
+              w="full"
               textStyle="cossetteDisplayHeading"
               textTransform="none"
               color="#ccc5be"
