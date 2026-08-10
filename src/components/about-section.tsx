@@ -467,8 +467,7 @@ function AboutCopyLayer({
             href={links.tickets}
             variant="outline-accent"
             size="hero"
-            display="none"
-            css={findTicketsButtonCss}
+            css={{ ...findTicketsButtonCss, display: "none" }}
           >
             Find my tickets
           </Button>
