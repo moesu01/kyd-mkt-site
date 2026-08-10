@@ -1,18 +1,27 @@
 import { Box, Flex, Image, Link, chakra } from "@chakra-ui/react"
 import {
   useEffect,
+  useRef,
   useState,
   type TransitionEvent,
 } from "react"
+import { createPortal } from "react-dom"
 import { links, navMenuLinks } from "../content/site-content"
 import { assetUrl } from "../lib/asset-url"
-import { Button } from "./ui/button"
+import { Button, CtaArrow } from "./ui/button"
 
 const interactionEase = "cubic-bezier(0.2, 0, 0, 1)"
 const navShellRadius = 16
 const navMenuButtonRadius = 8
-const navMenuGlassBg = "oklch(0.15 0.01 63.9 / 0.8)"
-const navGlassFilter = "blur(8px) saturate(4)"
+/** Matches pageBg (oklch 0.178 .01 63.9) at ~0.8 opacity for frosted panel. */
+const navMenuGlassBg = "oklch(0.178 0.01 63.9 / 0.8)"
+const navGlassFilter = "blur(12px) saturate(4)"
+const navMenuButtonHeroBg = "oklch(0.178 0.01 63.9 / 0.7)"
+const navMenuButtonCompactBg = "oklch(0.178 0.01 63.9 / 0.25)"
+const navMenuButtonHoverBg = "oklch(0.178 0.01 63.9 / 0.7)"
+/** Dimmed black page overlay; z sits under App nav chrome (zIndex 100). */
+const navScrimBg = "rgba(0, 0, 0, 0.6)"
+const navScrimZIndex = 99
 const navShellShadow =
   "0 0 0 1px rgba(255, 255, 255, 0.1), 0 2px 10px rgba(0, 0, 0, 0.25)"
 const navIntroDurationMs = 360
@@ -128,13 +137,36 @@ function LogoLink() {
   )
 }
 
+/**
+ * Visibility on the positioning wrapper only — no transform here.
+ * A transformed ancestor breaks backdrop-filter on the glass panel.
+ */
+function getMobileMenuPanelVisibility(isOpen: boolean) {
+  return {
+    visibility: isOpen ? "visible" : "hidden",
+    pointerEvents: isOpen ? "auto" : "none",
+    transitionProperty: "visibility",
+    transitionDuration: "0ms",
+    transitionDelay: isOpen ? "0ms" : "150ms",
+  } as const
+}
+
+/** Slide motion lives on the same node as backdrop-filter so blur still works. */
 function getMobileMenuPanelMotion(isOpen: boolean) {
   return {
     transform: isOpen ? "translateY(0)" : "translateY(-12px)",
+    transitionProperty: "transform",
+    transitionDuration: isOpen ? "220ms" : "150ms",
+    transitionTimingFunction: isOpen ? interactionEase : "ease-in",
+  } as const
+}
+
+function getMobileMenuScrimMotion(isOpen: boolean) {
+  return {
+    opacity: isOpen ? 1 : 0,
     visibility: isOpen ? "visible" : "hidden",
     pointerEvents: isOpen ? "auto" : "none",
-    transitionProperty: "transform, visibility",
-    // Transform runs immediately; visibility waits for the exit to finish.
+    transitionProperty: "opacity, visibility",
     transitionDuration: isOpen ? "220ms, 0ms" : "150ms, 0ms",
     transitionDelay: isOpen ? "0ms, 0ms" : "0ms, 150ms",
     transitionTimingFunction: isOpen
@@ -178,7 +210,15 @@ export function AlternateNav({
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [hasIntroSettled, setHasIntroSettled] = useState(false)
   const [trackedIntroVisible, setTrackedIntroVisible] = useState(isIntroVisible)
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
+  const menuPanelRef = useRef<HTMLElement>(null)
+  const wasMenuOpenRef = useRef(false)
+  const [isPortalReady, setIsPortalReady] = useState(false)
   const isHero = variant === "hero"
+
+  useEffect(() => {
+    setIsPortalReady(true)
+  }, [])
 
   // Close mobile menu when crossing hero → compact (layout width changes).
   if (menuVariant !== variant) {
@@ -203,6 +243,44 @@ export function AlternateNav({
     mediaQuery.addEventListener("change", handleChange)
     return () => mediaQuery.removeEventListener("change", handleChange)
   }, [])
+
+  useEffect(() => {
+    if (!isMenuOpen) return
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+    }
+  }, [isMenuOpen])
+
+  useEffect(() => {
+    if (!isMenuOpen) return
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key !== "Escape") return
+      setIsMenuOpen(false)
+    }
+
+    document.addEventListener("keydown", handleKeyDown)
+    return () => document.removeEventListener("keydown", handleKeyDown)
+  }, [isMenuOpen])
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      const firstFocusable = menuPanelRef.current?.querySelector<HTMLElement>(
+        "a[href], button:not([disabled])",
+      )
+      firstFocusable?.focus()
+      wasMenuOpenRef.current = true
+      return
+    }
+
+    if (!wasMenuOpenRef.current) return
+    wasMenuOpenRef.current = false
+    menuButtonRef.current?.focus()
+  }, [isMenuOpen])
 
   function handleToggleMenu() {
     setIsMenuOpen((isOpen) => !isOpen)
@@ -248,7 +326,25 @@ export function AlternateNav({
       onTransitionEnd={handleIntroTransitionEnd}
       css={stateTransition}
     >
+      {isPortalReady
+        ? createPortal(
+            <Box
+              display={{ base: "block", lg901: "none" }}
+              position="fixed"
+              inset="0"
+              zIndex={navScrimZIndex}
+              bg={navScrimBg}
+              aria-hidden
+              css={getMobileMenuScrimMotion(isMenuOpen)}
+              onClick={handleCloseMenu}
+            />,
+            document.body,
+          )
+        : null}
+
       <Box
+        position="relative"
+        zIndex={1}
         bg={isHero ? "transparent" : "#000"}
         pl={isHero ? { base: "0", lg901: "5" } : { base: "4", lg901: "5" }}
         pr={isHero ? { base: "0", lg901: "1.5" } : "1.5"}
@@ -283,6 +379,7 @@ export function AlternateNav({
           </Flex>
 
           <chakra.button
+            ref={menuButtonRef}
             type="button"
             display={{ base: "flex", lg901: "none" }}
             alignItems="center"
@@ -292,23 +389,18 @@ export function AlternateNav({
             p="0"
             border="none"
             borderRadius={`${navMenuButtonRadius}px`}
-            bg={
-              isHero
-                ? "oklch(0.178 0.01 63.9 / 0.4)"
-                : "oklch(0.178 0.01 63.9 / 0.25)"
-            }
+            bg={isHero ? navMenuButtonHeroBg : navMenuButtonCompactBg}
             color="fg"
             cursor="pointer"
             boxShadow="0 0 0 1px rgba(255, 255, 255, 0.1)"
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={isMenuOpen}
-            aria-controls="alternate-nav-menu"
+            backdropFilter={isHero ? navGlassFilter : undefined}
             css={{
+              WebkitBackdropFilter: isHero ? navGlassFilter : undefined,
               transitionProperty: "background-color, box-shadow, transform",
               transitionDuration: "180ms",
               transitionTimingFunction: interactionEase,
               _hover: {
-                bg: "oklch(0.178 0.01 63.9 / 0.4)",
+                bg: navMenuButtonHoverBg,
                 boxShadow: "0 0 0 1px rgba(255, 255, 255, 0.16)",
               },
               _active: { transform: "scale(0.96)" },
@@ -318,6 +410,9 @@ export function AlternateNav({
                 outlineOffset: "2px",
               },
             }}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
+            aria-controls="alternate-nav-menu"
             onClick={handleToggleMenu}
           >
             <MenuIcon isOpen={isMenuOpen} />
@@ -326,8 +421,8 @@ export function AlternateNav({
       </Box>
 
       {/*
-        Menu is a sibling of the glass shell (not nested inside backdrop-filter).
-        Opacity stays off the glass layer so backdrop blur keeps working.
+        Positioning wrapper stays transform-free so backdrop-filter on the
+        glass panel can sample the page (and portal scrim) behind it.
       */}
       <Box
         display={{ base: "block", lg901: "none" }}
@@ -336,9 +431,10 @@ export function AlternateNav({
         left="0"
         right="0"
         zIndex={1}
-        css={getMobileMenuPanelMotion(isMenuOpen)}
+        css={getMobileMenuPanelVisibility(isMenuOpen)}
       >
         <Flex
+          ref={menuPanelRef}
           id="alternate-nav-menu"
           as="nav"
           direction="column"
@@ -346,11 +442,14 @@ export function AlternateNav({
           p="2"
           bg={navMenuGlassBg}
           backdropFilter={navGlassFilter}
-          css={{ WebkitBackdropFilter: navGlassFilter }}
           borderRadius={`${navShellRadius}px`}
           boxShadow="frame"
           aria-label="Mobile page sections"
           aria-hidden={!isMenuOpen}
+          css={{
+            WebkitBackdropFilter: navGlassFilter,
+            ...getMobileMenuPanelMotion(isMenuOpen),
+          }}
         >
           {navMenuLinks.map((item, index) => (
             <Link
@@ -387,7 +486,7 @@ export function AlternateNav({
               ...ticketsButtonStyles,
               w: "full",
               minH: "12",
-              justifyContent: "flex-start",
+              justifyContent: "space-between",
               px: "4",
               py: "3",
               fontSize: "18px",
@@ -399,7 +498,8 @@ export function AlternateNav({
             }}
             onClick={handleCloseMenu}
           >
-            My Tickets
+            Find my tickets
+            <CtaArrow />
           </Button>
         </Flex>
       </Box>
