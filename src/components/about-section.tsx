@@ -34,6 +34,12 @@ const ABOUT_EXTREME_VIEWPORT = "(max-height: 640px)"
  * (Social Proof bottom / Used By / Venues: py 20 / 28).
  */
 const ABOUT_STAGE_PY = { base: "20", lg901: "28" } as const
+/**
+ * Absolute legal bar sits on top of the stage — reserve enough bottom
+ * padding so the Book a call CTA stays clear of the copyright row on
+ * short viewports (stacked mobile footer is taller than the desktop row).
+ */
+const ABOUT_FOOTER_CLEARANCE = { base: "9rem", md: "6rem" } as const
 /** Below this height, tighten copy width so the stack stays readable. */
 const ABOUT_SHORT_VIEWPORT = "(max-height: 901px)"
 /**
@@ -118,7 +124,8 @@ export function AboutSection() {
         alignItems="center"
         overflow="hidden"
         px={{ base: "6", lg901: "12" }}
-        py={ABOUT_STAGE_PY}
+        pt={ABOUT_STAGE_PY}
+        pb={ABOUT_FOOTER_CLEARANCE}
         bg="transparent"
       >
         <Container position="relative" zIndex={1} w="full">
