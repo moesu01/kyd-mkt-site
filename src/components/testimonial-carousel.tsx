@@ -539,6 +539,8 @@ export function TestimonialCarousel() {
                 attribution={testimonial.attribution}
                 role={testimonial.role}
                 logoSrc={testimonial.logoSrc}
+                href={testimonial.href}
+                isFocusable={activeLogicalIndex === logicalIndex}
                 placeholder={testimonial.placeholder}
                 rotateDeg={0}
                 willChangeTransform={false}

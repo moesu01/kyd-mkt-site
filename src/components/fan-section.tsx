@@ -26,14 +26,16 @@ export function FanSection() {
       >
         <Grid
           templateColumns={{ base: "1fr", lg901: "2fr 1.5fr" }}
-          minH={{ base: "680px", lg901: "380px" }}
+          minH={{ base: "auto", lg901: "380px" }}
         >
           <Flex
             minW="0"
             direction="column"
             justify="center"
+            align={{ base: "center", lg901: "stretch" }}
+            textAlign={{ base: "center", lg901: "left" }}
             px="25px"
-            py={{ base: "12", lg901: "16" }}
+            py={{ base: "0", lg901: "16" }}
           >
             <SectionHeading
               eyebrowVariant="prominent"
@@ -43,7 +45,9 @@ export function FanSection() {
               headingAs="h2"
               label="For Fans"
               headline="Need ticket help?"
-              css={{ "& > h2": { fontSize: "64px" } }}
+              css={{
+                "& > h2": { fontSize: { base: "2rem", md700: "3rem", lg901: "64px" } },
+              }}
             />
             <Text
               mt="6"
@@ -58,7 +62,13 @@ export function FanSection() {
               Looking for your tickets? You&apos;re in the right place.
             </Text>
 
-            <Flex mt="8" align="center" gap="3" flexWrap="nowrap">
+            <Flex
+              mt="8"
+              align="center"
+              justify={{ base: "center", lg901: "flex-start" }}
+              gap="3"
+              flexWrap="nowrap"
+            >
               <Button href={links.tickets} variant="outline" css={fanCtaButtonCss}>
                 <span>
                   Find My Tickets
@@ -76,10 +86,11 @@ export function FanSection() {
           </Flex>
 
           <Box
+            display={{ base: "none", lg901: "block" }}
             position="relative"
             minW="0"
-            h={{ base: "360px", lg901: "380px" }}
-            maxH={{ base: "360px", lg901: "380px" }}
+            h="380px"
+            maxH="380px"
             borderRadius="32px"
             bg="frameBg"
             boxShadow="frame"
@@ -87,9 +98,9 @@ export function FanSection() {
           >
             <Box
               position="absolute"
-              top={{ base: "40px", lg901: "56px" }}
+              top="56px"
               left="50%"
-              w={{ base: "260px", md: "300px", lg901: "330px" }}
+              w="330px"
               transform="translateX(-50%)"
             >
               <Ticket

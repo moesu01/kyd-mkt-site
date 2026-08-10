@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react"
+import { Box, Flex, Image, Link, Text } from "@chakra-ui/react"
 import { useLayoutEffect, useRef, useState } from "react"
 import { assetUrl } from "../lib/asset-url"
 
@@ -7,6 +7,8 @@ interface TestimonialBlockProps {
   attribution: string
   role?: string
   logoSrc?: string
+  href?: string
+  isFocusable?: boolean
   placeholder?: boolean
   rotateDeg?: number
   willChangeTransform?: boolean
@@ -49,17 +51,51 @@ function TestimonialLogo({
     <Image
       src={logoSrc}
       alt={`${attribution} logo`}
-      h="10"
+      h="auto"
       w="auto"
-      maxW="32"
+      maxH="10"
+      maxW="48"
       objectFit="contain"
       onError={() => setHasError(true)}
     />
   )
 }
 
+function ExternalLinkIcon() {
+  return (
+    <svg
+      viewBox="0 0 16 16"
+      width="0.85em"
+      height="0.85em"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ flexShrink: 0 }}
+      aria-hidden
+    >
+      <path d="M6.5 3.5H3.5v9h9v-3" />
+      <path d="M9.5 2.5h4v4" />
+      <path d="M13.5 2.5 8 8" />
+    </svg>
+  )
+}
+
 const testimonialFontFeatures = {
   fontFeatureSettings: '"ss08" 1, "case" 1',
+} as const
+
+const roleTextProps = {
+  fontFamily: "cossetteTexte",
+  mt: "1",
+  fontSize: "14px",
+  fontWeight: "medium",
+  lineHeight: "1.2",
+  letterSpacing: "-0.26px",
+  color: "#404040",
+  opacity: 0.85,
+  css: testimonialFontFeatures,
 } as const
 
 const testimonialQuoteFeatures = {
@@ -112,6 +148,8 @@ export function TestimonialBlock({
   attribution,
   role = "",
   logoSrc,
+  href = "",
+  isFocusable = true,
   placeholder = false,
   rotateDeg = 0,
   willChangeTransform = false,
@@ -243,21 +281,29 @@ export function TestimonialBlock({
         >
           {attribution}
         </Text>
-        {role ? (
-          <Text
-            fontFamily="cossetteTexte"
-            mt="1"
-            fontSize="14px"
-            fontWeight="medium"
-            lineHeight="1.2"
-            letterSpacing="-0.26px"
-            color="#404040"
-            opacity={0.85}
-            css={testimonialFontFeatures}
+        {role && href ? (
+          <Link
+            {...roleTextProps}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            display="inline-flex"
+            alignItems="center"
+            gap="1"
+            textDecoration="none"
+            tabIndex={isFocusable ? undefined : -1}
+            aria-label={`Read “${role}” on ${attribution} (opens in a new tab)`}
+            transitionProperty="opacity"
+            transitionDuration="150ms"
+            _hover={{ opacity: 1, textDecoration: "underline" }}
+            _focusVisible={{ opacity: 1, textDecoration: "underline" }}
           >
             {role}
-          </Text>
+            <ExternalLinkIcon />
+          </Link>
         ) : null}
+
+        {role && !href ? <Text {...roleTextProps}>{role}</Text> : null}
       </Box>
     </Flex>
   )

@@ -118,3 +118,25 @@ export const bookCallButtonCss = {
   paddingInline: "16px",
   borderRadius: "8px",
 } satisfies SystemStyleObject
+
+/** Transparent "Find my tickets" with light border — matches the hero CTA. */
+export const findTicketsButtonCss = {
+  bg: "transparent",
+  borderColor: "rgba(248, 248, 248, 0.44)",
+  color: "fg",
+  fontWeight: "medium",
+  px: "24px",
+  py: "14px",
+  backdropFilter: "none",
+  WebkitBackdropFilter: "none",
+  boxShadow: "none",
+  _hover: {
+    bg: "rgba(255, 255, 255, 0.08)",
+    borderColor: "rgba(248, 248, 248, 0.64)",
+    boxShadow: "none",
+  },
+  _active: {
+    bg: "rgba(255, 255, 255, 0.12)",
+    boxShadow: "none",
+  },
+} as const

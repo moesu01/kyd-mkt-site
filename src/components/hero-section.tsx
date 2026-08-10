@@ -4,6 +4,7 @@ import { heroSection, links } from "../content/site-content"
 import {
   BookCallCtaContent,
   bookCallButtonCss,
+  findTicketsButtonCss,
   Button,
 } from "./ui/button"
 import { Container } from "./ui/container"
@@ -43,28 +44,6 @@ const HERO_BODY_SIZE = {
  */
 const HERO_STAGE_PT = "108px"
 const HERO_STAGE_PB = "48px"
-
-/** Figma: transparent "Find my tickets" with light border. */
-const findTicketsButtonCss = {
-  bg: "transparent",
-  borderColor: "rgba(248, 248, 248, 0.44)",
-  color: "fg",
-  fontWeight: "medium",
-  px: "24px",
-  py: "14px",
-  backdropFilter: "none",
-  WebkitBackdropFilter: "none",
-  boxShadow: "none",
-  _hover: {
-    bg: "rgba(255, 255, 255, 0.08)",
-    borderColor: "rgba(248, 248, 248, 0.64)",
-    boxShadow: "none",
-  },
-  _active: {
-    bg: "rgba(255, 255, 255, 0.12)",
-    boxShadow: "none",
-  },
-} as const
 
 function toggleHeroBgVideo() {
   const video = document.getElementById(HERO_BG_VIDEO_ID)

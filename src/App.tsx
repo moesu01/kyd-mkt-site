@@ -11,8 +11,6 @@ import { FeaturesSectionInteractive } from "./components/features-section-intera
 // import { FeaturesSection } from "./components/features-section"
 import { HeroAboutBackground } from "./components/hero-about-background"
 import { HeroSection } from "./components/hero-section"
-// TEMP: Press section hidden — restore import and <PressSection /> below when ready.
-// import { PressSection } from "./components/press-section"
 import { SocialProofSection } from "./components/social-proof-section"
 import { BandSeparatorSection } from "./components/band-separator-section"
 import { UsedByPageSection } from "./components/used-by-page-section"
@@ -85,7 +83,6 @@ function App() {
           <SocialProofSection />
           <FanSection />
           <AboutSection />
-          {/* TEMP: Press section hidden — <PressSection /> */}
         </Box>
       </Box>
     </>

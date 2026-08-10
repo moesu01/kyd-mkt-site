@@ -21,6 +21,7 @@ import {
 import {
   BookCallCtaContent,
   bookCallButtonCss,
+  findTicketsButtonCss,
   Button,
 } from "./ui/button"
 import { Container } from "./ui/container"
@@ -204,14 +205,14 @@ function LegalFooterBar() {
     >
       <Flex
         as="nav"
-        aria-label="Legal"
+        aria-label="Support"
         gap="3"
         flexWrap="wrap"
         justify={{ base: "center", md: "flex-start" }}
         flex={{ md: "1" }}
         minW="0"
       >
-        {footerLegalLinks.map((link) => (
+        {footerUtilityLinks.map((link) => (
           <FooterBarLink key={link.label} link={link} />
         ))}
       </Flex>
@@ -233,14 +234,14 @@ function LegalFooterBar() {
 
       <Flex
         as="nav"
-        aria-label="Support"
+        aria-label="Legal"
         gap="3"
         flexWrap="wrap"
         justify={{ base: "center", md: "flex-end" }}
         flex={{ md: "1" }}
         minW="0"
       >
-        {footerUtilityLinks.map((link) => (
+        {footerLegalLinks.map((link) => (
           <FooterBarLink key={link.label} link={link} />
         ))}
       </Flex>
@@ -397,6 +398,9 @@ function AboutCopyLayer({
           mx="auto"
           css={{
             textWrap: "balance",
+            "@media (max-width: 399px)": {
+              fontSize: "30px",
+            },
             [`@media ${ABOUT_SHORT_VIEWPORT}`]: {
               maxWidth: "42rem",
             },
@@ -428,28 +432,36 @@ function AboutCopyLayer({
         </Text>
       </Reveal>
       <Reveal order={3}>
+        {/*
+          Same CTA rhythm as the hero: both buttons share a line down to
+          500px, then stack with matched widths via stretch + fit-content.
+        */}
         <Flex
-          direction={{ base: "column", sm: "row" }}
-          align="stretch"
+          direction={{ base: "column", sm500: "row" }}
+          flexWrap={{ base: "nowrap", sm500: "wrap" }}
+          align={{ base: "stretch", sm500: "center" }}
           justify="center"
-          gap="6"
-          w={{ base: "full", sm: "auto" }}
+          w={{ base: "fit-content", sm500: "auto" }}
+          mx="auto"
+          columnGap="6"
+          rowGap="2"
+          flexShrink={0}
+          px="0.5"
         >
           <Button
             href={links.getInTouch}
             size="hero"
-            css={{
-              ...bookCallButtonCss,
-              width: { base: "full", sm: "auto" },
-            }}
+            css={bookCallButtonCss}
           >
             <BookCallCtaContent />
           </Button>
+          {/* TEMP: Find my tickets hidden in About — restore when ready. */}
           <Button
             href={links.tickets}
             variant="outline-accent"
             size="hero"
-            css={{ width: { base: "full", sm: "auto" } }}
+            display="none"
+            css={findTicketsButtonCss}
           >
             Find my tickets
           </Button>

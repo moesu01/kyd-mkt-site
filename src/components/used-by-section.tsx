@@ -1,84 +1,38 @@
-import { Box, Flex, Heading, Image, Text, chakra } from "@chakra-ui/react"
-import { useEffect, useRef, useState, type MouseEvent } from "react"
+import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react"
+import { useEffect, useRef, useState } from "react"
 import { usedBy } from "../content/site-content"
-import { assetUrl } from "../lib/asset-url"
 import { PixelGlobe } from "./used-by/pixel-globe"
-
-const ChakraLink = chakra("a")
 
 interface UsedByCardProps {
   name: string
   subtitle: string
-  href: string
   imageSrc: string
   objectPosition?: string
-}
-
-function ExternalLinkArrow({ isHovered }: { isHovered: boolean }) {
-  return (
-    <Box
-      display="inline-flex"
-      flexShrink={0}
-      transform={isHovered ? "translateX(3px)" : "translateX(0)"}
-      transitionProperty="transform"
-      transitionDuration="200ms"
-      transitionTimingFunction={usedByCardEase}
-      aria-hidden
-    >
-      <Image src={assetUrl("/icons/external-link-arrow.svg")} alt="" w="13.828px" h="12px" />
-    </Box>
-  )
 }
 
 function UsedByCard({
   name,
   subtitle,
-  href,
   imageSrc,
   objectPosition = "center",
 }: UsedByCardProps) {
   const [isHovered, setIsHovered] = useState(false)
-  const isPlaceholderLink = href === "#"
-
-  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    if (isPlaceholderLink) event.preventDefault()
-  }
 
   return (
-    <ChakraLink
-      href={href}
+    <Box
+      as="article"
       display="flex"
       flexDirection="column"
       gap="3"
-      textDecoration="none"
       color="inherit"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={handleClick}
-      aria-label={
-        isPlaceholderLink
-          ? `${name}, ${subtitle} (link coming soon)`
-          : `${name}, ${subtitle}`
-      }
-      _focusVisible={usedByCardFocusVisible}
+      aria-label={`${name}, ${subtitle}`}
     >
       <Box display="flex" flexDirection="column" gap="1.5">
-        <Box
-          display="inline-flex"
-          alignItems="center"
-          gap="2"
-          transitionProperty="color"
-          transitionDuration="200ms"
-          transitionTimingFunction={usedByCardEase}
-        >
-          <Text
-            as="span"
-            textStyle="touringArtistName"
-          >
-            {name}
-          </Text>
-          <ExternalLinkArrow isHovered={isHovered} />
-        </Box>
+        <Text as="span" textStyle="touringArtistName">
+          {name}
+        </Text>
         <Text
           as="p"
           mt="0"
@@ -119,18 +73,11 @@ function UsedByCard({
           transitionTimingFunction={usedByCardEase}
         />
       </Box>
-    </ChakraLink>
+    </Box>
   )
 }
 
 const usedByCardEase = "cubic-bezier(0.2, 0, 0, 1)"
-
-const usedByCardFocusVisible = {
-  outline: "2px solid",
-  outlineColor: "rgba(255, 255, 255, 0.45)",
-  outlineOffset: "4px",
-  borderRadius: "2px",
-} as const
 
 const usedByImageShadow = "0 0 0 1px rgba(255, 255, 255, 0.1)"
 
@@ -274,7 +221,6 @@ export function UsedByCarousel() {
             <UsedByCard
               name={item.name}
               subtitle={item.subtitle}
-              href={item.href}
               imageSrc={item.imageSrc}
               objectPosition={"objectPosition" in item ? item.objectPosition : "center"}
             />

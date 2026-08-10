@@ -101,12 +101,6 @@ function getEnterOffset(direction: NavDirection) {
   return "8px"
 }
 
-function getExitOffset(direction: NavDirection) {
-  if (direction === "down") return "-12px"
-  if (direction === "up") return "12px"
-  return "-8px"
-}
-
 function PlatformInteractiveHeader() {
   return (
     <Flex
@@ -340,126 +334,6 @@ function FeatureListItem({
   )
 }
 
-interface FeatureVisualPlaceholderProps {
-  index: number
-  title: string
-  icon: string
-  isActive: boolean
-  isExiting: boolean
-  enterDirection: NavDirection
-  exitDirection: NavDirection
-  contentKey: number
-  prefersReducedMotion: boolean
-  onExitComplete: (index: number) => void
-}
-
-function FeatureVisualPlaceholder({
-  index,
-  title,
-  icon,
-  isActive,
-  isExiting,
-  enterDirection,
-  exitDirection,
-  contentKey,
-  prefersReducedMotion,
-  onExitComplete,
-}: FeatureVisualPlaceholderProps) {
-  const motionless = prefersReducedMotion
-  const enterOffset = getEnterOffset(enterDirection)
-  const exitOffset = getExitOffset(exitDirection)
-
-  function handleVisualExitEnd(event: AnimationEvent<HTMLDivElement>) {
-    if (event.animationName !== "feature-visual-exit") return
-    onExitComplete(index)
-  }
-
-  if (isExiting) {
-    return (
-      <Flex
-        position="absolute"
-        inset="0"
-        direction="column"
-        align="center"
-        justify="center"
-        gap="4"
-        p="8"
-        zIndex="1"
-        aria-hidden
-        className={motionless ? undefined : "feature-visual-exit"}
-        style={
-          motionless
-            ? undefined
-            : ({ ["--feature-exit-y" as string]: exitOffset } as const)
-        }
-        onAnimationEnd={handleVisualExitEnd}
-      >
-        <FeatureVisualContent index={index} title={title} icon={icon} />
-      </Flex>
-    )
-  }
-
-  if (!isActive) return null
-
-  return (
-    <Flex
-      key={contentKey}
-      position="absolute"
-      inset="0"
-      direction="column"
-      align="center"
-      justify="center"
-      gap="4"
-      p="8"
-      zIndex="1"
-      aria-hidden={false}
-      className={motionless ? undefined : "feature-body-enter"}
-      style={
-        motionless
-          ? undefined
-          : ({ ["--feature-enter-y" as string]: enterOffset } as const)
-      }
-    >
-      <FeatureVisualContent index={index} title={title} icon={icon} />
-    </Flex>
-  )
-}
-
-function FeatureVisualContent({
-  index,
-  title,
-  icon,
-}: {
-  index: number
-  title: string
-  icon: string
-}) {
-  return (
-    <>
-      <Flex
-        align="center"
-        justify="center"
-        h="16"
-        w="16"
-        borderRadius="16px"
-        border="1px solid"
-        borderColor="border"
-        fontSize="2xl"
-        color="accent"
-        opacity="0.5"
-      >
-        {icon}
-      </Flex>
-      <Text fontSize="sm" color="fgGhost" textAlign="center">
-        Visual placeholder — {title}
-      </Text>
-      <Text fontSize="xs" color="fgDim" textAlign="center">
-        Slot {index + 1} of {featureCount}
-      </Text>
-    </>
-  )
-}
-
 export function FeaturesSectionInteractive() {
   return (
     <Box
@@ -536,7 +410,6 @@ function PlatformFeaturesInteractive() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [exitingIndex, setExitingIndex] = useState<number | null>(null)
   const [enterDirection, setEnterDirection] = useState<NavDirection>("none")
-  const [exitDirection, setExitDirection] = useState<NavDirection>("none")
   const [cycleKey, setCycleKey] = useState(0)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const cycleKeyRef = useRef(cycleKey)
@@ -559,7 +432,6 @@ function PlatformFeaturesInteractive() {
       if (index === activeIndex) return
 
       setEnterDirection(direction)
-      setExitDirection(direction)
       setExitingIndex(activeIndex)
       setActiveIndex(index)
       cycleKeyRef.current += 1
@@ -578,7 +450,6 @@ function PlatformFeaturesInteractive() {
     setActiveIndex((current) => {
       setExitingIndex(current)
       setEnterDirection("down")
-      setExitDirection("down")
       return (current + 1) % featureCount
     })
     cycleKeyRef.current += 1
@@ -683,25 +554,6 @@ function PlatformFeaturesInteractive() {
               contentKey={cycleKey}
               prefersReducedMotion={prefersReducedMotion}
             />
-            {features.map((feature, index) => {
-              if (feature.title === emailCampaignVisualTitle) return null
-
-              return (
-                <FeatureVisualPlaceholder
-                  key={feature.title}
-                  index={index}
-                  title={feature.title}
-                  icon={feature.icon}
-                  isActive={activeIndex === index}
-                  isExiting={exitingIndex === index}
-                  enterDirection={enterDirection}
-                  exitDirection={exitDirection}
-                  contentKey={cycleKey}
-                  prefersReducedMotion={prefersReducedMotion}
-                  onExitComplete={handleExitComplete}
-                />
-              )
-            })}
           </Box>
         </Grid>
       </Box>

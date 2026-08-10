@@ -2,15 +2,15 @@ import { assetUrl } from "../lib/asset-url"
 
 export const links = {
   tickets: "https://kydlabs.com/tickets",
-  getInTouch: "#",
+  getInTouch: "https://calendly.com/kydlabs/new-meeting",
   waitlist: "#",
   refund: "#",
   forFans: "#",
   forVenues: "#",
   tix: "https://tix.xyz",
-  terms: "#",
-  privacy: "#",
-  contact: "#",
+  terms: "https://www.iubenda.com/terms-and-conditions/22517592",
+  privacy: "https://www.iubenda.com/privacy-policy/22517592",
+  contact: "https://help.kydlabs.com/en/",
   pressEmail: "mailto:press@kydlabs.com",
 } as const
 
@@ -34,7 +34,7 @@ export const heroSection = {
 
 export const aboutSection = {
   eyebrow: "About KYD",
-  curvedTagline: "Keep your data. Own your fans. Keep your distribution.",
+  curvedTagline: "Own your data. Keep your fans. Keep your distribution.",
   headline: "Built for the People Who Actually Create Value.",
   body: "Live events are the beating heart of culture. For too long, venues and artists have been cut off from the fans and revenue they generate. KYD is the infrastructure to change that.",
 } as const
@@ -180,56 +180,47 @@ export const usedBy = [
   {
     name: "The Ideal Theater & Bar",
     subtitle: "Cedar Rapids, IA",
-    href: "#",
     imageSrc: assetUrl("/images/used-by/ideal-theater-bar.jpg"),
   },
   {
     name: "ANGINE DE POITRINE",
     subtitle: "NYC Debut @ LPR",
-    href: "#",
     imageSrc: assetUrl("/images/used-by/angine-de-poitrine.webp"),
   },
   {
     name: "Le Poisson Rouge",
     subtitle: "New York City, NY",
-    href: "#",
     imageSrc: assetUrl("/images/used-by/le-poisson-rouge.jpg"),
   },
   {
     name: "Action Bronson",
     subtitle: "Touring Artist",
-    href: "#",
     imageSrc: assetUrl("/images/used-by/action-bronson.jpg"),
     objectPosition: "center top",
   },
   {
     name: "The Brooklyn Monarch",
     subtitle: "Brooklyn, NY",
-    href: "#",
     imageSrc: assetUrl("/images/used-by/brooklyn-monarch.jpg"),
   },
   {
     name: "Pangea Sound",
     subtitle: "Los Angeles, CA",
-    href: "#",
     imageSrc: assetUrl("/images/used-by/pangea-sound.png"),
   },
   {
     name: "SOB's",
     subtitle: "New York City, NY",
-    href: "#",
     imageSrc: assetUrl("/images/used-by/sobs.jpg"),
   },
   {
     name: "Robert Plant",
     subtitle: "With Saving Grace & Suzi Dian",
-    href: "#",
     imageSrc: assetUrl("/images/used-by/robert_plant.png"),
   },
   {
     name: "Adéla",
     subtitle: "NYC Debut @ LPR",
-    href: "#",
     imageSrc: assetUrl("/images/used-by/adela.webp"),
   },
 ] as const
@@ -288,16 +279,18 @@ export const testimonials = [
       "Seems to me KYD is the bleeding edge. Then again, I don't want to talk to everybody.",
     attribution: "Bob Lefsetz",
     role: "The Lefsetz Letter",
-    logoSrc: assetUrl("/logos/testimonials/bob-lefsetz.svg"),
+    logoSrc: assetUrl("/logos/lefsetz.svg"),
+    href: "https://lefsetz.com/wordpress/2023/06/27/tiktok-marketing/",
     placeholder: false,
   },
   {
     quote:
-      "The difference is ownership. We are not renting our audience from another platform and hoping the data is still there after the show ends.",
-    attribution: "mock up",
-    role: "place holder",
-    logoSrc: assetUrl("/logos/testimonials/placeholder.svg"),
-    placeholder: true,
+      "Ticketmaster is a bank. When ticketing companies deploy $15 billion across 11,000 exclusive venues, and earn 30 cents per dollar they lend, they\u2019re no longer a software business, but a financial system.",
+    attribution: "CCN",
+    role: "Ticketing as a Bank?",
+    logoSrc: assetUrl("/logos/ccn-g.svg"),
+    href: "https://www.ccn.com/education/crypto/ticketing-as-a-bank-tix-ahmed-nimale-live-events/",
+    placeholder: false,
   },
   {
     quote:
@@ -305,15 +298,17 @@ export const testimonials = [
     attribution: "Billboard",
     role: "Feature on (le) poisson rouge, NYC",
     logoSrc: assetUrl("/logos/Billboard_logo2.svg"),
+    href: "https://smry.ai/www.billboard.com/pro/indie-venue-of-the-month-march-2026-lpr-new-york-city",
     placeholder: false,
   },
   {
     quote:
-      "We switched our entire tour to KYD and finally stopped fighting our own box office. Fans get in faster, we see real data, and nobody is refreshing a broken checkout page at 10:01 a.m.",
-    attribution: "mock up",
-    role: "place holder",
-    logoSrc: assetUrl("/logos/testimonials/placeholder.svg"),
-    placeholder: true,
+      "KYD is DeFi\u2019s largest ticket transfer platform, with more than $8 million in ticket sales, and $2 million in pre-existing financing across more than 300,000 tickets",
+    attribution: "The Defiant",
+    role: "KYD Labs Launches TIX for Live Events Financing",
+    logoSrc: assetUrl("/logos/defiant_1.svg"),
+    href: "https://thedefiant.io/news/nfts-and-web3/solana-ticketing-platform-kyd-labs-launches-tix",
+    placeholder: false,
   },
   {
     quote:
@@ -321,6 +316,7 @@ export const testimonials = [
     attribution: "Forbes",
     role: "The Future of Digital Assets",
     logoSrc: assetUrl("/logos/Forbes_logo2.svg"),
+    href: "https://www.forbes.com/sites/azeemkhan/2026/05/22/the-future-of-digital-assets-might-look-more-like-a-drake-party/",
     placeholder: false,
   },
   {
@@ -329,6 +325,7 @@ export const testimonials = [
     attribution: "Forbes",
     role: "The Future of Digital Assets",
     logoSrc: assetUrl("/logos/Forbes_logo2.svg"),
+    href: "https://www.forbes.com/sites/azeemkhan/2026/05/22/the-future-of-digital-assets-might-look-more-like-a-drake-party/",
     placeholder: false,
   },
 ] as const
@@ -354,41 +351,10 @@ export const backers = [
   },
 ] as const
 
-export const pressCoverage = [
-  {
-    outlet: "Forbes",
-    headline: "[Headline placeholder — coverage coming soon]",
-    date: "[Month Year]",
-    href: "#",
-    placeholder: true,
-  },
-  {
-    outlet: "Billboard",
-    headline: "[Headline placeholder — coverage coming soon]",
-    date: "[Month Year]",
-    href: "#",
-    placeholder: true,
-  },
-  {
-    outlet: "TechCrunch",
-    headline: "[Headline placeholder — coverage coming soon]",
-    date: "[Month Year]",
-    href: "#",
-    placeholder: true,
-  },
-  {
-    outlet: "Variety",
-    headline: "[Headline placeholder — coverage coming soon]",
-    date: "[Month Year]",
-    href: "#",
-    placeholder: true,
-  },
-] as const
-
 export const footerPrimaryLinks = [
   { label: "For Fans", href: links.forFans },
   { label: "For Venues & Artists", href: links.forVenues },
-  { label: "Get Help", href: "#fans" },
+  { label: "Get Help", href: links.contact },
 ] as const
 
 export const footerLegalLinks = [
@@ -398,5 +364,5 @@ export const footerLegalLinks = [
 
 export const footerUtilityLinks = [
   { label: "TIX", href: links.tix },
-  { label: "Get Help", href: "#fans" },
+  { label: "Get Help", href: links.contact },
 ] as const
