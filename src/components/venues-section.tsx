@@ -8,6 +8,7 @@ import {
   testimonials,
   venuesSection,
 } from "../content/site-content"
+import { trackEvent } from "../lib/analytics"
 import {
   BookCallCtaContent,
   bookCallButtonCss,
@@ -106,6 +107,25 @@ function TicketRevenueCalculator() {
     setMonthlyTicketRevenue(nextRevenue)
   }
 
+  function handleSimulatorInteraction({
+    inputMethod,
+    revenue,
+  }: {
+    inputMethod: "keyboard" | "pointer"
+    revenue: number
+  }) {
+    trackEvent({
+      event: "revenue_simulator_interacted",
+      properties: {
+        input_method: inputMethod,
+        monthly_ticket_revenue: revenue,
+        projected_monthly_revenue: revenue * REVENUE_GROWTH_MULTIPLIER,
+        additional_monthly_revenue:
+          revenue * (REVENUE_GROWTH_MULTIPLIER - 1),
+      },
+    })
+  }
+
   return (
     <Flex
       direction="column"
@@ -178,6 +198,19 @@ function TicketRevenueCalculator() {
           onChange={(event) =>
             handleMonthlyTicketRevenueChange(Number(event.currentTarget.value))
           }
+          onPointerUp={(event) =>
+            handleSimulatorInteraction({
+              inputMethod: "pointer",
+              revenue: Number(event.currentTarget.value),
+            })
+          }
+          onKeyUp={(event) => {
+            if (!SIMULATOR_CONTROL_KEYS.has(event.key)) return
+            handleSimulatorInteraction({
+              inputMethod: "keyboard",
+              revenue: Number(event.currentTarget.value),
+            })
+          }}
           aria-label="Current monthly ticket revenue"
           w="full"
           h="40px"
@@ -554,6 +587,16 @@ function formatAnimatedCurrency(value: number): AnimatedCurrency {
 }
 
 const REVENUE_GROWTH_MULTIPLIER = 1.3
+const SIMULATOR_CONTROL_KEYS = new Set([
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowUp",
+  "End",
+  "Home",
+  "PageDown",
+  "PageUp",
+])
 const MINIMUM_MONTHLY_REVENUE = 30000
 const MAXIMUM_MONTHLY_REVENUE = 999000
 const venuesPressTestimonials = testimonials.filter(
